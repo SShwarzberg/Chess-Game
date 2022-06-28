@@ -1,0 +1,65 @@
+.gameBoard {
+    display: flex;
+    flex-wrap: wrap;
+    width: 800px;
+    height: 800px;
+    margin: 0 auto;
+    margin-top: 6rem;
+}
+
+.gameBoard > div {
+    height: 100px;
+    width: 100px;
+    flex: 12%;
+    color: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.whiteTile {
+    background-color: whitesmoke;
+}
+
+.blackTile {
+    background-color: rgb(4, 44, 66);
+}
+
+.active {
+    background-color: rgba(117, 252, 0, 0.3);
+}
+
+img {
+    max-height: 60%;
+    z-index: 100;
+    cursor: pointer;
+}
+
+.playerOnePieces {
+    filter: invert(55%) sepia(70%) saturate(1299%) hue-rotate(6330deg)
+        brightness(105%) contrast(111%);
+}
+
+.playerTwoPieces {
+    filter: invert(73%) sepia(49%) saturate(3849%) hue-rotate(358deg)
+        brightness(102%) contrast(106%);
+}
+
+.pickNewPieceContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.pickNewPiece {
+    display: flex;
+    gap: 30px;
+}
+
+.pickNewPiece img {
+    height: 65px;
+}
