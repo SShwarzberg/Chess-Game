@@ -88,38 +88,51 @@ const RookMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                 }
             })
         })
-        // newAvailableMoves.forEach(move => {
-        //     if (individualPiece.tilePosition[1] === move[1]) {
+        // boardLetters.forEach((letter, i) => {
+        //     if (individualPiece.tilePosition[0] === letter) {
+        //         console.log(individualPiece.tilePosition, i);
         //         playerTwoPiecePositions.forEach(position => {
-        //             if (position.tilePosition === move) {
-        //                 boardLetters.forEach((letter, i) => {
-        //                     if (move[0] === letter) {
-        //                         console.log(move, i)
-        //                     }
-        //                     if (individualPiece.tilePosition[0] === letter) {
-        //                         console.log(individualPiece.tilePosition, i);
-        //                     }
-        //                 })
-        //             }
+        //             newAvailableMoves.forEach(move => {
+        //                 if (move === position.tilePosition) {
+        //                     boardLetters.forEach((letters, index) => {
+        //                         if (move[0] === letters) {
+        //                             console.log(move, index)
+        //                         }
+        //                     })
+        //                 }
+        //             })
         //         })
         //     }
         // })
-        playerTwoPiecePositions.forEach(position => {
+        let lessThanHorizontal = []
+        boardLetters.forEach((letter, i) => {
             newAvailableMoves.forEach(move => {
-                if (move === position.tilePosition) {
-                    boardLetters.forEach((letter, i) => {
-                        if (individualPiece.tilePosition[0] === letter) {
-                            newAvailableMoves.forEach(moves => {
-                                boardLetters.forEach((letters, index) => {
-                                    if (moves[0] === letters) {
-                                        if (i > index) {
-                                            console.log(moves, index)
-                                        }
-                                    }
-                                })
-                            })
+                if (move.includes(letter) && move[1] === individualPiece.tilePosition[1]) {
+                    boardLetters.forEach((letters, index) => {
+                        if (individualPiece.tilePosition.includes(letters)) {
+                            if (index > i) {
+                                lessThanHorizontal.push({ move, i });
+                            }
+                            if (index < i) {
+                                // console.log(move);
+                            }
                         }
                     })
+                }
+            })
+        })
+        let playerTwoHorizontalMatch = []
+        playerTwoPiecePositions.forEach(position => {
+            boardLetters.forEach((letter, i) => {
+                if (position.tilePosition.includes(letter) && individualPiece.tilePosition[1] === position.tilePosition[1]) {
+                    playerTwoHorizontalMatch.push({ move: position.tilePosition, i })
+                }
+            })
+        })
+        lessThanHorizontal.forEach(obj => {
+            playerTwoHorizontalMatch.forEach(match => {
+                if (match.i > obj.i) {
+                    removeFromAvailableMoves.push(obj.move)
                 }
             })
         })
