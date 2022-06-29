@@ -10,7 +10,6 @@ const PawnMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositio
                 let newAvailableMoves = [
                     pawnMove
                 ]
-                console.log(pawnFirstMove);
                 playerOnePiecePositions.forEach(position => {
                     if (position.tilePosition === pawnMove) {
                         newAvailableMoves.splice(pawnMove)
@@ -32,6 +31,20 @@ const PawnMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositio
                 if (individualPiece.tilePosition.includes('b')) {
                     newAvailableMoves.push(pawnFirstMove)
                 }
+                let removeFromAvailableMoves = []
+                playerOnePiecePositions.forEach(position => {
+                    newAvailableMoves.forEach(move => {
+                        if (move === position.tilePosition) {
+                            removeFromAvailableMoves.push(move)
+                        }
+                    })
+                })
+                newAvailableMoves = newAvailableMoves.filter(move => {
+                    if (!removeFromAvailableMoves.includes(move)) {
+                        return move
+                    }
+                })
+                console.log(newAvailableMoves);
                 setAvailableMoves(newAvailableMoves)
             }
         })

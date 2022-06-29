@@ -88,23 +88,14 @@ const RookMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                 }
             })
         })
-        // boardLetters.forEach((letter, i) => {
-        //     if (individualPiece.tilePosition[0] === letter) {
-        //         console.log(individualPiece.tilePosition, i);
-        //         playerTwoPiecePositions.forEach(position => {
-        //             newAvailableMoves.forEach(move => {
-        //                 if (move === position.tilePosition) {
-        //                     boardLetters.forEach((letters, index) => {
-        //                         if (move[0] === letters) {
-        //                             console.log(move, index)
-        //                         }
-        //                     })
-        //                 }
-        //             })
-        //         })
-        //     }
-        // })
         let lessThanHorizontal = []
+        let moreThanHorizontal = []
+        let individualPieceIndex = {}
+        boardLetters.forEach((letter, i) => {
+            if (individualPiece.tilePosition.includes(letter)) {
+                individualPieceIndex = { move: individualPiece.tilePosition, i }
+            }
+        })
         boardLetters.forEach((letter, i) => {
             newAvailableMoves.forEach(move => {
                 if (move.includes(letter) && move[1] === individualPiece.tilePosition[1]) {
@@ -114,7 +105,7 @@ const RookMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                                 lessThanHorizontal.push({ move, i });
                             }
                             if (index < i) {
-                                // console.log(move);
+                                moreThanHorizontal.push({ move, i })
                             }
                         }
                     })
@@ -131,7 +122,14 @@ const RookMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
         })
         lessThanHorizontal.forEach(obj => {
             playerTwoHorizontalMatch.forEach(match => {
-                if (match.i > obj.i) {
+                if (match.i > obj.i && match.i < individualPieceIndex.i) {
+                    removeFromAvailableMoves.push(obj.move)
+                }
+            })
+        })
+        moreThanHorizontal.forEach(obj => {
+            playerTwoHorizontalMatch.forEach(match => {
+                if (match.i < obj.i && match.i > individualPieceIndex.i) {
                     removeFromAvailableMoves.push(obj.move)
                 }
             })

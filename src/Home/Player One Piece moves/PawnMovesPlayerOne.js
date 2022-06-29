@@ -31,6 +31,19 @@ const PawnMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                 if (individualPiece.tilePosition.includes('g')) {
                     newAvailableMoves.push(pawnFirstMove)
                 }
+                let removeFromAvailableMoves = []
+                playerTwoPiecePositions.forEach(position => {
+                    newAvailableMoves.forEach(move => {
+                        if (position.tilePosition === move) {
+                            removeFromAvailableMoves.push(move)
+                        }
+                    })
+                })
+                newAvailableMoves = newAvailableMoves.filter(move => {
+                    if (!removeFromAvailableMoves.includes(move)) {
+                        return move
+                    }
+                })
                 setAvailableMoves(newAvailableMoves)
             }
         })
