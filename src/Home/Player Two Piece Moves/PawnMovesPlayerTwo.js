@@ -44,7 +44,6 @@ const PawnMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositio
                         return move
                     }
                 })
-                console.log(newAvailableMoves);
                 setAvailableMoves(newAvailableMoves)
             }
         })

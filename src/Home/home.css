@@ -11,14 +11,14 @@
     height: 100px;
     width: 100px;
     flex: 12%;
-    color: red;
+    color: rgb(13, 103, 64);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .whiteTile {
-    background-color: whitesmoke;
+    background-color: rgb(234, 232, 210);
 }
 
 .blackTile {
@@ -62,4 +62,10 @@ img {
 
 .pickNewPiece img {
     height: 65px;
+}
+
+.boardPositions {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
 }

@@ -8,9 +8,11 @@ import {
 import PawnMovesPlayerOne from './Player One Piece moves/PawnMovesPlayerOne'
 import RookMovesPlayerOne from './Player One Piece moves/RookMovesPlayerOne'
 import HorseMovesPlayerOne from './Player One Piece moves/HorseMovesPlayerOne'
+import BishopMovesPlayerOne from './Player One Piece moves/BishopMovesPlayerOne'
 //import player two's piece positions
 import PawnMovesPlayerTwo from './Player Two Piece Moves/PawnMovesPlayerTwo'
 import HorseMovesPlayerTwo from './Player Two Piece Moves/HorseMovesPlayerTwo'
+import RookMovesPlayerTwo from './Player Two Piece Moves/RookMovesPlayerTwo'
 
 const boardLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 
@@ -59,7 +61,6 @@ const Home = () => {
                             return Object.assign({}, position);
                         })
                         newPlayerTwoPositions[currentPieceId - 17].tilePosition = move
-                        console.log(newPlayerTwoPositions[currentPieceId - 17].tilePosition);
                         setPlayerTwoPiecePositions(newPlayerTwoPositions)
                         setAvailableMoves([])
                         setPlayerOneTurn(true)
@@ -116,8 +117,10 @@ const Home = () => {
         PawnMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
         RookMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
         HorseMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves)
+        BishopMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
         // player two
         PawnMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves)
+        RookMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves)
         HorseMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves)
     }
     const renderPiecePosition = (boardPosition) => {
@@ -157,7 +160,9 @@ const Home = () => {
                         takeOpponentPiece(e.target.id)
                         replacePawn(e.target.id)
                         checkGameOver()
-                    }} key={piece.position} id={piece.position} className={tile}>{renderPiecePosition(piece.position)}</div>
+                    }} key={piece.position} id={piece.position} className={tile}>{renderPiecePosition(piece.position)}
+                        <div className='boardPositions'>{piece.position}</div>
+                    </div>
                 }
             }
         })
