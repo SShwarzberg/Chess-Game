@@ -11,7 +11,7 @@
     height: 100px;
     width: 100px;
     flex: 12%;
-    color: rgb(13, 103, 64);
+    color: rgb(187, 162, 151);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,7 +22,7 @@
 }
 
 .blackTile {
-    background-color: rgb(4, 44, 66);
+    background-color: rgb(10, 58, 84);
 }
 
 .active {

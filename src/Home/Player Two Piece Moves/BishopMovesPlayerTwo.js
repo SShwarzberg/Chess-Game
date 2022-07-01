@@ -1,5 +1,5 @@
-const BishopMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves) => {
-    if (individualPiece.id === 9 || individualPiece.id === 10) {
+const BishopMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves) => {
+    if (individualPiece.id === 25 || individualPiece.id === 26) {
         let newAvailableMoves = []
         let upAndToRight = []
         let downAndToRight = []
@@ -24,19 +24,15 @@ const BishopMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosit
             }
         })
         let removeFromAvailableMoves = []
-        let checkIfBlockingPlayerOne = []
-        playerOnePiecePositions.forEach(position => {
+        let checkIfBlockingPlayerTwo = []
+        playerTwoPiecePositions.forEach(position => {
             newAvailableMoves.forEach(move => {
                 if (position.tilePosition === move) {
                     removeFromAvailableMoves.push(move)
-                    checkIfBlockingPlayerOne.push(move)
+                    checkIfBlockingPlayerTwo.push(move)
                 }
             })
         })
-        let upAndToRightIndex = []
-        let downAndToRightIndex = []
-        let downAndToLeftIndex = []
-        let upAndToLeftIndex = []
         const getDirectionsAvailableMoves = (direction, directionIndex) => {
             direction.forEach(move => {
                 boardLetters.forEach((letter, i) => {
@@ -46,6 +42,10 @@ const BishopMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosit
                 })
             })
         }
+        let upAndToRightIndex = []
+        let downAndToRightIndex = []
+        let downAndToLeftIndex = []
+        let upAndToLeftIndex = []
         getDirectionsAvailableMoves(upAndToRight, upAndToRightIndex)
         getDirectionsAvailableMoves(downAndToRight, downAndToRightIndex)
         getDirectionsAvailableMoves(downAndToLeft, downAndToLeftIndex)
@@ -54,7 +54,7 @@ const BishopMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosit
         let ownPiecesBlockingDownRight = []
         let ownPiecesBlockingDownLeft = []
         let ownPiecesBlockingUpLeft = []
-        checkIfBlockingPlayerOne.forEach(blocking => {
+        checkIfBlockingPlayerTwo.forEach(blocking => {
             const ownBlockingDirections = (direction, directionArray) => {
                 direction.forEach(availableMove => {
                     if (availableMove === blocking && blocking !== individualPiece.tilePosition) {
@@ -128,7 +128,7 @@ const BishopMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosit
         pushOwnBlockingPiecesUp(ownPiecesBlockingUpLeft, upAndToLeftIndex)
 
         let checkIfBlockingOpponent = []
-        playerTwoPiecePositions.forEach(position => {
+        playerOnePiecePositions.forEach(position => {
             newAvailableMoves.forEach(move => {
                 if (move === position.tilePosition) {
                     checkIfBlockingOpponent.push(move)
@@ -154,7 +154,6 @@ const BishopMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosit
             opponentBlockingDirections(downAndToLeftIndex, opponentPiecesBlockingDownLeft)
             opponentBlockingDirections(upAndToLeftIndex, opponentPiecesBlockingUpLeft)
         })
-
         const removePiecesBlockedByOpponentUp = (opponentPiecesBlockingDirection, directionIndex) => {
             const getOpponentsBlockingIndexDirection = () => {
                 return opponentPiecesBlockingDirection.map(piece => piece.i)
@@ -186,7 +185,6 @@ const BishopMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosit
         removePiecesBlockedByOpponentUp(opponentPiecesBlockingUpLeft, upAndToLeftIndex)
         removePiecesBlockedByOpponentDown(opponentPiecesBlockingDownRight, downAndToRightIndex)
         removePiecesBlockedByOpponentDown(opponentPiecesBlockingDownLeft, downAndToLeftIndex)
-
         newAvailableMoves = newAvailableMoves.filter(move => {
             if (!removeFromAvailableMoves.includes(move)) {
                 return move
@@ -202,4 +200,4 @@ const BishopMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosit
     }
 }
 
-export default BishopMovesPlayerOne
+export default BishopMovesPlayerTwo
