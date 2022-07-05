@@ -17,6 +17,7 @@ import HorseMovesPlayerTwo from './Player Two Piece Moves/HorseMovesPlayerTwo'
 import RookMovesPlayerTwo from './Player Two Piece Moves/RookMovesPlayerTwo'
 import BishopMovesPlayerTwo from './Player Two Piece Moves/BishopMovesPlayerTwo'
 import QueenMovesPlayerTwo from './Player Two Piece Moves/QueenMovesPlayerTwo'
+import KingMovesPlayerTwo from './Player Two Piece Moves/KingMovesPlayerTwo'
 
 const boardLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 
@@ -25,7 +26,7 @@ const Home = () => {
     const [playerTwoPiecePositions, setPlayerTwoPiecePositions] = useState(piecesPlayerTwo)
     const [playerOneLostPieces, setPlayerOneLostPieces] = useState([])
     const [playerTwoLostPieces, setPlayerTwoLostPieces] = useState([])
-    const [playerOneTurn, setPlayerOneTurn] = useState(true)
+    const [playerOneTurn, setPlayerOneTurn] = useState(false)
     const [availableMoves, setAvailableMoves] = useState([])
     const [currentPieceId, setCurrentPieceId] = useState(null)
     const [switchPawn, setSwitchPawn] = useState(false)
@@ -130,6 +131,7 @@ const Home = () => {
         HorseMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves)
         BishopMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves)
         QueenMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves)
+        KingMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves)
     }
     const renderPiecePosition = (boardPosition) => {
         let playerPieces = [playerOnePiecePositions, playerTwoPiecePositions]
@@ -175,6 +177,7 @@ const Home = () => {
             }
         })
     }
+    console.log(availableMoves);
     return (
         <>
             {gameOver && <div>Game Over</div>}
