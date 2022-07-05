@@ -80,12 +80,12 @@ const BishopMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosit
             const getOwnBlockingDirection = () => {
                 return ownPiecesBlockingDirection.map(piece => piece.i)
             }
-            const getMaxIndex = () => {
-                return Math.max(...getOwnBlockingDirection())
+            const getMinIndex = () => {
+                return Math.min(...getOwnBlockingDirection())
             }
             let ownPieceBlockingDirection
             ownPiecesBlockingDirection.forEach(piece => {
-                if (piece.i === getMaxIndex()) {
+                if (piece.i === getMinIndex()) {
                     ownPieceBlockingDirection = piece
                 }
             })

@@ -3,7 +3,6 @@ const HorseMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositi
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition[0] === letter) {
                 let newAvailableMoves = []
-                console.log(boardLetters[i - 1] + (parseInt(individualPiece.tilePosition[1]) - 2));
                 newAvailableMoves.push(
                     // move horse down two, right one
                     boardLetters[i + 2] + (parseInt(individualPiece.tilePosition[1]) + 1),
