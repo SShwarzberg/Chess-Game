@@ -56,7 +56,7 @@ const Home = () => {
                         const newPlayerOnePositions = playerOnePiecePositions.map(position => {
                             return Object.assign({}, position);
                         })
-                        newPlayerOnePositions[currentPieceId - 1].tilePosition = move
+                        newPlayerOnePositions[currentPieceId].tilePosition = move
                         setPlayerOnePiecePositions(newPlayerOnePositions)
                         setAvailableMoves([])
                         setPlayerOneTurn(false)
@@ -188,14 +188,14 @@ const Home = () => {
                 <div className='pickNewPieceContainer'>Pick a piece:
                     <div className='pickNewPiece'>
                         {playerOnePiecePositions.map(position => {
-                            if (position.id > 9 && position.id !== 12 && position.id !== 14 && position.id !== 16) {
+                            if (position.id > 8 && position.id !== 11 && position.id !== 13 && position.id !== 15) {
                                 return <img onClick={() => {
                                     changePiece(position)
                                 }} src={position.pieceName} alt="" key={position.id} />
                             }
                         })}
                         {playerTwoPiecePositions.map(position => {
-                            if (position.id > 9 && position.id !== 12 && position.id !== 14 && position.id !== 16) {
+                            if (position.id > 8 && position.id !== 11 && position.id !== 13 && position.id !== 15) {
                                 return <img onClick={() => {
                                     changePiece(position)
                                 }} src={position.pieceName} alt="" key={position.id} />

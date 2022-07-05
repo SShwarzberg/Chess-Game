@@ -1,5 +1,6 @@
 const PawnMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves) => {
-    if (individualPiece.id > 16 && individualPiece.id < 25) {
+    if (individualPiece.id > 15 && individualPiece.id < 24) {
+        console.log(individualPiece.id);
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition.includes(letter)) {
                 const tileHorizontalIndex = parseInt(individualPiece.tilePosition[1])

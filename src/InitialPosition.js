@@ -27,42 +27,42 @@ const piecesPlayerOne = [
         return {
             pieceName: pawn,
             tilePosition: position,
-            id: i + 1
+            id: i
         }
     }),
     ...bishopsPlayerOne.map((position, i) => {
         return {
             pieceName: bishop,
             tilePosition: position,
-            id: i + 9
+            id: i + 8
         }
     }),
     ...rooksPlayerOne.map((position, i) => {
         return {
             pieceName: rook,
             tilePosition: position,
-            id: i + 11
+            id: i + 10
         }
     }),
     ...horsesPlayerOne.map((position, i) => {
         return {
             pieceName: horse,
             tilePosition: position,
-            id: i + 13
+            id: i + 12
         }
     }),
     ...queenPlayerOne.map((position, i) => {
         return {
             pieceName: queen,
             tilePosition: position,
-            id: i + 15
+            id: i + 14
         }
     }),
     ...kingPlayerOne.map((position, i) => {
         return {
             pieceName: king,
             tilePosition: position,
-            id: i + 16
+            id: i + 15
         }
     }),
 ]
@@ -81,35 +81,35 @@ const piecesPlayerTwo = [
         return {
             pieceName: bishop,
             tilePosition: position,
-            id: i + 25
+            id: i + 24
         }
     }),
     ...rooksPlayerTwo.map((position, i) => {
         return {
             pieceName: rook,
             tilePosition: position,
-            id: i + 27
+            id: i + 26
         }
     }),
     ...horsesPlayerTwo.map((position, i) => {
         return {
             pieceName: horse,
             tilePosition: position,
-            id: i + 29
+            id: i + 28
         }
     }),
     ...queenPlayerTwo.map((position, i) => {
         return {
             pieceName: queen,
             tilePosition: position,
-            id: i + 31
+            id: i + 30
         }
     }),
     ...kingPlayerTwo.map((position, i) => {
         return {
             pieceName: king,
             tilePosition: position,
-            id: i + 33
+            id: i + 32
         }
     }),
 ]

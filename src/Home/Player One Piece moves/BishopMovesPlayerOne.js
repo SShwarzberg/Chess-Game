@@ -1,5 +1,5 @@
 const BishopMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves) => {
-    if (individualPiece.id === 9 || individualPiece.id === 10) {
+    if (individualPiece.id === 8 || individualPiece.id === 9) {
         let newAvailableMoves = []
         let upAndToRight = []
         let downAndToRight = []

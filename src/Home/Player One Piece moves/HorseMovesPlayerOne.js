@@ -1,5 +1,5 @@
 const HorseMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves) => {
-    if (individualPiece.id === 13 || individualPiece.id === 14) {
+    if (individualPiece.id === 12 || individualPiece.id === 13) {
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition[0] === letter) {
                 let newAvailableMoves = []
