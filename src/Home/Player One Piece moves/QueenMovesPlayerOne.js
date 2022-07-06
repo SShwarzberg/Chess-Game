@@ -1,5 +1,5 @@
 const QueenMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves) => {
-    if (individualPiece.id === 15) {
+    if (individualPiece.id === 14) {
         let newAvailableMoves = []
         let removeFromAvailableMoves = []
 
@@ -11,7 +11,7 @@ const QueenMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositi
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition[0] === letter) {
                 boardLetters.forEach((letters, index) => {
-                    newAvailableMoves.push(letter + (index + 1));
+                    newAvailableMoves.push(letter + (index + 1))
                 })
             }
             if (parseInt(individualPiece.tilePosition[1]) === i) {
@@ -95,7 +95,7 @@ const QueenMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositi
                 ownPieceBlockingUp.push(pieceBlocking)
             }
             if (pieceBlocking.i > individualPieceIndex) {
-                ownPieceBlockingDown.push(pieceBlocking);
+                ownPieceBlockingDown.push(pieceBlocking)
             }
         })
 
@@ -397,7 +397,7 @@ const QueenMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositi
             }
             directionIndex.forEach(index => {
                 if (getMaxIndexDirection() !== undefined && index.i < getMaxIndexDirection()) {
-                    removeFromAvailableMoves.push(index.move);
+                    removeFromAvailableMoves.push(index.move)
                 }
             })
         }
@@ -410,7 +410,7 @@ const QueenMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositi
             }
             directionIndex.forEach(index => {
                 if (getMinIndexDirection() !== undefined && index.i > getMinIndexDirection()) {
-                    removeFromAvailableMoves.push(index.move);
+                    removeFromAvailableMoves.push(index.move)
                 }
             })
         }

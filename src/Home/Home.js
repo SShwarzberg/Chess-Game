@@ -26,21 +26,21 @@ const Home = () => {
     const [playerTwoPiecePositions, setPlayerTwoPiecePositions] = useState(piecesPlayerTwo)
     const [playerOneLostPieces, setPlayerOneLostPieces] = useState([])
     const [playerTwoLostPieces, setPlayerTwoLostPieces] = useState([])
-    const [playerOneTurn, setPlayerOneTurn] = useState(false)
+    const [playerOneTurn, setPlayerOneTurn] = useState(true)
     const [availableMoves, setAvailableMoves] = useState([])
     const [currentPieceId, setCurrentPieceId] = useState(null)
     const [switchPawn, setSwitchPawn] = useState(false)
     const [gameOver, setGameOver] = useState(false)
     const checkGameOver = () => {
         playerOnePiecePositions.forEach(position => {
-            if (position.id === 17) {
+            if (position.id === 15) {
                 if (position.tilePosition === null) {
                     setGameOver(true)
                 }
             }
         })
         playerTwoPiecePositions.forEach(position => {
-            if (position.id === 33) {
+            if (position.id === 31) {
                 if (position.tilePosition === null) {
                     setGameOver(true)
                 }
@@ -54,7 +54,7 @@ const Home = () => {
                     if (playerOneTurn) {
                         // player one 
                         const newPlayerOnePositions = playerOnePiecePositions.map(position => {
-                            return Object.assign({}, position);
+                            return Object.assign({}, position)
                         })
                         newPlayerOnePositions[currentPieceId].tilePosition = move
                         setPlayerOnePiecePositions(newPlayerOnePositions)
@@ -63,9 +63,9 @@ const Home = () => {
                     } else {
                         // player two
                         const newPlayerTwoPositions = playerTwoPiecePositions.map(position => {
-                            return Object.assign({}, position);
+                            return Object.assign({}, position)
                         })
-                        newPlayerTwoPositions[currentPieceId - 17].tilePosition = move
+                        newPlayerTwoPositions[currentPieceId - 16].tilePosition = move
                         setPlayerTwoPiecePositions(newPlayerTwoPositions)
                         setAvailableMoves([])
                         setPlayerOneTurn(true)
@@ -139,9 +139,8 @@ const Home = () => {
             return playerArray.map(individualPiece => {
                 if (individualPiece.tilePosition === boardPosition) {
                     let className
-                    if (individualPiece.id < 17) {
+                    if (individualPiece.id < 16) {
                         className = 'playerOnePieces'
-                        // } else if (individualPiece.id > 16 && individualPiece.id < 34) {
                     } else {
                         className = 'playerTwoPieces'
                     }
@@ -177,10 +176,10 @@ const Home = () => {
             }
         })
     }
-    console.log(availableMoves);
     return (
         <>
             {gameOver && <div>Game Over</div>}
+            <div className='whosTurn'>player&nbsp; {playerOneTurn && <p>one&nbsp;  </p>} {!playerOneTurn && <p>two&nbsp; </p>} turn</div>
             <div className='gameBoard'>
                 {colorBoard()}
             </div>
@@ -188,7 +187,7 @@ const Home = () => {
                 <div className='pickNewPieceContainer'>Pick a piece:
                     <div className='pickNewPiece'>
                         {playerOnePiecePositions.map(position => {
-                            if (position.id > 8 && position.id !== 11 && position.id !== 13 && position.id !== 15) {
+                            if (position.id > 7 && position.id !== 10 && position.id !== 12 && position.id !== 15) {
                                 return <img onClick={() => {
                                     changePiece(position)
                                 }} src={position.pieceName} alt="" key={position.id} />

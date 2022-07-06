@@ -6,7 +6,7 @@ import rook from './images/rook.png'
 import horse from './images/horse.png'
 
 // player one beginning positions
-const pawnsPlayerOne = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8']
+const pawnsPlayerOne = ['g1', 'g2', 'g3', 'g4', 'c5', 'g6', 'g7', 'g8']
 const bishopsPlayerOne = ['h3', 'h6']
 const rooksPlayerOne = ['h1', 'h8']
 const horsesPlayerOne = ['h2', 'h7']
@@ -19,7 +19,7 @@ const bishopsPlayerTwo = ['a3', 'a6']
 const rooksPlayerTwo = ['a1', 'a8']
 const horsesPlayerTwo = ['a2', 'a7']
 const queenPlayerTwo = ['a4']
-const kingPlayerTwo = ['d5']
+const kingPlayerTwo = ['a5']
 
 // player one piece info
 const piecesPlayerOne = [
@@ -74,7 +74,7 @@ const piecesPlayerTwo = [
         return {
             pieceName: pawn,
             tilePosition: position,
-            id: i + 17
+            id: i + 16
         }
     }),
     ...bishopsPlayerTwo.map((position, i) => {
@@ -109,7 +109,7 @@ const piecesPlayerTwo = [
         return {
             pieceName: king,
             tilePosition: position,
-            id: i + 32
+            id: i + 31
         }
     }),
 ]

@@ -69,3 +69,8 @@ img {
     z-index: 0;
     pointer-events: none;
 }
+
+.whosTurn {
+    display: flex;
+    flex-direction: row;
+}

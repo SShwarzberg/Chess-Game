@@ -1,5 +1,5 @@
 const KingMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves) => {
-    if (individualPiece.id === 32) {
+    if (individualPiece.id === 31) {
         let newAvailableMoves = ['d4', 'd6']
         let removeFromAvailableMoves = []
         boardLetters.forEach((letter, i) => {

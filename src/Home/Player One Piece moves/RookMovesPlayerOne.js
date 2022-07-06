@@ -1,5 +1,5 @@
 const RookMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves) => {
-    if (individualPiece.id === 11 || individualPiece.id === 12) {
+    if (individualPiece.id === 10 || individualPiece.id === 11) {
         let newAvailableMoves = []
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition.includes(letter)) {
@@ -102,7 +102,7 @@ const RookMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                     boardLetters.forEach((letters, index) => {
                         if (individualPiece.tilePosition.includes(letters)) {
                             if (index > i) {
-                                lessThanHorizontal.push({ move, i });
+                                lessThanHorizontal.push({ move, i })
                             }
                             if (index < i) {
                                 moreThanHorizontal.push({ move, i })

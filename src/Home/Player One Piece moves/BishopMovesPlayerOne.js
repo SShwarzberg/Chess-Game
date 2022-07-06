@@ -164,7 +164,7 @@ const BishopMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosit
             }
             directionIndex.forEach(index => {
                 if (getMaxIndexDirection() !== undefined && index.i < getMaxIndexDirection()) {
-                    removeFromAvailableMoves.push(index.move);
+                    removeFromAvailableMoves.push(index.move)
                 }
             })
         }
@@ -177,7 +177,7 @@ const BishopMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosit
             }
             directionIndex.forEach(index => {
                 if (getMinIndexDirection() !== undefined && index.i > getMinIndexDirection()) {
-                    removeFromAvailableMoves.push(index.move);
+                    removeFromAvailableMoves.push(index.move)
                 }
             })
         }

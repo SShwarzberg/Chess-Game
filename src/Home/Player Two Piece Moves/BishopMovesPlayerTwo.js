@@ -1,5 +1,5 @@
 const BishopMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves) => {
-    if (individualPiece.id === 25 || individualPiece.id === 26) {
+    if (individualPiece.id === 24 || individualPiece.id === 25) {
         let newAvailableMoves = []
         let upAndToRight = []
         let downAndToRight = []
@@ -163,7 +163,7 @@ const BishopMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosit
             }
             directionIndex.forEach(index => {
                 if (getMaxIndexDirection() !== undefined && index.i < getMaxIndexDirection()) {
-                    removeFromAvailableMoves.push(index.move);
+                    removeFromAvailableMoves.push(index.move)
                 }
             })
         }
@@ -176,7 +176,7 @@ const BishopMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosit
             }
             directionIndex.forEach(index => {
                 if (getMinIndexDirection() !== undefined && index.i > getMinIndexDirection()) {
-                    removeFromAvailableMoves.push(index.move);
+                    removeFromAvailableMoves.push(index.move)
                 }
             })
         }

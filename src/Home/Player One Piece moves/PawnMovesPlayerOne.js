@@ -1,6 +1,5 @@
 const PawnMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves) => {
-    if (individualPiece.id < 9) {
-        console.log(playerOnePiecePositions);
+    if (individualPiece.id >= 0 && individualPiece.id <= 7) {
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition.includes(letter)) {
                 const tileHorizontalIndex = parseInt(individualPiece.tilePosition[1])
@@ -12,6 +11,11 @@ const PawnMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                     pawnMove
                 ]
                 playerTwoPiecePositions.forEach(position => {
+                    newAvailableMoves.forEach(move => {
+                        if (position.tilePosition.includes('f') && position.tilePosition[1] === move[1]) {
+                            removeFromAvailableMoves.push('e' + move[1])
+                        }
+                    })
                     if (position.tilePosition === pawnMove) {
                         newAvailableMoves.splice(pawnMove)
                     }
