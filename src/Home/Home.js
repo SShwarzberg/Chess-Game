@@ -4,20 +4,23 @@ import tiles from '../Tiles'
 import {
     piecesPlayerOne, piecesPlayerTwo,
 } from '../InitialPosition'
-// import player one's piece moves
+// import player one's moves
 import PawnMovesPlayerOne from './Player One Piece moves/PawnMovesPlayerOne'
 import RookMovesPlayerOne from './Player One Piece moves/RookMovesPlayerOne'
 import HorseMovesPlayerOne from './Player One Piece moves/HorseMovesPlayerOne'
 import BishopMovesPlayerOne from './Player One Piece moves/BishopMovesPlayerOne'
 import QueenMovesPlayerOne from './Player One Piece moves/QueenMovesPlayerOne'
 import KingMovesPlayerOne from './Player One Piece moves/KingMovesPlayerOne'
-//import player two's piece positions
+// import player two's moves
 import PawnMovesPlayerTwo from './Player Two Piece Moves/PawnMovesPlayerTwo'
 import HorseMovesPlayerTwo from './Player Two Piece Moves/HorseMovesPlayerTwo'
 import RookMovesPlayerTwo from './Player Two Piece Moves/RookMovesPlayerTwo'
 import BishopMovesPlayerTwo from './Player Two Piece Moves/BishopMovesPlayerTwo'
 import QueenMovesPlayerTwo from './Player Two Piece Moves/QueenMovesPlayerTwo'
 import KingMovesPlayerTwo from './Player Two Piece Moves/KingMovesPlayerTwo'
+// get player one's next turn's available moves 
+import PawnNextMovesPlayerOne from './Player One Next Piece moves/PawnNextMovesPlayerOne'
+import { useEffect } from 'react'
 
 const boardLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 
@@ -28,9 +31,11 @@ const Home = () => {
     const [playerTwoLostPieces, setPlayerTwoLostPieces] = useState([])
     const [playerOneTurn, setPlayerOneTurn] = useState(true)
     const [availableMoves, setAvailableMoves] = useState([])
+    const [currentPiece, setCurrentPiece] = useState(null)
     const [currentPieceId, setCurrentPieceId] = useState(null)
     const [switchPawn, setSwitchPawn] = useState(false)
     const [gameOver, setGameOver] = useState(false)
+    const [playerTwoIsInCheck, setPlayerTwoIsInCheck] = useState(false)
     const checkGameOver = () => {
         playerOnePiecePositions.forEach(position => {
             if (position.id === 15) {
@@ -47,6 +52,25 @@ const Home = () => {
             }
         })
     }
+    useEffect(() => {
+        setCurrentPiece(playerOnePiecePositions[currentPiece?.id])
+    }, [playerOnePiecePositions])
+    const checkIfInCheck = () => {
+        // player one
+        PawnNextMovesPlayerOne(currentPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setPlayerTwoIsInCheck)
+        // RookNextMovesPlayerOne(currentPiece.tilePosition, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
+        // BishopNextMovesPlayerOne(currentPiece.tilePosition, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
+        // QueenNextMovesPlayerOne(currentPiece.tilePosition, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
+        // HorseNextMovesPlayerOne(currentPiece.tilePosition, boardLetters, playerOnePiecePositions, setAvailableMoves)
+        // KingNextMovesPlayerOne(currentPiece.tilePosition, boardLetters, playerOnePiecePositions, setAvailableMoves)
+        // player two
+        // PawnNextMovesPlayerTwo(currentPiece.tilePosition, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves)
+        // RookNextMovesPlayerTwo(currentPiece.tilePosition, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves)
+        // BishopNextMovesPlayerTwo(currentPiece.tilePosition, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves)
+        // QueenNextMovesPlayerTwo(currentPiece.tilePosition, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves)
+        // HorseNextMovesPlayerTwo(currentPiece.tilePosition, boardLetters, playerTwoPiecePositions, setAvailableMoves)
+        // KingNextMovesPlayerTwo(currentPiece.tilePosition, boardLetters, playerTwoPiecePositions, setAvailableMoves)
+    }
     const changePiecePosition = (eventTargetId) => {
         if (availableMoves !== []) {
             availableMoves.forEach(move => {
@@ -60,6 +84,7 @@ const Home = () => {
                         setPlayerOnePiecePositions(newPlayerOnePositions)
                         setAvailableMoves([])
                         setPlayerOneTurn(false)
+                        checkIfInCheck()
                     } else {
                         // player two
                         const newPlayerTwoPositions = playerTwoPiecePositions.map(position => {
@@ -105,7 +130,7 @@ const Home = () => {
         })
     }
     const replacePawn = (eventTargetId) => {
-        if (eventTargetId.includes('a') && currentPieceId !== null && currentPieceId < 9) {
+        if (eventTargetId.includes('a') && currentPieceId && currentPieceId < 9) {
             setSwitchPawn(true)
         }
     }
@@ -121,18 +146,19 @@ const Home = () => {
         // player one
         PawnMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
         RookMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
-        HorseMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves)
         BishopMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
         QueenMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
+        HorseMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves)
         KingMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves)
         // player two
         PawnMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves)
         RookMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves)
-        HorseMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves)
         BishopMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves)
         QueenMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves)
+        HorseMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves)
         KingMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves)
     }
+    // renders pieces onto board as team one and team two
     const renderPiecePosition = (boardPosition) => {
         let playerPieces = [playerOnePiecePositions, playerTwoPiecePositions]
         return playerPieces.map(playerArray => {
@@ -145,6 +171,7 @@ const Home = () => {
                         className = 'playerTwoPieces'
                     }
                     return <img onClick={() => {
+                        setCurrentPiece(individualPiece)
                         setCurrentPieceId(individualPiece.id)
                         getAvailableMoves(individualPiece)
                     }} className={className} src={individualPiece.pieceName} alt="" key={individualPiece.id} />
@@ -152,6 +179,7 @@ const Home = () => {
             })
         })
     }
+    // colors board by iterating through squares 
     const colorBoard = () => {
         return tiles.map(piece => {
             for (let i in boardLetters) {
@@ -169,8 +197,14 @@ const Home = () => {
                         takeOpponentPiece(e.target.id)
                         replacePawn(e.target.id)
                         checkGameOver()
-                    }} key={piece.position} id={piece.position} className={tile}>{renderPiecePosition(piece.position)}
-                        <div className='boardPositions'>{piece.position}</div>
+                    }}
+                        key={piece.position}
+                        id={piece.position}
+                        className={tile}>
+                        {renderPiecePosition(piece.position)}
+                        <div className='boardPositions'>
+                            {piece.position}
+                        </div>
                     </div>
                 }
             }

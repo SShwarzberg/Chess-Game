@@ -6,7 +6,7 @@ import rook from './images/rook.png'
 import horse from './images/horse.png'
 
 // player one beginning positions
-const pawnsPlayerOne = ['g1', 'g2', 'g3', 'g4', 'c5', 'g6', 'g7', 'g8']
+const pawnsPlayerOne = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8']
 const bishopsPlayerOne = ['h3', 'h6']
 const rooksPlayerOne = ['h1', 'h8']
 const horsesPlayerOne = ['h2', 'h7']
