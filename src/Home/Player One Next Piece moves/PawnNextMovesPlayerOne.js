@@ -10,9 +10,10 @@ const PawnNextMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
                 let newAvailableMoves = [
                     pawnMove
                 ]
+                let removeFromAvailableMoves = []
                 playerTwoPiecePositions.forEach(position => {
                     newAvailableMoves.forEach(move => {
-                        if (position.tilePosition.includes('f') && position.tilePosition[1] === move[1]) {
+                        if (position.tilePosition && position.tilePosition.includes('f') && position.tilePosition[1] === move[1]) {
                             removeFromAvailableMoves.push('e' + move[1])
                         }
                     })
@@ -28,7 +29,6 @@ const PawnNextMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
                 if (individualPiece.tilePosition.includes('g')) {
                     newAvailableMoves.push(pawnFirstMove)
                 }
-                let removeFromAvailableMoves = []
                 playerTwoPiecePositions.forEach(position => {
                     newAvailableMoves.forEach(move => {
                         if (position.tilePosition === move) {
