@@ -63,19 +63,19 @@ const getNewAvailableMoves = (positions, boardLetters, playerOnePiecePositions, 
     player1NewMoves.push(horseP1)
     player1NewMoves.push(queenP1)
     player1NewMoves.push(kingP1)
+    let nextMoves = []
     player1NewMoves.forEach(pieces => {
         pieces.forEach(piece => {
             piece.newAvailableMoves.forEach(move => {
-                playerTwoPiecePositions.forEach(position => {
-                    if (position.id === 31) {
-                        if (move === position.tilePosition) {
-                            console.log('check')
-                        }
+                if (!move.includes('-')) {
+                    if (!move.includes(0)) {
+                        nextMoves.push(move)
                     }
-                })
+                }
             })
         })
     })
+    setNextAvailableMoves(nextMoves)
 }
 
 export default getNewAvailableMoves

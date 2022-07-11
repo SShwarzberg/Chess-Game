@@ -50,13 +50,6 @@ const PawnNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosi
                         return move
                     }
                 })
-                newAvailableMoves.forEach(move => {
-                    playerTwoPiecePositions.forEach(position => {
-                        if (position.tilePosition === move && position.id === 31) {
-                            console.log('check');
-                        }
-                    })
-                })
                 returnedMoves = { piece: 'Pawn', id: individualPiece.id, newAvailableMoves }
             }
         })
