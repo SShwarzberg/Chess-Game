@@ -1,4 +1,4 @@
-const takeOpponentPiece = (eventTargetId) => {
+const takeOpponentPiece = (eventTargetId, playerTwoPiecePositions, playerOnePiecePositions, availableMoves, setPlayerTwoPiecePositions, setAvailableMoves, setPlayerOnePiecePositions) => {
     playerTwoPiecePositions.forEach((position, i) => {
         availableMoves.forEach(move => {
             if (move === position.tilePosition && eventTargetId === position.tilePosition) {
@@ -6,8 +6,6 @@ const takeOpponentPiece = (eventTargetId) => {
                     return Object.assign({}, positions)
                 })
                 newPlayerTwoPositions[i].tilePosition = null
-                const newPlayerTwoLostPiece = playerTwoLostPieces.concat(newPlayerTwoPositions[i])
-                setPlayerTwoLostPieces(newPlayerTwoLostPiece)
                 setPlayerTwoPiecePositions(newPlayerTwoPositions)
                 setAvailableMoves([])
             }
@@ -20,8 +18,6 @@ const takeOpponentPiece = (eventTargetId) => {
                     return Object.assign({}, positions)
                 })
                 newPlayerOnePositions[i].tilePosition = null
-                const newPlayerOneLostPiece = playerOneLostPieces.concat(newPlayerOnePositions[i])
-                setPlayerOneLostPieces(newPlayerOneLostPiece)
                 setPlayerOnePiecePositions(newPlayerOnePositions)
                 setAvailableMoves([])
             }

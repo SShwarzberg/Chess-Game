@@ -1,17 +1,17 @@
 // import player one's moves
-import PawnMovesPlayerOne from '../Player One Piece moves/PawnMovesPlayerOne'
-import RookMovesPlayerOne from '../Player One Piece moves/RookMovesPlayerOne'
-import HorseMovesPlayerOne from '../Player One Piece moves/HorseMovesPlayerOne'
-import BishopMovesPlayerOne from '../Player One Piece moves/BishopMovesPlayerOne'
-import QueenMovesPlayerOne from '../Player One Piece moves/QueenMovesPlayerOne'
-import KingMovesPlayerOne from '../Player One Piece moves/KingMovesPlayerOne'
+import PawnMovesPlayerOne from './Player One Piece Moves/PawnMovesPlayerOne'
+import RookMovesPlayerOne from './Player One Piece Moves/RookMovesPlayerOne'
+import HorseMovesPlayerOne from './Player One Piece Moves/HorseMovesPlayerOne'
+import BishopMovesPlayerOne from './Player One Piece Moves/BishopMovesPlayerOne'
+import QueenMovesPlayerOne from './Player One Piece Moves/QueenMovesPlayerOne'
+import KingMovesPlayerOne from './Player One Piece Moves/KingMovesPlayerOne'
 // import player two's moves
-import PawnMovesPlayerTwo from '../Player Two Piece Moves/PawnMovesPlayerTwo'
-import HorseMovesPlayerTwo from '../Player Two Piece Moves/HorseMovesPlayerTwo'
-import RookMovesPlayerTwo from '../Player Two Piece Moves/RookMovesPlayerTwo'
-import BishopMovesPlayerTwo from '../Player Two Piece Moves/BishopMovesPlayerTwo'
-import QueenMovesPlayerTwo from '../Player Two Piece Moves/QueenMovesPlayerTwo'
-import KingMovesPlayerTwo from '../Player Two Piece Moves/KingMovesPlayerTwo'
+import PawnMovesPlayerTwo from './Player Two Piece Moves/PawnMovesPlayerTwo'
+import HorseMovesPlayerTwo from './Player Two Piece Moves/HorseMovesPlayerTwo'
+import RookMovesPlayerTwo from './Player Two Piece Moves/RookMovesPlayerTwo'
+import BishopMovesPlayerTwo from './Player Two Piece Moves/BishopMovesPlayerTwo'
+import QueenMovesPlayerTwo from './Player Two Piece Moves/QueenMovesPlayerTwo'
+import KingMovesPlayerTwo from './Player Two Piece Moves/KingMovesPlayerTwo'
 
 const getAvailableMoves = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves) => {
     // player one

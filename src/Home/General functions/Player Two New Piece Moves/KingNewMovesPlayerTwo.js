@@ -1,4 +1,4 @@
-const KingMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves) => {
+const KingNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions) => {
     if (individualPiece.id === 31) {
         let newAvailableMoves = ['d4', 'd6']
         let removeFromAvailableMoves = []
@@ -38,10 +38,8 @@ const KingMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositio
                 return move
             }
         })
-        setAvailableMoves(newAvailableMoves)
-
-        setAvailableMoves(newAvailableMoves)
+        console.log('King 2', individualPiece.id, newAvailableMoves)
     }
 }
 
-export default KingMovesPlayerTwo
+export default KingNewMovesPlayerTwo

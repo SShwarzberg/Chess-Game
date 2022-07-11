@@ -7,7 +7,7 @@ import {
 // General functions
 import getAvailableMoves from './General functions/getAvailablemoves'
 import takeOpponentPiece from './General functions/takeOpponentsPiece'
-import changePiecePosition from './General functions/changePiecePosition'
+import getNewAvailableMoves from './General functions/getNewAvailableMoves'
 
 
 const Home = () => {
@@ -17,6 +17,38 @@ const Home = () => {
     const [playerOneTurn, setPlayerOneTurn] = useState(true)
     const [availableMoves, setAvailableMoves] = useState([])
     const [currentPiece, setCurrentPiece] = useState(null)
+
+    // change pieces position
+    const changePiecePosition = (eventTargetId, currentPiece, availableMoves, playerOneTurn, playerOnePiecePositions, setPlayerOnePiecePositions, setAvailableMoves, setPlayerOneTurn, playerTwoPiecePositions, setPlayerTwoPiecePositions) => {
+        if (availableMoves !== []) {
+            availableMoves.forEach(move => {
+                if (move === eventTargetId) {
+                    if (playerOneTurn) {
+                        // player one 
+                        const newPlayerOnePositions = playerOnePiecePositions.map(position => {
+                            return Object.assign({}, position)
+                        })
+                        newPlayerOnePositions[currentPiece.id].tilePosition = move
+                        setPlayerOnePiecePositions(newPlayerOnePositions)
+                        setAvailableMoves([])
+                        setPlayerOneTurn(false)
+                        getNewAvailableMoves(newPlayerOnePositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions)
+                    } else {
+                        // player two
+                        const newPlayerTwoPositions = playerTwoPiecePositions.map(position => {
+                            return Object.assign({}, position)
+                        })
+                        newPlayerTwoPositions[currentPiece.id - 16].tilePosition = move
+                        setPlayerTwoPiecePositions(newPlayerTwoPositions)
+                        setAvailableMoves([])
+                        setPlayerOneTurn(true)
+                        getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions)
+                    }
+                }
+            })
+        }
+    }
+
     // renders pieces onto board as team one and team two
     const renderPiecePosition = (boardPosition) => {
         let playerPieces = [playerOnePiecePositions, playerTwoPiecePositions]
@@ -37,6 +69,7 @@ const Home = () => {
             })
         })
     }
+
     // colors board by iterating through squares 
     const colorBoard = () => {
         return tiles.map(piece => {
@@ -51,8 +84,8 @@ const Home = () => {
                         tile = 'whiteTile'
                     }
                     return <div onClick={(e) => {
-                        changePiecePosition(e.target.id, availableMoves, playerOneTurn, playerOnePiecePositions, currentPiece, setPlayerOnePiecePositions, setAvailableMoves, setPlayerOneTurn, playerTwoPiecePositions, setPlayerTwoPiecePositions)
-                        takeOpponentPiece(e.target.id)
+                        changePiecePosition(e.target.id, currentPiece, availableMoves, playerOneTurn, playerOnePiecePositions, setPlayerOnePiecePositions, setAvailableMoves, setPlayerOneTurn, playerTwoPiecePositions, setPlayerTwoPiecePositions)
+                        takeOpponentPiece(e.target.id, playerTwoPiecePositions, playerOnePiecePositions, availableMoves, setPlayerTwoPiecePositions, setAvailableMoves, setPlayerOnePiecePositions)
                     }}
                         key={piece.position}
                         id={piece.position}

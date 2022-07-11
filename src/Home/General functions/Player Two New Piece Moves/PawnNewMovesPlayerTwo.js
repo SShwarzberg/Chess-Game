@@ -1,42 +1,42 @@
-const PawnMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves) => {
-    if (individualPiece.id >= 0 && individualPiece.id <= 7) {
+const PawnNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions) => {
+    if (individualPiece.id >= 16 && individualPiece.id <= 23) {
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition.includes(letter)) {
                 const tileHorizontalIndex = parseInt(individualPiece.tilePosition[1])
-                let pawnMove = boardLetters[i - 1] + individualPiece.tilePosition[1]
-                let pawnFirstMove = boardLetters[i - 2] + individualPiece.tilePosition[1]
-                let pawnAttackLeft = boardLetters[i - 1] + (individualPiece.tilePosition[1] - 1)
-                let pawnAttackRight = boardLetters[i - 1] + (tileHorizontalIndex + 1)
+                let pawnMove = boardLetters[i + 1] + tileHorizontalIndex
+                let pawnFirstMove = boardLetters[i + 2] + tileHorizontalIndex
+                let pawnAttackLeft = boardLetters[i + 1] + (tileHorizontalIndex - 1)
+                let pawnAttackRight = boardLetters[i + 1] + (tileHorizontalIndex + 1)
                 let newAvailableMoves = [
                     pawnMove
                 ]
                 let removeFromAvailableMoves = []
-                playerTwoPiecePositions.forEach(position => {
+                playerOnePiecePositions.forEach(position => {
                     newAvailableMoves.forEach(move => {
-                        if (position.tilePosition && position.tilePosition.includes('f') && position.tilePosition[1] === move[1]) {
-                            removeFromAvailableMoves.push('e' + move[1])
+                        if (position.tilePosition && position.tilePosition.includes('c') && position.tilePosition[1] === move[1]) {
+                            removeFromAvailableMoves.push('d' + move[1])
                         }
                     })
                     if (position.tilePosition === pawnMove) {
                         newAvailableMoves.splice(pawnMove)
                     }
                 })
-                playerOnePiecePositions.forEach(position => {
+                playerTwoPiecePositions.forEach(position => {
                     if (position.tilePosition === pawnMove) {
                         newAvailableMoves.splice(pawnMove)
                     }
                 })
-                if (individualPiece.tilePosition.includes('g')) {
+                if (individualPiece.tilePosition.includes('b')) {
                     newAvailableMoves.push(pawnFirstMove)
                 }
-                playerTwoPiecePositions.forEach(position => {
+                playerOnePiecePositions.forEach(position => {
                     newAvailableMoves.forEach(move => {
-                        if (position.tilePosition === move) {
+                        if (move === position.tilePosition) {
                             removeFromAvailableMoves.push(move)
                         }
                     })
                 })
-                playerTwoPiecePositions.forEach(position => {
+                playerOnePiecePositions.forEach(position => {
                     if (position.tilePosition === pawnAttackLeft) {
                         newAvailableMoves.push(pawnAttackLeft)
                     }
@@ -49,10 +49,10 @@ const PawnMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                         return move
                     }
                 })
-                setAvailableMoves(newAvailableMoves)
+                console.log('Pawn 2', individualPiece.id, newAvailableMoves);
             }
         })
     }
 }
 
-export default PawnMovesPlayerOne
+export default PawnNewMovesPlayerTwo
