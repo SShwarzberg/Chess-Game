@@ -1,4 +1,5 @@
 const HorseNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions) => {
+    let returnedMoves
     if (individualPiece.id === 12 || individualPiece.id === 13) {
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition[0] === letter) {
@@ -35,9 +36,10 @@ const HorseNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
                         return move
                     }
                 })
-                console.log('Horse', individualPiece.id, newAvailableMoves);
+                returnedMoves = { piece: 'Horse', id: individualPiece.id, newAvailableMoves }
             }
         })
+        return returnedMoves
     }
 }
 

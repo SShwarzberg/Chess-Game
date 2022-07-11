@@ -16,6 +16,7 @@ const Home = () => {
     const [playerTwoPiecePositions, setPlayerTwoPiecePositions] = useState(piecesPlayerTwo)
     const [playerOneTurn, setPlayerOneTurn] = useState(true)
     const [availableMoves, setAvailableMoves] = useState([])
+    const [nextAvailableMoves, setNextAvailableMoves] = useState([])
     const [currentPiece, setCurrentPiece] = useState(null)
 
     // change pieces position
@@ -32,7 +33,7 @@ const Home = () => {
                         setPlayerOnePiecePositions(newPlayerOnePositions)
                         setAvailableMoves([])
                         setPlayerOneTurn(false)
-                        getNewAvailableMoves(newPlayerOnePositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions)
+                        getNewAvailableMoves(newPlayerOnePositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves)
                     } else {
                         // player two
                         const newPlayerTwoPositions = playerTwoPiecePositions.map(position => {

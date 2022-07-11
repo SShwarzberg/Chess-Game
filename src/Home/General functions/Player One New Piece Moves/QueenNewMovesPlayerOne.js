@@ -1,4 +1,5 @@
 const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions) => {
+    let returnedMoves
     if (individualPiece.id === 14) {
         let newAvailableMoves = []
         let removeFromAvailableMoves = []
@@ -427,8 +428,9 @@ const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
         newAvailableMoves = newAvailableMoves.filter(move => {
             return move !== individualPiece.tilePosition ? move : null
         })
-        console.log('Queen', individualPiece.id, newAvailableMoves)
+        returnedMoves = { piece: 'Queen', id: individualPiece.id, newAvailableMoves }
     }
+    return returnedMoves
 }
 
 export default QueenNewMovesPlayerOne

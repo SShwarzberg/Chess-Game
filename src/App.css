@@ -5,6 +5,7 @@
 }
 
 body {
+    background-color: gray;
     width: 100vw;
     max-width: 100%;
 }
