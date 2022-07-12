@@ -1,6 +1,7 @@
 const KingNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions) => {
+    let returnedMoves
     if (individualPiece.id === 31) {
-        let newAvailableMoves = ['d4', 'd6']
+        let newAvailableMoves = []
         let removeFromAvailableMoves = []
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition.includes(letter)) {
@@ -38,8 +39,9 @@ const KingNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosi
                 return move
             }
         })
-        console.log('King 2', individualPiece.id, newAvailableMoves)
+        returnedMoves = { piece: 'King 2', id: individualPiece.id, newAvailableMoves }
     }
+    return returnedMoves
 }
 
 export default KingNewMovesPlayerTwo

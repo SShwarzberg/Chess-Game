@@ -33,8 +33,8 @@ const KingMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositio
                 }
             })
         })
-        nextAvailableMoves.forEach(nextMove => {
-            nextAvailableMoves.filter(move => {
+        nextAvailableMoves[0].forEach(nextMove => {
+            newAvailableMoves.filter(move => {
                 if (nextMove === move) {
                     removeFromAvailableMoves.push(move)
                 }

@@ -1,4 +1,4 @@
-const KingMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves) => {
+const KingMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves, nextAvailableMoves) => {
     if (individualPiece.id === 15) {
         let newAvailableMoves = []
         let removeFromAvailableMoves = []
@@ -29,6 +29,13 @@ const KingMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
         playerOnePiecePositions.forEach(position => {
             newAvailableMoves.forEach(move => {
                 if (move === position.tilePosition) {
+                    removeFromAvailableMoves.push(move)
+                }
+            })
+        })
+        nextAvailableMoves[1].forEach(nextMove => {
+            newAvailableMoves.filter(move => {
+                if (nextMove === move) {
                     removeFromAvailableMoves.push(move)
                 }
             })

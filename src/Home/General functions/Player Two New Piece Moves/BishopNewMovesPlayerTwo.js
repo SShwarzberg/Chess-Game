@@ -1,4 +1,5 @@
 const BishopNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions) => {
+    let returnedMoves
     if (individualPiece.id === 24 || individualPiece.id === 25) {
         let newAvailableMoves = []
         let upAndToRight = []
@@ -196,8 +197,9 @@ const BishopNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePo
             }
         })
         newAvailableMoves = Array.from(new Set(newAvailableMoves))
-        console.log('Bishop 2', individualPiece.id, newAvailableMoves)
+        returnedMoves = { piece: 'Bishop 2', id: individualPiece.id, newAvailableMoves }
     }
+    return returnedMoves
 }
 
 export default BishopNewMovesPlayerTwo

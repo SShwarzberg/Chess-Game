@@ -83,3 +83,7 @@ img {
     background-color: red;
     opacity: 0.5;
 }
+
+.availableMove {
+    opacity: 0.5;
+}

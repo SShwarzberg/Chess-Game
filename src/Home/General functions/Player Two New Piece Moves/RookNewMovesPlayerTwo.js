@@ -1,4 +1,5 @@
 const RookNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions) => {
+    let returnedMoves
     if (individualPiece.id === 26 || individualPiece.id === 27) {
         let newAvailableMoves = []
         boardLetters.forEach((letter, i) => {
@@ -140,8 +141,9 @@ const RookNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosi
                 return item
             }
         })
-        console.log('Rook 2', individualPiece.id, newAvailableMoves)
+        returnedMoves = { piece: 'Rook 2', id: individualPiece.id, newAvailableMoves }
     }
+    return returnedMoves
 }
 
 export default RookNewMovesPlayerTwo

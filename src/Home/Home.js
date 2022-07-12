@@ -18,38 +18,51 @@ const Home = () => {
     const [availableMoves, setAvailableMoves] = useState([])
     const [nextAvailableMoves, setNextAvailableMoves] = useState([])
     const [currentPiece, setCurrentPiece] = useState(null)
+    const [playerOneInCheck, setPlayerOneInCheck] = useState(false)
+
+    // sets player two check
+    // if (nextAvailableMoves[0]) {
+    //     nextAvailableMoves[0].forEach(move => {
+    //         playerTwoPiecePositions.forEach(position => {
+    //             if (position.tilePosition === move && position.id === 31) {
+    //                 setPlayerOneInCheck(true)
+    //             }
+    //         })
+    //     })
+    // }
 
     // change pieces position
     const changePiecePosition = (eventTargetId, currentPiece, availableMoves, playerOneTurn, playerOnePiecePositions, setPlayerOnePiecePositions, setAvailableMoves, setPlayerOneTurn, playerTwoPiecePositions, setPlayerTwoPiecePositions) => {
         if (availableMoves !== []) {
+            let newPlayerOnePositions
+            let newPlayerTwoPositions
             availableMoves.forEach(move => {
                 if (move === eventTargetId) {
                     if (playerOneTurn) {
                         // player one 
-                        const newPlayerOnePositions = playerOnePiecePositions.map(position => {
+                        newPlayerOnePositions = playerOnePiecePositions.map(position => {
                             return Object.assign({}, position)
                         })
                         newPlayerOnePositions[currentPiece.id].tilePosition = move
                         setPlayerOnePiecePositions(newPlayerOnePositions)
                         setAvailableMoves([])
                         setPlayerOneTurn(false)
-                        getNewAvailableMoves(newPlayerOnePositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves)
+                        getNewAvailableMoves(newPlayerOnePositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn)
                     } else {
                         // player two
-                        const newPlayerTwoPositions = playerTwoPiecePositions.map(position => {
+                        newPlayerTwoPositions = playerTwoPiecePositions.map(position => {
                             return Object.assign({}, position)
                         })
                         newPlayerTwoPositions[currentPiece.id - 16].tilePosition = move
                         setPlayerTwoPiecePositions(newPlayerTwoPositions)
                         setAvailableMoves([])
                         setPlayerOneTurn(true)
-                        getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions)
+                        getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn)
                     }
                 }
             })
         }
     }
-
     // renders pieces onto board as team one and team two
     const renderPiecePosition = (boardPosition) => {
         let playerPieces = [playerOnePiecePositions, playerTwoPiecePositions]
@@ -83,6 +96,9 @@ const Home = () => {
                         tile = 'blackTile'
                     } else {
                         tile = 'whiteTile'
+                    }
+                    if (availableMoves.includes(piece.position)) {
+                        tile += ' availableMove'
                     }
                     return <div onClick={(e) => {
                         changePiecePosition(e.target.id, currentPiece, availableMoves, playerOneTurn, playerOnePiecePositions, setPlayerOnePiecePositions, setAvailableMoves, setPlayerOneTurn, playerTwoPiecePositions, setPlayerTwoPiecePositions)

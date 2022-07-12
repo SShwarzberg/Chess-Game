@@ -20,7 +20,7 @@ const getAvailableMoves = (individualPiece, boardLetters, playerOnePiecePosition
     BishopMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
     QueenMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
     HorseMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves)
-    KingMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves)
+    KingMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves, nextAvailableMoves)
     // player two
     PawnMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves)
     RookMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves)
