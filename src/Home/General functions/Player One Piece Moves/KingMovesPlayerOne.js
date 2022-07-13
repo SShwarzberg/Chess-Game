@@ -5,8 +5,8 @@ const KingMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition.includes(letter)) {
                 boardLetters.forEach((letters, index) => {
-                    if (parseInt(individualPiece.tilePosition[1]) === (index - 1)) {
-                        newAvailableMoves.push(letter + index)
+                    if (parseInt(individualPiece.tilePosition[1]) === (index)) {
+                        newAvailableMoves.push(letter + (index + 1))
                     }
                     if (parseInt(individualPiece.tilePosition[1]) === (index + 1)) {
                         newAvailableMoves.push(letter + index)
@@ -33,13 +33,15 @@ const KingMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                 }
             })
         })
-        nextAvailableMoves[1].forEach(nextMove => {
-            newAvailableMoves.filter(move => {
-                if (nextMove === move) {
-                    removeFromAvailableMoves.push(move)
-                }
+        if (nextAvailableMoves[1]) {
+            nextAvailableMoves[1].forEach(nextMove => {
+                newAvailableMoves.filter(move => {
+                    if (nextMove === move) {
+                        removeFromAvailableMoves.push(move)
+                    }
+                })
             })
-        })
+        }
         newAvailableMoves = newAvailableMoves.filter(move => {
             if (!removeFromAvailableMoves.includes(move)) {
                 return move

@@ -13,6 +13,12 @@ const KingMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositio
                     }
                 })
             }
+            boardLetters.forEach((letters, index) => {
+                if (letters === individualPiece.tilePosition[0]) {
+                    newAvailableMoves.push(boardLetters[index - 1] + individualPiece.tilePosition[1])
+                    newAvailableMoves.push(boardLetters[index - 1] + parseInt(individualPiece.tilePosition[1] - 1));
+                }
+            })
             if (parseInt(individualPiece.tilePosition[1]) === i) {
                 boardLetters.forEach((letters, index) => {
                     if (individualPiece.tilePosition[0] === letters) {

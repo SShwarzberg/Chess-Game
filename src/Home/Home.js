@@ -58,8 +58,8 @@ const Home = () => {
                         setAvailableMoves([])
                         setPlayerOneTurn(true)
                         getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn)
-                        const p2NewMoves = getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn)[1]
-                        console.log(p2NewMoves)
+                        // const p2NewMoves = getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn)[1]
+                        // console.log(p2NewMoves)
                     }
                 }
             })
