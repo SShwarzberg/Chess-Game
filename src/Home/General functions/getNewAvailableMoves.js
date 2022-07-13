@@ -88,7 +88,6 @@ const getNewAvailableMoves = (newPositions, boardLetters, playerOnePiecePosition
             }
         }
     })
-
     // player 1
     player1NewMoves.push(
         pawnP1,
@@ -131,6 +130,7 @@ const getNewAvailableMoves = (newPositions, boardLetters, playerOnePiecePosition
         })
     })
     setNextAvailableMoves([nextMovesP1, nextMovesP2])
+    return [nextMovesP1, nextMovesP2]
 }
 
 export default getNewAvailableMoves

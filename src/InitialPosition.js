@@ -19,7 +19,7 @@ const bishopsPlayerTwo = ['a3', 'a6']
 const rooksPlayerTwo = ['a1', 'a8']
 const horsesPlayerTwo = ['a2', 'a7']
 const queenPlayerTwo = ['a4']
-const kingPlayerTwo = ['e5']
+const kingPlayerTwo = ['e7']
 
 // player one piece info
 const piecesPlayerOne = [
