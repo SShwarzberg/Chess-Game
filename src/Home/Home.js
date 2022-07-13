@@ -14,13 +14,15 @@ const Home = () => {
     const boardLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
     const [playerOnePiecePositions, setPlayerOnePiecePositions] = useState(piecesPlayerOne)
     const [playerTwoPiecePositions, setPlayerTwoPiecePositions] = useState(piecesPlayerTwo)
-    const [playerOneTurn, setPlayerOneTurn] = useState(true)
+    const [playerOneTurn, setPlayerOneTurn] = useState(false)
     const [availableMoves, setAvailableMoves] = useState([])
     const [nextAvailableMoves, setNextAvailableMoves] = useState([])
     const [currentPiece, setCurrentPiece] = useState(null)
     const [playerTwoInCheck, setPlayerTwoInCheck] = useState(false)
+    const [playerOneInCheck, setPlayerOneInCheck] = useState(false)
 
 
+    console.log(playerOneInCheck);
     // change pieces position
     const changePiecePosition = (eventTargetId, currentPiece, availableMoves, playerOneTurn, playerOnePiecePositions, setPlayerOnePiecePositions, setAvailableMoves, setPlayerOneTurn, playerTwoPiecePositions, setPlayerTwoPiecePositions) => {
         if (availableMoves !== []) {
@@ -58,8 +60,16 @@ const Home = () => {
                         setAvailableMoves([])
                         setPlayerOneTurn(true)
                         getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn)
-                        // const p2NewMoves = getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn)[1]
-                        // console.log(p2NewMoves)
+                        const p2NewMoves = getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn)[1]
+                        if (p2NewMoves) {
+                            p2NewMoves.forEach(move => {
+                                playerOnePiecePositions.forEach(position => {
+                                    if (move === position.tilePosition && position.id === 15) {
+                                        setPlayerOneInCheck(true)
+                                    }
+                                })
+                            })
+                        }
                     }
                 }
             })
@@ -78,12 +88,13 @@ const Home = () => {
                         className = 'playerTwoPieces'
                     }
                     return <img onClick={() => {
-                        getAvailableMoves(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, nextAvailableMoves, playerOneTurn, playerTwoInCheck, setCurrentPiece, setPlayerTwoInCheck)
+                        getAvailableMoves(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, nextAvailableMoves, playerOneTurn, playerTwoInCheck, setCurrentPiece, setPlayerTwoInCheck, playerOneInCheck, setPlayerOneInCheck)
                     }} className={className} src={individualPiece.pieceName} alt="" key={individualPiece.id} />
                 }
             })
         })
     }
+    console.log(playerOneInCheck);
 
     // colors board by iterating through squares 
     const colorBoard = () => {

@@ -13,16 +13,20 @@ import BishopMovesPlayerTwo from './Player Two Piece Moves/BishopMovesPlayerTwo'
 import QueenMovesPlayerTwo from './Player Two Piece Moves/QueenMovesPlayerTwo'
 import KingMovesPlayerTwo from './Player Two Piece Moves/KingMovesPlayerTwo'
 
-const getAvailableMoves = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, nextAvailableMoves, playerOneTurn, playerTwoInCheck, setCurrentPiece) => {
+const getAvailableMoves = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, nextAvailableMoves, playerOneTurn, playerTwoInCheck, setCurrentPiece, setPlayerTwoInCheck, playerOneInCheck, setPlayerOneInCheck) => {
     if (playerOneTurn) {
-        setCurrentPiece(individualPiece)
         // player one
-        PawnMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
-        RookMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
-        BishopMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
-        QueenMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
-        HorseMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves)
-        KingMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves, nextAvailableMoves)
+        if (!playerOneInCheck) {
+            setCurrentPiece(individualPiece)
+            PawnMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
+            RookMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
+            BishopMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
+            QueenMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves)
+            HorseMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves)
+        } else if (playerOneInCheck && individualPiece.id === 15) {
+            setCurrentPiece(individualPiece)
+        }
+        KingMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves, nextAvailableMoves, setPlayerOneInCheck)
     } else {
         // player two
         if (!playerTwoInCheck) {
@@ -35,7 +39,7 @@ const getAvailableMoves = (individualPiece, boardLetters, playerOnePiecePosition
         } else if (playerTwoInCheck && individualPiece.id === 31) {
             setCurrentPiece(individualPiece)
         }
-        KingMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves, nextAvailableMoves)
+        KingMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves, nextAvailableMoves, setPlayerTwoInCheck)
     }
 }
 
