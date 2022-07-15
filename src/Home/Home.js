@@ -64,7 +64,7 @@ const Home = () => {
                             p2NewMoves.forEach(move => {
                                 playerOnePiecePositions.forEach(position => {
                                     if (move === position.tilePosition && position.id === 15) {
-                                        setPlayerOneInCheck(true)
+                                        // setPlayerOneInCheck(true)
                                     }
                                 })
                             })
@@ -94,7 +94,6 @@ const Home = () => {
             })
         })
     }
-
     // colors board by iterating through squares 
     const colorBoard = () => {
         return tiles.map(piece => {

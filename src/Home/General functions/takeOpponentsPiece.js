@@ -5,7 +5,7 @@ const takeOpponentPiece = (eventTargetId, playerTwoPiecePositions, playerOnePiec
                 const newPlayerTwoPositions = playerTwoPiecePositions.map(positions => {
                     return Object.assign({}, positions)
                 })
-                newPlayerTwoPositions[i].tilePosition = null
+                newPlayerTwoPositions[i].tilePosition = 'null'
                 setPlayerTwoPiecePositions(newPlayerTwoPositions)
                 setAvailableMoves([])
             }
@@ -17,7 +17,7 @@ const takeOpponentPiece = (eventTargetId, playerTwoPiecePositions, playerOnePiec
                 const newPlayerOnePositions = playerOnePiecePositions.map(positions => {
                     return Object.assign({}, positions)
                 })
-                newPlayerOnePositions[i].tilePosition = null
+                newPlayerOnePositions[i].tilePosition = 'null'
                 setPlayerOnePiecePositions(newPlayerOnePositions)
                 setAvailableMoves([])
             }

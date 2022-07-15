@@ -1,5 +1,6 @@
 const BishopNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions) => {
     let returnedMoves
+    let blockingKingFromCheck = []
     if (individualPiece.id === 24 || individualPiece.id === 25) {
         let newAvailableMoves = []
         let upAndToRight = []
@@ -186,6 +187,49 @@ const BishopNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePo
         removePiecesBlockedByOpponentUp(opponentPiecesBlockingUpLeft, upAndToLeftIndex)
         removePiecesBlockedByOpponentDown(opponentPiecesBlockingDownRight, downAndToRightIndex)
         removePiecesBlockedByOpponentDown(opponentPiecesBlockingDownLeft, downAndToLeftIndex)
+
+        let kingPosition
+        playerOnePiecePositions.forEach(position => {
+            if (position.id === 15) {
+                kingPosition = position.tilePosition
+            }
+        })
+
+        let blockingKingUpRight = []
+        let blockingKingDownRight = []
+        opponentPiecesBlockingUpRight.forEach(blockingPiece => {
+            if (blockingPiece.move === kingPosition) {
+                playerOnePiecePositions.forEach(position => {
+                    opponentPiecesBlockingUpRight.forEach(piece => {
+                        if (position.tilePosition === piece.move && position.tilePosition[1] < kingPosition[1] && individualPiece.tilePosition !== piece.move) {
+                            blockingKingUpRight.push(piece.move)
+                        }
+                    })
+                })
+            }
+        })
+        opponentPiecesBlockingDownRight.forEach(blockingPiece => {
+            if (blockingPiece.move === kingPosition) {
+                playerOnePiecePositions.forEach(position => {
+                    opponentPiecesBlockingDownRight.forEach(piece => {
+                        if (position.tilePosition === piece.move && position.tilePosition[1] < kingPosition[1] && individualPiece.tilePosition !== piece.move) {
+                            blockingKingDownRight.push(piece.move)
+                        }
+                    })
+                })
+            }
+        })
+        if (blockingKingUpRight.length === 1) {
+            blockingKingUpRight.forEach(blocking => {
+                blockingKingFromCheck.push(blocking)
+            })
+        }
+        if (blockingKingDownRight.length === 1) {
+            blockingKingDownRight.forEach(blocking => {
+                blockingKingFromCheck.push(blocking)
+            })
+        }
+
         newAvailableMoves = newAvailableMoves.filter(move => {
             if (!removeFromAvailableMoves.includes(move)) {
                 return move
@@ -198,8 +242,18 @@ const BishopNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePo
         })
         newAvailableMoves = Array.from(new Set(newAvailableMoves))
         returnedMoves = { piece: 'Bishop 2', id: individualPiece.id, newAvailableMoves }
+        newAvailableMoves = newAvailableMoves.filter(move => {
+            if (!move.includes('-')) {
+                return move
+            }
+        })
+        newAvailableMoves = newAvailableMoves.filter(move => {
+            if (!move.includes('0')) {
+                return move
+            }
+        })
     }
-    return returnedMoves
+    return [returnedMoves, blockingKingFromCheck]
 }
 
 export default BishopNewMovesPlayerTwo
