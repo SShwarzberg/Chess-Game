@@ -13,7 +13,7 @@ import BishopMovesPlayerTwo from './Player Two Piece Moves/BishopMovesPlayerTwo'
 import QueenMovesPlayerTwo from './Player Two Piece Moves/QueenMovesPlayerTwo'
 import KingMovesPlayerTwo from './Player Two Piece Moves/KingMovesPlayerTwo'
 
-const getAvailableMoves = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, nextAvailableMoves, playerOneTurn, playerTwoInCheck, setCurrentPiece, setPlayerTwoInCheck, playerOneInCheck, setPlayerOneInCheck) => {
+const getAvailableMoves = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, nextAvailableMoves, playerOneTurn, playerTwoInCheck, setCurrentPiece, playerOneInCheck) => {
     if (playerOneTurn) {
         // player one
         if (!playerOneInCheck) {
@@ -26,7 +26,7 @@ const getAvailableMoves = (individualPiece, boardLetters, playerOnePiecePosition
         } else if (playerOneInCheck && individualPiece.id === 15) {
             setCurrentPiece(individualPiece)
         }
-        KingMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves, nextAvailableMoves, setPlayerOneInCheck)
+        KingMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves, nextAvailableMoves)
     } else {
         // player two
         if (!playerTwoInCheck) {
@@ -39,7 +39,7 @@ const getAvailableMoves = (individualPiece, boardLetters, playerOnePiecePosition
         } else if (playerTwoInCheck && individualPiece.id === 31) {
             setCurrentPiece(individualPiece)
         }
-        KingMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves, nextAvailableMoves, setPlayerTwoInCheck)
+        KingMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves, nextAvailableMoves)
     }
 }
 

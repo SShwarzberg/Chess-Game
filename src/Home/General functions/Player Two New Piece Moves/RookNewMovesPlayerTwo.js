@@ -1,5 +1,6 @@
 const RookNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions) => {
     let returnedMoves
+    let blockingKingFromCheck = []
     if (individualPiece.id === 26 || individualPiece.id === 27) {
         let newAvailableMoves = []
         boardLetters.forEach((letter, i) => {
@@ -117,8 +118,10 @@ const RookNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosi
         let playerOneHorizontalMatch = []
         playerOnePiecePositions.forEach(position => {
             boardLetters.forEach((letter, i) => {
-                if (position.tilePosition.includes(letter) && individualPiece.tilePosition[1] === position.tilePosition[1]) {
-                    playerOneHorizontalMatch.push({ move: position.tilePosition, i })
+                if (position.tilePosition !== null) {
+                    if (position.tilePosition.includes(letter) && individualPiece.tilePosition[1] === position.tilePosition[1]) {
+                        playerOneHorizontalMatch.push({ move: position.tilePosition, i })
+                    }
                 }
             })
         })
@@ -141,9 +144,55 @@ const RookNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosi
                 return item
             }
         })
+        newAvailableMoves = Array.from(new Set(newAvailableMoves))
         returnedMoves = { piece: 'Rook 2', id: individualPiece.id, newAvailableMoves }
+
+        let moreThanBlockingHorizontal = []
+        let lessThanBlockingHorizontal = []
+        newAvailableMoves.forEach(move => {
+            playerOnePiecePositions.forEach(position => {
+                if (position.tilePosition === move) {
+                    playerOnePiecePositions.forEach(piecePosition => {
+                        if (piecePosition.id === 15 && position.id !== 15) {
+                            // gets blocking piece that is available move and is less than current piece index and more than king index horizontally
+                            if (position.tilePosition[0] === piecePosition.tilePosition[0] && individualPiece.tilePosition[1] > position.tilePosition[1] && individualPiece.tilePosition[1] > piecePosition.tilePosition[1]) {
+                                blockingKingFromCheck.push(position.tilePosition)
+                                playerOnePiecePositions.forEach(p1Position => {
+                                    if (p1Position.tilePosition) {
+                                        if (p1Position.tilePosition[0] === position.tilePosition[0] && p1Position.id !== 15 && p1Position.tilePosition[1] < individualPiece.tilePosition[1] && p1Position.tilePosition[1] > piecePosition.tilePosition[1]) {
+                                            lessThanBlockingHorizontal.push(p1Position.tilePosition)
+                                        }
+                                    }
+                                })
+                            }
+                            // gets blocking piece that is available move and is more than current piece index and less than king index horizontally
+                            if (position.tilePosition[0] === piecePosition.tilePosition[0] && individualPiece.tilePosition[1] < position.tilePosition[1] && individualPiece.tilePosition[1] < piecePosition.tilePosition[1]) {
+                                blockingKingFromCheck.push(position.tilePosition)
+                                playerOnePiecePositions.forEach(p1Position => {
+                                    if (p1Position.tilePosition[0] === position.tilePosition[0] && p1Position.id !== 15 && p1Position.tilePosition[1] < piecePosition.tilePosition[1] && p1Position.tilePosition[1] > individualPiece.tilePosition[1]) {
+                                        moreThanBlockingHorizontal.push(p1Position)
+                                    }
+                                })
+                            }
+                            // gets blocking piece that is available move and is more than current piece letter index and less than king index vertically
+                            if (position.tilePosition[1] === piecePosition.tilePosition[1]) {
+                                blockingKingFromCheck.push(position.tilePosition)
+                            }
+                            // gets blocking piece that is available move and is less than current piece letter index and more than king index vertically
+                        }
+                    })
+                }
+            })
+        })
+        if (moreThanBlockingHorizontal.length > 1) {
+            blockingKingFromCheck.pop()
+        }
+        if (lessThanBlockingHorizontal.length > 1) {
+            blockingKingFromCheck.pop()
+        }
     }
-    return returnedMoves
+    console.log(blockingKingFromCheck)
+    return [returnedMoves, blockingKingFromCheck]
 }
 
 export default RookNewMovesPlayerTwo

@@ -1,4 +1,4 @@
-const KingMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves, nextAvailableMoves, setPlayerOneInCheck) => {
+const KingMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves, nextAvailableMoves) => {
     if (individualPiece.id === 15) {
         let newAvailableMoves = []
         let removeFromAvailableMoves = []
@@ -48,7 +48,6 @@ const KingMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
             }
         })
         setAvailableMoves(newAvailableMoves)
-        setPlayerOneInCheck(false)
     }
 }
 

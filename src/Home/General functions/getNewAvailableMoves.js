@@ -30,64 +30,65 @@ const getNewAvailableMoves = (newPositions, boardLetters, playerOnePiecePosition
     let queenP2 = []
     let kingP2 = []
     let player2NewMoves = []
+    const pushPiecesToArray = (piece, arrayToPushTo) => {
+        if (piece) {
+            arrayToPushTo.push(piece)
+        }
+    }
+    let blockingKingFromCheckP1 = []
+    let blockingKingFromCheckP2 = []
     newPositions.forEach(position => {
         if (position.tilePosition !== null) {
             // player one new moves
-            const pawn1 = (PawnNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions))
-            if (pawn1) {
-                pawnP1.push(pawn1)
-            }
+            const pawn1 = PawnNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
+            pushPiecesToArray(pawn1, pawnP1)
             const bishop1 = BishopNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
-            if (bishop1) {
-                bishopP1.push(bishop1)
-            }
+            pushPiecesToArray(bishop1, bishopP1)
             const rook1 = RookNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
-            if (rook1) {
-                rookP1.push(rook1)
-            }
+            pushPiecesToArray(rook1, rookP1)
             const horse1 = HorseNewMovesPlayerOne(position, boardLetters, newPositions)
-            if (horse1) {
-                horseP1.push(horse1)
-            }
+            pushPiecesToArray(horse1, horseP1)
             const queen1 = QueenNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
-            if (queen1) {
-                queenP1.push(queen1)
-            }
+            pushPiecesToArray(queen1, queenP1)
             const king1 = KingNewMovesPlayerOne(position, boardLetters, newPositions)
-            if (king1) {
-                kingP1.push(king1)
-            }
+            pushPiecesToArray(king1, kingP1)
         }
     })
     newPositions.forEach(position => {
         if (position !== null) {
             // player two new moves
             const pawn2 = PawnNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
-            if (pawn2) {
-                pawnP2.push(pawn2)
-            }
-            const rook2 = RookNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
-            if (rook2) {
-                rookP2.push(rook2)
-            }
+            pushPiecesToArray(pawn2, pawnP2)
+            const [rook2, blockingKingRook2] = RookNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
+            blockingKingRook2.forEach(blockingPiece => {
+                blockingKingFromCheckP1.push(blockingPiece)
+            })
+            pushPiecesToArray(rook2, rookP2)
             const horse2 = HorseNewMovesPlayerTwo(position, boardLetters, newPositions)
-            if (horse2) {
-                horseP2.push(horse2)
-            }
+            pushPiecesToArray(horse2, horseP2)
             const bishop2 = BishopNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
-            if (bishop2) {
-                bishopP2.push(bishop2)
-            }
+            pushPiecesToArray(bishop2, bishopP2)
             const queen2 = QueenNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
-            if (queen2) {
-                queenP2.push(queen2)
-            }
+            pushPiecesToArray(queen2, queenP2)
             const king2 = KingNewMovesPlayerTwo(position, boardLetters, newPositions)
-            if (king2) {
-                kingP2.push(king2)
-            }
+            pushPiecesToArray(king2, kingP2)
         }
     })
+
+    const extractAvailableMoves = (playerNewMoves, nextMovesPlayer) => {
+        playerNewMoves.forEach(pieces => {
+            pieces.forEach(piece => {
+                piece.newAvailableMoves.forEach(move => {
+                    if (!move.includes('-')) {
+                        if (!move.includes(0)) {
+                            nextMovesPlayer.push(move)
+                        }
+                    }
+                })
+            })
+        })
+    }
+
     // player 1
     player1NewMoves.push(
         pawnP1,
@@ -97,17 +98,8 @@ const getNewAvailableMoves = (newPositions, boardLetters, playerOnePiecePosition
         queenP1,
         kingP1)
     let nextMovesP1 = []
-    player1NewMoves.forEach(pieces => {
-        pieces.forEach(piece => {
-            piece.newAvailableMoves.forEach(move => {
-                if (!move.includes('-')) {
-                    if (!move.includes(0)) {
-                        nextMovesP1.push(move)
-                    }
-                }
-            })
-        })
-    })
+    extractAvailableMoves(player1NewMoves, nextMovesP1)
+
     // player 2
     player2NewMoves.push(
         pawnP2,
@@ -118,19 +110,10 @@ const getNewAvailableMoves = (newPositions, boardLetters, playerOnePiecePosition
         kingP2
     )
     let nextMovesP2 = []
-    player2NewMoves.forEach(pieces => {
-        pieces.forEach(piece => {
-            piece.newAvailableMoves.forEach(move => {
-                if (!move.includes('-')) {
-                    if (!move.includes(0)) {
-                        nextMovesP2.push(move)
-                    }
-                }
-            })
-        })
-    })
+    extractAvailableMoves(player2NewMoves, nextMovesP2)
+
     setNextAvailableMoves([nextMovesP1, nextMovesP2])
-    return [nextMovesP1, nextMovesP2]
+    return [nextMovesP1, nextMovesP2, blockingKingFromCheckP1]
 }
 
 export default getNewAvailableMoves

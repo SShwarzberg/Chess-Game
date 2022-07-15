@@ -20,11 +20,9 @@ const Home = () => {
     const [currentPiece, setCurrentPiece] = useState(null)
     const [playerTwoInCheck, setPlayerTwoInCheck] = useState(false)
     const [playerOneInCheck, setPlayerOneInCheck] = useState(false)
+    const [piecesBlockingKingP1, setPiecesBlockingKingP1] = useState([])
 
-
-    console.log(playerOneInCheck);
-    // change pieces position
-    const changePiecePosition = (eventTargetId, currentPiece, availableMoves, playerOneTurn, playerOnePiecePositions, setPlayerOnePiecePositions, setAvailableMoves, setPlayerOneTurn, playerTwoPiecePositions, setPlayerTwoPiecePositions) => {
+    const changePiecePosition = (eventTargetId) => {
         if (availableMoves !== []) {
             let newPlayerOnePositions
             let newPlayerTwoPositions
@@ -59,7 +57,8 @@ const Home = () => {
                         setPlayerTwoPiecePositions(newPlayerTwoPositions)
                         setAvailableMoves([])
                         setPlayerOneTurn(true)
-                        getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn)
+                        setPiecesBlockingKingP1(getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn, setPiecesBlockingKingP1)[2])
+                        getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn, setPiecesBlockingKingP1)
                         const p2NewMoves = getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn)[1]
                         if (p2NewMoves) {
                             p2NewMoves.forEach(move => {
@@ -75,6 +74,7 @@ const Home = () => {
             })
         }
     }
+    // console.log(piecesBlockingKingP1);
     // renders pieces onto board as team one and team two
     const renderPiecePosition = (boardPosition) => {
         let playerPieces = [playerOnePiecePositions, playerTwoPiecePositions]
@@ -88,13 +88,12 @@ const Home = () => {
                         className = 'playerTwoPieces'
                     }
                     return <img onClick={() => {
-                        getAvailableMoves(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, nextAvailableMoves, playerOneTurn, playerTwoInCheck, setCurrentPiece, setPlayerTwoInCheck, playerOneInCheck, setPlayerOneInCheck)
+                        getAvailableMoves(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, nextAvailableMoves, playerOneTurn, playerTwoInCheck, setCurrentPiece, playerOneInCheck)
                     }} className={className} src={individualPiece.pieceName} alt="" key={individualPiece.id} />
                 }
             })
         })
     }
-    console.log(playerOneInCheck);
 
     // colors board by iterating through squares 
     const colorBoard = () => {
