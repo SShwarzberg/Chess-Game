@@ -40,39 +40,87 @@ const getNewAvailableMoves = (newPositions, boardLetters, playerOnePiecePosition
     newPositions.forEach(position => {
         if (position.tilePosition !== null) {
             // player one new moves
-            const pawn1 = PawnNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
-            pushPiecesToArray(pawn1, pawnP1)
-            const bishop1 = BishopNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
-            pushPiecesToArray(bishop1, bishopP1)
-            const rook1 = RookNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
-            pushPiecesToArray(rook1, rookP1)
-            const horse1 = HorseNewMovesPlayerOne(position, boardLetters, newPositions)
-            pushPiecesToArray(horse1, horseP1)
-            const queen1 = QueenNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
-            pushPiecesToArray(queen1, queenP1)
-            const king1 = KingNewMovesPlayerOne(position, boardLetters, newPositions)
-            pushPiecesToArray(king1, kingP1)
+            if (position.id === 10 || position.id === 11) {
+                const [rook1, blockingKingRook1] = RookNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
+                pushPiecesToArray(rook1, rookP1)
+                blockingKingRook1.forEach(blockingPiece => {
+                    blockingKingFromCheckP2.push(blockingPiece)
+                })
+            }
+
+            if (position.id === 8 || position.id === 9) {
+                const [bishop1, blockingKingBishop1] = BishopNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
+                pushPiecesToArray(bishop1, bishopP1)
+                blockingKingBishop1.forEach(blockingPiece => {
+                    blockingKingFromCheckP2.push(blockingPiece)
+                })
+            }
+
+            if (position.id === 14) {
+                const [queen1, blockingKingQueen1] = QueenNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
+                pushPiecesToArray(queen1, queenP1)
+                blockingKingQueen1.forEach(blockingPiece => {
+                    blockingKingFromCheckP2.push(blockingPiece)
+                })
+            }
+
+            if (position.id >= 0 && position.id <= 7) {
+                const pawn1 = PawnNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
+                pushPiecesToArray(pawn1, pawnP1)
+            }
+
+            if (position.id === 12 || position.id === 13) {
+                const horse1 = HorseNewMovesPlayerOne(position, boardLetters, newPositions)
+                pushPiecesToArray(horse1, horseP1)
+            }
+
+            if (position.id === 15) {
+                const king1 = KingNewMovesPlayerOne(position, boardLetters, newPositions)
+                pushPiecesToArray(king1, kingP1)
+            }
         }
     })
     newPositions.forEach(position => {
         if (position !== null) {
             // player two new moves
-            const pawn2 = PawnNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
-            pushPiecesToArray(pawn2, pawnP2)
-            const [rook2, blockingKingRook2] = RookNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
-            blockingKingRook2.forEach(blockingPiece => {
-                blockingKingFromCheckP1.push(blockingPiece)
-            })
-            pushPiecesToArray(rook2, rookP2)
-            const horse2 = HorseNewMovesPlayerTwo(position, boardLetters, newPositions)
-            pushPiecesToArray(horse2, horseP2)
-            const [bishop2, blockingKingBishop2] = BishopNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
-            console.log(blockingKingBishop2)
-            pushPiecesToArray(bishop2, bishopP2)
-            const queen2 = QueenNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
-            pushPiecesToArray(queen2, queenP2)
-            const king2 = KingNewMovesPlayerTwo(position, boardLetters, newPositions)
-            pushPiecesToArray(king2, kingP2)
+            if (position.id === 26 || position.id === 27) {
+                const [rook2, blockingKingRook2] = RookNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
+                pushPiecesToArray(rook2, rookP2)
+                blockingKingRook2.forEach(blockingPiece => {
+                    blockingKingFromCheckP1.push(blockingPiece)
+                })
+            }
+
+            if (position.id === 24 || position.id === 25) {
+                const [bishop2, blockingKingBishop2] = BishopNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
+                pushPiecesToArray(bishop2, bishopP2)
+                blockingKingBishop2.forEach(blockingPiece => {
+                    blockingKingFromCheckP1.push(blockingPiece)
+                })
+            }
+
+            if (position.id === 30) {
+                const [queen2, blockingKingQueen2] = QueenNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
+                pushPiecesToArray(queen2, queenP2)
+                blockingKingQueen2.forEach(blockingPiece => {
+                    blockingKingFromCheckP1.push(blockingPiece)
+                })
+            }
+
+            if (position.id >= 16 && position.id <= 23) {
+                const pawn2 = PawnNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
+                pushPiecesToArray(pawn2, pawnP2)
+            }
+
+            if (position.id === 28 || position.id === 29) {
+                const horse2 = HorseNewMovesPlayerTwo(position, boardLetters, newPositions)
+                pushPiecesToArray(horse2, horseP2)
+            }
+
+            if (position.id === 31) {
+                const king2 = KingNewMovesPlayerTwo(position, boardLetters, newPositions)
+                pushPiecesToArray(king2, kingP2)
+            }
         }
     })
 

@@ -14,7 +14,7 @@ const Home = () => {
     const boardLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
     const [playerOnePiecePositions, setPlayerOnePiecePositions] = useState(piecesPlayerOne)
     const [playerTwoPiecePositions, setPlayerTwoPiecePositions] = useState(piecesPlayerTwo)
-    const [playerOneTurn, setPlayerOneTurn] = useState(false)
+    const [playerOneTurn, setPlayerOneTurn] = useState(true)
     const [availableMoves, setAvailableMoves] = useState([])
     const [nextAvailableMoves, setNextAvailableMoves] = useState([])
     const [currentPiece, setCurrentPiece] = useState(null)
@@ -43,7 +43,7 @@ const Home = () => {
                             p1NewMoves.forEach(move => {
                                 playerTwoPiecePositions.forEach(position => {
                                     if (move === position.tilePosition && position.id === 31) {
-                                        setPlayerTwoInCheck(true)
+                                        // setPlayerTwoInCheck(true)
                                     }
                                 })
                             })
@@ -74,7 +74,6 @@ const Home = () => {
             })
         }
     }
-    // console.log(piecesBlockingKingP1);
     // renders pieces onto board as team one and team two
     const renderPiecePosition = (boardPosition) => {
         let playerPieces = [playerOnePiecePositions, playerTwoPiecePositions]

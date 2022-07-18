@@ -200,24 +200,27 @@ const QueenMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositi
         let opponentPieceBlockingUp = []
         let opponentPieceBlockingDown = []
         opponentPieceBlockingVertical.forEach(pieceBlocking => {
-            if (pieceBlocking.i < individualPieceIndex) {
+            if (pieceBlocking.blockingPiece[0] < individualPiece.tilePosition[0]) {
                 opponentPieceBlockingUp.push(pieceBlocking)
             }
-            if (pieceBlocking.i > individualPieceIndex) {
+            if (pieceBlocking.blockingPiece[0] > individualPiece.tilePosition[0]) {
                 opponentPieceBlockingDown.push(pieceBlocking)
             }
         })
 
+
         const opponentBlockingUp = () => {
-            const indexBlockingUp = opponentPieceBlockingUp.map(piece => {
-                return piece.i
-            })
-            const getMaxBlockingUp = Math.max(...indexBlockingUp)
-            newAvailableMovesIndexVertical.forEach(vertMove => {
-                if (vertMove.i < getMaxBlockingUp && Number.isFinite(getMaxBlockingUp) && vertMove.i < individualPieceIndex) {
-                    removeFromAvailableMoves.push(vertMove.move)
-                }
-            })
+            if (opponentPieceBlockingUp.length > 0) {
+                const indexBlockingUp = opponentPieceBlockingUp.map(piece => {
+                    return piece.i
+                })
+                const getMaxBlockingUp = Math.max(...indexBlockingUp)
+                newAvailableMovesIndexVertical.forEach(vertMove => {
+                    if (vertMove.i < getMaxBlockingUp) {
+                        removeFromAvailableMoves.push(vertMove.move)
+                    }
+                })
+            }
         }
         opponentBlockingUp()
 
@@ -227,7 +230,7 @@ const QueenMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositi
             })
             const getMinBlockingDown = Math.min(...indexBlockingDown)
             newAvailableMovesIndexVertical.forEach(vertMove => {
-                if (vertMove.i > getMinBlockingDown && Number.isFinite(getMinBlockingDown) && vertMove.i > individualPieceIndex) {
+                if (vertMove.i > getMinBlockingDown) {
                     removeFromAvailableMoves.push(vertMove.move)
                 }
             })
