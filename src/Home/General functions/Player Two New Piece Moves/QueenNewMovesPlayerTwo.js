@@ -598,6 +598,52 @@ const QueenNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePos
     setBlockingDirectionsLeft(opponentPiecesBlockingUpLeft, blockingKingUpLeft)
     setBlockingDirectionsLeft(opponentPiecesBlockingDownLeft, blockingKingDownLeft)
 
+    let playerTwoTilePositions = []
+    let playerOneTilePositions = []
+    playerTwoPiecePositions.forEach(position => {
+        if (position.id !== individualPiece.id) {
+            playerTwoTilePositions.push(position.tilePosition)
+        }
+    })
+    playerOnePiecePositions.forEach(position => {
+        playerOneTilePositions.push(position.tilePosition)
+    })
+
+    let tilesBetweenKingAndAttacker = []
+    const rightTilesBetween = (vertRight) => {
+        if (vertRight.includes(kingPosition)) {
+            vertRight.forEach(position => {
+                if (position[1] < kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+            tilesBetweenKingAndAttacker.forEach(position => {
+                if (playerTwoTilePositions.includes(position) || playerOneTilePositions.includes(position)) {
+                    tilesBetweenKingAndAttacker = []
+                }
+            })
+        }
+    }
+    const leftTilesBetween = (vertRight) => {
+        if (vertRight.includes(kingPosition)) {
+            vertRight.forEach(position => {
+                if (position[1] > kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+            tilesBetweenKingAndAttacker.forEach(position => {
+                if (playerTwoTilePositions.includes(position) || playerOneTilePositions.includes(position)) {
+                    tilesBetweenKingAndAttacker = []
+                }
+            })
+        }
+    }
+    rightTilesBetween(upAndToRight)
+    rightTilesBetween(downAndToRight)
+    leftTilesBetween(upAndToLeft)
+    leftTilesBetween(downAndToLeft)
+
+
     let kingBlockedByOwnPieceUpRight
     playerTwoPiecePositions.forEach(position => {
         upAndToRightIndex.forEach(directionIndex => {
@@ -689,7 +735,7 @@ const QueenNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePos
         setBlockingKing(direction)
     })
 
-    return [returnedMoves, blockingKingFromCheck]
+    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker]
 }
 
 export default QueenNewMovesPlayerTwo

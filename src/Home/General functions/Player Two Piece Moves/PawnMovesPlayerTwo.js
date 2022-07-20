@@ -1,4 +1,4 @@
-const PawnMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves) => {
+const PawnMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1) => {
     if (individualPiece.id >= 16 && individualPiece.id <= 23) {
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition.includes(letter)) {
@@ -49,6 +49,13 @@ const PawnMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositio
                         return move
                     }
                 })
+                if (tilesBetweenKingAndAttackerP1.length > 0) {
+                    newAvailableMoves = newAvailableMoves.filter(move => {
+                        if (tilesBetweenKingAndAttackerP1.includes(move)) {
+                            return move
+                        }
+                    })
+                }
                 setAvailableMoves(newAvailableMoves)
             }
         })

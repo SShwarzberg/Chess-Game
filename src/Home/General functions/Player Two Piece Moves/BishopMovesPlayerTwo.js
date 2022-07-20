@@ -1,4 +1,4 @@
-const BishopMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves) => {
+const BishopMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1) => {
     if (individualPiece.id === 24 || individualPiece.id === 25) {
         let newAvailableMoves = []
         let upAndToRight = []
@@ -185,6 +185,7 @@ const BishopMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosit
         removePiecesBlockedByOpponentUp(opponentPiecesBlockingUpLeft, upAndToLeftIndex)
         removePiecesBlockedByOpponentDown(opponentPiecesBlockingDownRight, downAndToRightIndex)
         removePiecesBlockedByOpponentDown(opponentPiecesBlockingDownLeft, downAndToLeftIndex)
+
         newAvailableMoves = newAvailableMoves.filter(move => {
             if (!removeFromAvailableMoves.includes(move)) {
                 return move
@@ -196,6 +197,13 @@ const BishopMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosit
             }
         })
         newAvailableMoves = Array.from(new Set(newAvailableMoves))
+        if (tilesBetweenKingAndAttackerP1.length > 0) {
+            newAvailableMoves = newAvailableMoves.filter(move => {
+                if (tilesBetweenKingAndAttackerP1.includes(move)) {
+                    return move
+                }
+            })
+        }
         setAvailableMoves(newAvailableMoves)
     }
 }

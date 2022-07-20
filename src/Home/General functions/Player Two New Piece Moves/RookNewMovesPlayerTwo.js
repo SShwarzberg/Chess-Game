@@ -114,6 +114,66 @@ const RookNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosi
             }
         })
     })
+
+    let kingPosition
+    playerOnePiecePositions.forEach(position => {
+        if (position.id === 15) {
+            kingPosition = position.tilePosition
+        }
+    })
+
+    let playerTwoTilePositions = []
+    let playerOneTilePositions = []
+    playerTwoPiecePositions.forEach(position => {
+        if (position.id !== individualPiece.id) {
+            playerTwoTilePositions.push(position.tilePosition)
+        }
+    })
+    playerOnePiecePositions.forEach(position => {
+        playerOneTilePositions.push(position.tilePosition)
+    })
+
+    let underCurrentPiece = []
+    let overCurrentPiece = []
+    if (moreThanVertical.some(position => position.move === kingPosition)) {
+        moreThanVertical.forEach(position => {
+            underCurrentPiece.push(position.move)
+        })
+    }
+    if (lessThanVertical.some(position => position.move === kingPosition)) {
+        lessThanVertical.forEach(position => {
+            if (position.tilePosition !== kingPosition) {
+                overCurrentPiece.push(position.move)
+            }
+        })
+    }
+
+    let tilesBetweenKingAndAttacker = []
+    if (underCurrentPiece.includes(kingPosition)) {
+        underCurrentPiece.forEach(position => {
+            if (position[0] < kingPosition[0]) {
+                tilesBetweenKingAndAttacker.push(position)
+            }
+        })
+        tilesBetweenKingAndAttacker.forEach(position => {
+            if (playerTwoTilePositions.includes(position) || playerOneTilePositions.includes(position)) {
+                tilesBetweenKingAndAttacker = []
+            }
+        })
+    }
+    if (overCurrentPiece.includes(kingPosition)) {
+        overCurrentPiece.forEach(position => {
+            if (position[0] > kingPosition[0]) {
+                tilesBetweenKingAndAttacker.push(position)
+            }
+        })
+        tilesBetweenKingAndAttacker.forEach(position => {
+            if (playerTwoTilePositions.includes(position) || playerOneTilePositions.includes(position)) {
+                tilesBetweenKingAndAttacker = []
+            }
+        })
+    }
+
     let playerOneVerticalMatch = []
     playerOnePiecePositions.forEach(position => {
         boardLetters.forEach((letter, i) => {
@@ -266,7 +326,7 @@ const RookNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosi
             blockingKingFromCheck.push(blocking)
         })
     }
-    return [returnedMoves, blockingKingFromCheck]
+    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker]
 }
 
 export default RookNewMovesPlayerTwo

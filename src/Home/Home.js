@@ -9,18 +9,18 @@ import getAvailableMoves from './General functions/getAvailablemoves'
 import takeOpponentPiece from './General functions/takeOpponentsPiece'
 import getNewAvailableMoves from './General functions/getNewAvailableMoves'
 
-
 const Home = () => {
     const boardLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
     const [playerOnePiecePositions, setPlayerOnePiecePositions] = useState(piecesPlayerOne)
     const [playerTwoPiecePositions, setPlayerTwoPiecePositions] = useState(piecesPlayerTwo)
-    const [playerOneTurn, setPlayerOneTurn] = useState(true)
+    const [playerOneTurn, setPlayerOneTurn] = useState(false)
     const [availableMoves, setAvailableMoves] = useState([])
     const [nextAvailableMoves, setNextAvailableMoves] = useState([])
     const [currentPiece, setCurrentPiece] = useState(null)
-    const [playerTwoInCheck, setPlayerTwoInCheck] = useState(false)
-    const [playerOneInCheck, setPlayerOneInCheck] = useState(false)
-    const [piecesBlockingKingP1, setPiecesBlockingKingP1] = useState([])
+    const [p1UnmovablePieces, setP1UnmovablePieces] = useState([])
+    const [p2UnmovablePieces, setP2UnmovablePieces] = useState([])
+    const [tilesBetweenKingAndAttackerP1, setTilesBetweenKingAndAttackerP1] = useState([])
+    const [tilesBetweenKingAndAttackerP2, setTilesBetweenKingAndAttackerP2] = useState([])
 
     const changePiecePosition = (eventTargetId) => {
         if (availableMoves !== []) {
@@ -28,47 +28,32 @@ const Home = () => {
             let newPlayerTwoPositions
             availableMoves.forEach(move => {
                 if (move === eventTargetId) {
+                    // player one 
+                    newPlayerOnePositions = playerOnePiecePositions.map(position => {
+                        return Object.assign({}, position)
+                    })
+                    // player two
+                    newPlayerTwoPositions = playerTwoPiecePositions.map(position => {
+                        return Object.assign({}, position)
+                    })
                     if (playerOneTurn) {
                         // player one 
-                        newPlayerOnePositions = playerOnePiecePositions.map(position => {
-                            return Object.assign({}, position)
-                        })
                         newPlayerOnePositions[currentPiece.id].tilePosition = move
                         setPlayerOnePiecePositions(newPlayerOnePositions)
                         setAvailableMoves([])
                         setPlayerOneTurn(false)
-                        getNewAvailableMoves(newPlayerOnePositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn)
-                        const p1NewMoves = getNewAvailableMoves(newPlayerOnePositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn)[0]
-                        if (p1NewMoves) {
-                            p1NewMoves.forEach(move => {
-                                playerTwoPiecePositions.forEach(position => {
-                                    if (move === position.tilePosition && position.id === 31) {
-                                        // setPlayerTwoInCheck(true)
-                                    }
-                                })
-                            })
-                        }
+                        const [blockingKingFromCheck, /* blockingKingFromCheckP2 */, tilesBetweenKingAndAttacker] = getNewAvailableMoves(newPlayerOnePositions, newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn)
+                        setP2UnmovablePieces(blockingKingFromCheck)
+                        setTilesBetweenKingAndAttackerP1(tilesBetweenKingAndAttacker)
                     } else {
                         // player two
-                        newPlayerTwoPositions = playerTwoPiecePositions.map(position => {
-                            return Object.assign({}, position)
-                        })
                         newPlayerTwoPositions[currentPiece.id - 16].tilePosition = move
                         setPlayerTwoPiecePositions(newPlayerTwoPositions)
                         setAvailableMoves([])
                         setPlayerOneTurn(true)
-                        setPiecesBlockingKingP1(getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn, setPiecesBlockingKingP1)[2])
-                        getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn, setPiecesBlockingKingP1)
-                        const p2NewMoves = getNewAvailableMoves(newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn)[1]
-                        if (p2NewMoves) {
-                            p2NewMoves.forEach(move => {
-                                playerOnePiecePositions.forEach(position => {
-                                    if (move === position.tilePosition && position.id === 15) {
-                                        // setPlayerOneInCheck(true)
-                                    }
-                                })
-                            })
-                        }
+                        const [ /* blockingKingFromCheckP1 */, blockingKingFromCheck, /* tilesBetweenKingAndAttackerP1 */, tilesBetweenKingAndAttacker] = getNewAvailableMoves(newPlayerOnePositions, newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves, playerOneTurn)
+                        setP1UnmovablePieces(blockingKingFromCheck)
+                        setTilesBetweenKingAndAttackerP2(tilesBetweenKingAndAttacker)
                     }
                 }
             })
@@ -83,11 +68,11 @@ const Home = () => {
                     let className
                     if (individualPiece.id < 16) {
                         className = 'playerOnePieces'
-                    } else {
+                    } else if (individualPiece.id > 15 && individualPiece.id < 32) {
                         className = 'playerTwoPieces'
                     }
                     return <img onClick={() => {
-                        getAvailableMoves(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, nextAvailableMoves, playerOneTurn, playerTwoInCheck, setCurrentPiece, playerOneInCheck)
+                        getAvailableMoves(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, nextAvailableMoves, playerOneTurn, setCurrentPiece, p1UnmovablePieces, p2UnmovablePieces, tilesBetweenKingAndAttackerP1, tilesBetweenKingAndAttackerP2)
                     }} className={className} src={individualPiece.pieceName} alt="" key={individualPiece.id} />
                 }
             })

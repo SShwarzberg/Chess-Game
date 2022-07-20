@@ -343,7 +343,52 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
             return move
         }
     })
-    return [returnedMoves, blockingKingFromCheck]
+
+    let playerOneTilePositions = []
+    let playerTwoTilePositions = []
+    playerOnePiecePositions.forEach(position => {
+        if (position.id !== individualPiece.id) {
+            playerOneTilePositions.push(position.tilePosition)
+        }
+    })
+    playerTwoPiecePositions.forEach(position => {
+        playerTwoTilePositions.push(position.tilePosition)
+    })
+
+    let tilesBetweenKingAndAttacker = []
+    const rightTilesBetween = (vertRight) => {
+        if (vertRight.includes(kingPosition)) {
+            vertRight.forEach(position => {
+                if (position[1] < kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+            tilesBetweenKingAndAttacker.forEach(position => {
+                if (playerOneTilePositions.includes(position) || playerTwoTilePositions.includes(position)) {
+                    tilesBetweenKingAndAttacker = []
+                }
+            })
+        }
+    }
+    const leftTilesBetween = (vertRight) => {
+        if (vertRight.includes(kingPosition)) {
+            vertRight.forEach(position => {
+                if (position[1] > kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+            tilesBetweenKingAndAttacker.forEach(position => {
+                if (playerOneTilePositions.includes(position) || playerTwoTilePositions.includes(position) && individualPiece.tilePosition !== position) {
+                    tilesBetweenKingAndAttacker = []
+                }
+            })
+        }
+    }
+    rightTilesBetween(upAndToRight)
+    rightTilesBetween(downAndToRight)
+    leftTilesBetween(upAndToLeft)
+    leftTilesBetween(downAndToLeft)
+    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker]
 }
 
 export default BishopNewMovesPlayerOne

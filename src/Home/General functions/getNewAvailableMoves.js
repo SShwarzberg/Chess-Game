@@ -13,7 +13,7 @@ import BishopNewMovesPlayerTwo from "./Player Two New Piece Moves/BishopNewMoves
 import QueenNewMovesPlayerTwo from "./Player Two New Piece Moves/QueenNewMovesPlayerTwo"
 import KingNewMovesPlayerTwo from "./Player Two New Piece Moves/KingNewMovesPlayerTwo"
 
-const getNewAvailableMoves = (newPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves) => {
+const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves) => {
     // player 1
     let pawnP1 = []
     let bishopP1 = []
@@ -35,108 +35,111 @@ const getNewAvailableMoves = (newPositions, boardLetters, playerOnePiecePosition
             arrayToPushTo.push(piece)
         }
     }
-    let blockingKingFromCheckP1 = []
     let blockingKingFromCheckP2 = []
-    newPositions.forEach(position => {
+    let blockingKingFromCheckP1 = []
+    let tilesBetweenKingAndAttackerP1 = []
+    let tilesBetweenKingAndAttackerP2 = []
+    newPlayerOnePositions.forEach(position => {
         if (position.tilePosition !== null) {
             // player one new moves
             if (position.id === 10 || position.id === 11) {
-                const [rook1, blockingKingRook1] = RookNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
+                const [rook1, blockingKingRook1] = RookNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions, playerTwoPiecePositions)
                 pushPiecesToArray(rook1, rookP1)
                 blockingKingRook1.forEach(blockingPiece => {
-                    blockingKingFromCheckP2.push(blockingPiece)
+                    blockingKingFromCheckP1.push(blockingPiece)
                 })
             }
 
             if (position.id === 8 || position.id === 9) {
-                const [bishop1, blockingKingBishop1] = BishopNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
+                const [bishop1, blockingKingBishop1, tilesBetweenKingAndAttacker] = BishopNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions, playerTwoPiecePositions)
                 pushPiecesToArray(bishop1, bishopP1)
                 blockingKingBishop1.forEach(blockingPiece => {
-                    blockingKingFromCheckP2.push(blockingPiece)
+                    blockingKingFromCheckP1.push(blockingPiece)
+                })
+                tilesBetweenKingAndAttacker.forEach(position => {
+                    tilesBetweenKingAndAttackerP1.push(position)
                 })
             }
 
             if (position.id === 14) {
-                const [queen1, blockingKingQueen1] = QueenNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
+                const [queen1, blockingKingQueen1, tilesBetweenKingAndAttacker] = QueenNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions, playerTwoPiecePositions)
                 pushPiecesToArray(queen1, queenP1)
                 blockingKingQueen1.forEach(blockingPiece => {
-                    blockingKingFromCheckP2.push(blockingPiece)
+                    blockingKingFromCheckP1.push(blockingPiece)
+                })
+                tilesBetweenKingAndAttacker.forEach(position => {
+                    tilesBetweenKingAndAttackerP1.push(position)
                 })
             }
 
             if (position.id >= 0 && position.id <= 7) {
-                const pawn1 = PawnNewMovesPlayerOne(position, boardLetters, newPositions, playerTwoPiecePositions)
+                const pawn1 = PawnNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions, playerTwoPiecePositions)
                 pushPiecesToArray(pawn1, pawnP1)
             }
 
             if (position.id === 12 || position.id === 13) {
-                const horse1 = HorseNewMovesPlayerOne(position, boardLetters, newPositions)
+                const horse1 = HorseNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions)
                 pushPiecesToArray(horse1, horseP1)
             }
 
             if (position.id === 15) {
-                const king1 = KingNewMovesPlayerOne(position, boardLetters, newPositions)
+                const king1 = KingNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions)
                 pushPiecesToArray(king1, kingP1)
             }
         }
     })
-    newPositions.forEach(position => {
+    newPlayerTwoPositions.forEach(position => {
         if (position !== null) {
             // player two new moves
             if (position.id === 26 || position.id === 27) {
-                const [rook2, blockingKingRook2] = RookNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
+                const [rook2, blockingKingRook2, tilesBetweenKingAndAttacker] = RookNewMovesPlayerTwo(position, boardLetters, newPlayerTwoPositions, playerOnePiecePositions)
                 pushPiecesToArray(rook2, rookP2)
                 blockingKingRook2.forEach(blockingPiece => {
-                    blockingKingFromCheckP1.push(blockingPiece)
+                    blockingKingFromCheckP2.push(blockingPiece)
+                })
+                tilesBetweenKingAndAttacker.forEach(position => {
+                    tilesBetweenKingAndAttackerP2.push(position)
                 })
             }
 
             if (position.id === 24 || position.id === 25) {
-                const [bishop2, blockingKingBishop2] = BishopNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
+                const [bishop2, blockingKingBishop2, tilesBetweenKingAndAttacker] = BishopNewMovesPlayerTwo(position, boardLetters, newPlayerTwoPositions, playerOnePiecePositions)
                 pushPiecesToArray(bishop2, bishopP2)
                 blockingKingBishop2.forEach(blockingPiece => {
-                    blockingKingFromCheckP1.push(blockingPiece)
+                    blockingKingFromCheckP2.push(blockingPiece)
+                })
+                tilesBetweenKingAndAttacker.forEach(position => {
+                    tilesBetweenKingAndAttackerP2.push(position)
                 })
             }
 
             if (position.id === 30) {
-                const [queen2, blockingKingQueen2] = QueenNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
+                const [queen2, blockingKingQueen2, tilesBetweenKingAndAttacker] = QueenNewMovesPlayerTwo(position, boardLetters, newPlayerTwoPositions, playerOnePiecePositions)
                 pushPiecesToArray(queen2, queenP2)
                 blockingKingQueen2.forEach(blockingPiece => {
-                    blockingKingFromCheckP1.push(blockingPiece)
+                    blockingKingFromCheckP2.push(blockingPiece)
+                })
+                tilesBetweenKingAndAttacker.forEach(position => {
+                    tilesBetweenKingAndAttackerP2.push(position)
                 })
             }
 
             if (position.id >= 16 && position.id <= 23) {
-                const pawn2 = PawnNewMovesPlayerTwo(position, boardLetters, newPositions, playerOnePiecePositions)
+                const pawn2 = PawnNewMovesPlayerTwo(position, boardLetters, newPlayerTwoPositions, playerOnePiecePositions)
                 pushPiecesToArray(pawn2, pawnP2)
             }
 
             if (position.id === 28 || position.id === 29) {
-                const horse2 = HorseNewMovesPlayerTwo(position, boardLetters, newPositions)
+                const horse2 = HorseNewMovesPlayerTwo(position, boardLetters, newPlayerTwoPositions)
                 pushPiecesToArray(horse2, horseP2)
             }
 
             if (position.id === 31) {
-                const king2 = KingNewMovesPlayerTwo(position, boardLetters, newPositions)
+                const king2 = KingNewMovesPlayerTwo(position, boardLetters, newPlayerTwoPositions)
                 pushPiecesToArray(king2, kingP2)
             }
         }
     })
-
-    const extractAvailableMoves = (playerNewMoves, nextMovesPlayer) => {
-        playerNewMoves.forEach(pieces => {
-            pieces.forEach(piece => {
-                piece.newAvailableMoves.forEach(move => {
-                    if (!move.includes('-')) {
-                        if (!move.includes(0)) {
-                            nextMovesPlayer.push(move)
-                        }
-                    }
-                })
-            })
-        })
-    }
 
     // player 1
     player1NewMoves.push(
@@ -146,8 +149,6 @@ const getNewAvailableMoves = (newPositions, boardLetters, playerOnePiecePosition
         horseP1,
         queenP1,
         kingP1)
-    let nextMovesP1 = []
-    extractAvailableMoves(player1NewMoves, nextMovesP1)
 
     // player 2
     player2NewMoves.push(
@@ -158,11 +159,8 @@ const getNewAvailableMoves = (newPositions, boardLetters, playerOnePiecePosition
         queenP2,
         kingP2
     )
-    let nextMovesP2 = []
-    extractAvailableMoves(player2NewMoves, nextMovesP2)
-
-    setNextAvailableMoves([nextMovesP1, nextMovesP2])
-    return [nextMovesP1, nextMovesP2, blockingKingFromCheckP1]
+    setNextAvailableMoves([player1NewMoves, player2NewMoves])
+    return [blockingKingFromCheckP1, blockingKingFromCheckP2, tilesBetweenKingAndAttackerP1, tilesBetweenKingAndAttackerP2]
 }
 
 export default getNewAvailableMoves

@@ -1,4 +1,4 @@
-const QueenMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves) => {
+const QueenMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2) => {
     if (individualPiece.id === 14) {
         let newAvailableMoves = []
         let removeFromAvailableMoves = []
@@ -430,6 +430,13 @@ const QueenMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositi
         newAvailableMoves = newAvailableMoves.filter(move => {
             return move !== individualPiece.tilePosition ? move : null
         })
+        if (tilesBetweenKingAndAttackerP2.length > 0) {
+            newAvailableMoves = newAvailableMoves.filter(move => {
+                if (tilesBetweenKingAndAttackerP2.includes(move)) {
+                    return move
+                }
+            })
+        }
         setAvailableMoves(newAvailableMoves)
     }
 }
