@@ -344,6 +344,17 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
         }
     })
 
+
+    let checkingOpponent = []
+    newAvailableMoves.forEach(move => {
+        playerTwoPiecePositions.forEach(position => {
+            if (position.tilePosition === move && position.id === 31) {
+                checkingOpponent.push(individualPiece)
+            }
+        })
+    })
+
+
     let playerOneTilePositions = []
     let playerTwoTilePositions = []
     playerOnePiecePositions.forEach(position => {
@@ -388,7 +399,41 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
     rightTilesBetween(downAndToRight)
     leftTilesBetween(upAndToLeft)
     leftTilesBetween(downAndToLeft)
-    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker]
+
+    let checkingPositions = []
+    if (upAndToLeft.some(position => position === kingPosition)) {
+        upAndToLeft.forEach(position => {
+            if (position[1] > kingPosition[1]) {
+                checkingPositions.push(position)
+            }
+        })
+    }
+    if (upAndToRight.some(position => position === kingPosition)) {
+        upAndToRight.forEach(position => {
+            if (position[1] < kingPosition[1]) {
+                checkingPositions.push(position)
+            }
+        })
+    }
+    if (downAndToRight.some(position => position === kingPosition)) {
+        downAndToRight.forEach(position => {
+            if (position[1] < kingPosition[1]) {
+                checkingPositions.push(position)
+            }
+        })
+    }
+    if (downAndToLeft.some(position => position === kingPosition)) {
+        downAndToLeft.forEach(position => {
+            if (position[1] > kingPosition[1]) {
+                checkingPositions.push(position)
+            }
+        })
+    }
+    let willCheckKing = []
+    if (checkingPositions.length > 0) {
+        willCheckKing.push({ individualPiece, checkingPositions })
+    }
+    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker, willCheckKing]
 }
 
 export default BishopNewMovesPlayerOne

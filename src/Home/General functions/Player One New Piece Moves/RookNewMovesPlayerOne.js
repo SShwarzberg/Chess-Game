@@ -3,14 +3,18 @@ const RookNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosi
     let blockingKingFromCheck = []
     let removeFromAvailableMoves = []
     let newAvailableMoves = []
+    let horizontalMoves = []
+    let verticalMoves = []
     boardLetters.forEach((letter, i) => {
         if (individualPiece.tilePosition.includes(letter)) {
-            boardLetters.map((letters, i) => (
+            boardLetters.forEach((letters, i) => (
+                horizontalMoves.push(letter + [i + 1]),
                 newAvailableMoves.push(letter + [i + 1])
             ))
         }
         if (individualPiece.tilePosition.includes(i + 1)) {
-            boardLetters.map(letters => (
+            boardLetters.forEach(letters => (
+                verticalMoves.push(letters + [i + 1]),
                 newAvailableMoves.push(letters + [i + 1])
             ))
         }
@@ -122,6 +126,86 @@ const RookNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosi
             }
         })
     })
+
+    let kingPosition
+    playerTwoPiecePositions.forEach(position => {
+        if (position.id === 31) {
+            kingPosition = position.tilePosition
+        }
+    })
+
+    let tilesBetweenKingAndAttacker = []
+    let playerOneTilePositions = []
+    let playerTwoTilePositions = []
+    playerOnePiecePositions.forEach(position => {
+        if (position.id !== individualPiece.id) {
+            playerOneTilePositions.push(position.tilePosition)
+        }
+    })
+    playerTwoPiecePositions.forEach(position => {
+        playerTwoTilePositions.push(position.tilePosition)
+    })
+
+    let underCurrentPiece = []
+    let overCurrentPiece = []
+    let rightOfCurrentPiece = []
+    let leftOfCurrentPiece = []
+
+    verticalMoves.forEach(move => {
+        if (move[0] >= individualPiece.tilePosition[0]) {
+            underCurrentPiece.push(move)
+        }
+    })
+    verticalMoves.forEach(move => {
+        if (move[0] <= individualPiece.tilePosition[0]) {
+            overCurrentPiece.push(move)
+        }
+    })
+    horizontalMoves.forEach(move => {
+        if (move[1] >= individualPiece.tilePosition[1]) {
+            rightOfCurrentPiece.push(move)
+        }
+    })
+    horizontalMoves.forEach(move => {
+        if (move[1] <= individualPiece.tilePosition[1]) {
+            leftOfCurrentPiece.push(move)
+        }
+    })
+
+    if (underCurrentPiece.some(piece => piece === kingPosition)) {
+        underCurrentPiece.forEach(position => {
+            if (position[0] < kingPosition[0]) {
+                tilesBetweenKingAndAttacker.push(position)
+            }
+        })
+    }
+    if (overCurrentPiece.some(piece => piece === kingPosition)) {
+        overCurrentPiece.forEach(position => {
+            if (position[0] > kingPosition[0]) {
+                tilesBetweenKingAndAttacker.push(position)
+            }
+        })
+    }
+    if (rightOfCurrentPiece.some(piece => piece === kingPosition)) {
+        rightOfCurrentPiece.forEach(position => {
+            if (position[1] < kingPosition[1]) {
+                tilesBetweenKingAndAttacker.push(position)
+            }
+        })
+    }
+    if (leftOfCurrentPiece.some(piece => piece === kingPosition)) {
+        leftOfCurrentPiece.forEach(position => {
+            if (position[1] > kingPosition[1]) {
+                tilesBetweenKingAndAttacker.push(position)
+            }
+        })
+    }
+    tilesBetweenKingAndAttacker.forEach(position => {
+        if (playerOneTilePositions.includes(position) || playerTwoTilePositions.includes(position)) {
+            tilesBetweenKingAndAttacker = []
+        }
+    })
+
     lessThanVertical.forEach(obj => {
         playerOneVerticalMatch.forEach(match => {
             if (match.i > obj.i && match.i < individualPieceIndex.i) {
@@ -144,129 +228,120 @@ const RookNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosi
     newAvailableMoves = Array.from(new Set(newAvailableMoves))
     returnedMoves = { piece: 'Rook 2', id: individualPiece.id, newAvailableMoves }
 
-    let moreThanBlockingHorizontal = []
-    let lessThanBlockingHorizontal = []
-    let moreThanBlockingVertical = []
-    let lessThanBlockingVertical = []
-    let ownMoreThanBlockingHorizontal = []
-    let ownLessThanBlockingHorizontal = []
-    newAvailableMoves.forEach(move => {
-        playerTwoPiecePositions.forEach(position => {
-            if (position.tilePosition === move) {
-                const availableMove = position
-                playerTwoPiecePositions.forEach(piecePosition => {
-                    if (piecePosition.id === 31 && availableMove.id !== 31) {
-                        const kingPosition = piecePosition
-                        // gets blocking piece that is available move and is less than current piece index and more than king index horizontally
-                        if (availableMove.tilePosition[0] === kingPosition.tilePosition[0] && individualPiece.tilePosition[1] > availableMove.tilePosition[1] && individualPiece.tilePosition[1] > kingPosition.tilePosition[1]) {
-                            blockingKingFromCheck.push(availableMove.tilePosition)
-                            playerOnePiecePositions.forEach(p2Position => {
-                                if (p2Position.tilePosition) {
-                                    if (p2Position.tilePosition[0] === availableMove.tilePosition[0] && p2Position.id !== 15 && p2Position.tilePosition[1] < individualPiece.tilePosition[1] && p2Position.tilePosition[1] > kingPosition.tilePosition[1]) {
-                                        ownLessThanBlockingHorizontal.push(p2Position.tilePosition[1])
-                                    }
-                                }
-                            })
-                            playerTwoPiecePositions.forEach(p2Position => {
-                                if (p2Position.tilePosition) {
-                                    if (p2Position.tilePosition[0] === availableMove.tilePosition[0] && p2Position.id !== 15 && p2Position.tilePosition[1] < individualPiece.tilePosition[1] && p2Position.tilePosition[1] > kingPosition.tilePosition[1]) {
-                                        lessThanBlockingHorizontal.push(p2Position.tilePosition)
-                                    }
-                                }
-                            })
-                        }
-                        // gets blocking piece that is available move and is more than current piece index and less than king index horizontally
-                        if (availableMove.tilePosition[0] === kingPosition.tilePosition[0] && individualPiece.tilePosition[1] < availableMove.tilePosition[1] && individualPiece.tilePosition[1] < kingPosition.tilePosition[1] && availableMove.tilePosition[0] === individualPiece.tilePosition[0]) {
-                            blockingKingFromCheck.push(availableMove.tilePosition)
-                            playerOnePiecePositions.forEach(p1Position => {
-                                if (p1Position.tilePosition[0] === availableMove.tilePosition[0] && p1Position.id !== 15 && p1Position.tilePosition[1] < kingPosition.tilePosition[1] && p1Position.tilePosition[1] > individualPiece.tilePosition[1]) {
-                                    ownMoreThanBlockingHorizontal.push(parseInt(p1Position.tilePosition[1]))
-                                }
-                            })
-                            playerTwoPiecePositions.forEach(p2Position => {
-                                if (p2Position.tilePosition[0] === availableMove.tilePosition[0] && p2Position.id !== 15 && p2Position.tilePosition[1] < kingPosition.tilePosition[1] && p2Position.tilePosition[1] > individualPiece.tilePosition[1] && !ownMoreThanBlockingHorizontal.length > 0) {
-                                    moreThanBlockingHorizontal.push(p2Position)
-                                }
-                            })
-                        }
-                        if (availableMove.tilePosition[1] === kingPosition.tilePosition[1]) {
-                            let individualPieceIndex
-                            let kingPositionIndex
-                            let verticalPositionIndex = []
-                            playerTwoPiecePositions.forEach(position => {
-                                if (position.tilePosition[1] === availableMove.tilePosition[1]) {
-                                    boardLetters.forEach((letter, i) => {
-                                        if (individualPiece.tilePosition[0] === letter) {
-                                            individualPieceIndex = { piece: individualPiece.tilePosition, i }
-                                        }
-                                        if (position.tilePosition[0] === letter && position.id !== 15) {
-                                            verticalPositionIndex.push({ piece: position.tilePosition, i })
-                                        }
-                                        if (position.id === 15 && position.tilePosition[0] === letter) {
-                                            kingPositionIndex = { piece: position.tilePosition, i }
-                                        }
-                                    })
-                                }
-                            })
-                            let ownMoreThanVertical = []
-                            let ownLessThanVertical = []
-                            playerOnePiecePositions.forEach(position => {
-                                if (position.tilePosition[1] === availableMove.tilePosition[1]) {
-                                    boardLetters.forEach((letter, i) => {
-                                        if (position.tilePosition[0] === letter && position.tilePosition[0] > individualPiece.tilePosition[0]) {
-                                            ownMoreThanVertical.push(i)
-                                        }
-                                        if (position.tilePosition[0] === letter && position.tilePosition[0] < individualPiece.tilePosition[0]) {
-                                            ownLessThanVertical.push(i)
-                                        }
-                                    })
-                                }
-                            })
-                            verticalPositionIndex.forEach(position => {
-                                // gets blocking piece that is available move and is more than current piece letter index and less than king index vertically
-                                if (position.i > individualPieceIndex.i && position.i < kingPositionIndex.i && !ownMoreThanVertical.length > 0) {
-                                    moreThanBlockingVertical.push(position.piece)
-                                }
-                                else if (position.i > individualPieceIndex.i && position.i < kingPositionIndex.i && ownMoreThanVertical.length > 0) {
-                                    if (!ownMoreThanVertical.some(el => el < kingPositionIndex.i)) {
-                                        moreThanBlockingVertical.push(position.piece)
-                                    }
-                                }
-                                // gets blocking piece that is available move and is less than current piece letter index and more than king index vertically
-                                if (position.i < individualPieceIndex.i && position.i > kingPositionIndex.i && !ownLessThanVertical.length > 0) {
-                                    lessThanBlockingVertical.push(position.piece)
-                                }
-                                else if (position.i < individualPieceIndex.i && position.i > kingPositionIndex.i && ownLessThanVertical.length > 0) {
-                                    if (!ownLessThanVertical.some(el => el > kingPositionIndex.i)) {
-                                        lessThanBlockingVertical.push(position.piece)
-                                    }
-                                }
-                            })
-                        }
-                    }
-                })
+    const blockingKingFromCheckFunc = () => {
+        let playerOneTilePositions = []
+        let playerTwoTilePositions = []
+        playerOnePiecePositions.forEach(position => {
+            if (position.id !== individualPiece.id) {
+                playerOneTilePositions.push(position.tilePosition)
             }
         })
-    })
-    if (moreThanBlockingHorizontal.length > 1 || ownMoreThanBlockingHorizontal.length > 0) {
-        blockingKingFromCheck.pop()
-    }
-    if (lessThanBlockingHorizontal.length > 1 || ownLessThanBlockingHorizontal.length > 0) {
-        blockingKingFromCheck.pop()
-    }
-    moreThanBlockingVertical = Array.from(new Set(moreThanBlockingVertical))
-    if (moreThanBlockingVertical.length === 1) {
-        moreThanBlockingVertical.forEach(blocking => {
-            blockingKingFromCheck.push(blocking)
+        playerTwoPiecePositions.forEach(position => {
+            playerTwoTilePositions.push(position.tilePosition)
         })
-    }
-    lessThanBlockingVertical = Array.from(new Set(lessThanBlockingVertical))
-    if (lessThanBlockingVertical.length === 1) {
-        lessThanBlockingVertical.forEach(blocking => {
-            blockingKingFromCheck.push(blocking)
+
+        let underCurrentPiece = []
+        let overCurrentPiece = []
+        let rightOfCurrentPiece = []
+        let leftOfCurrentPiece = []
+
+        verticalMoves.forEach(move => {
+            if (move[0] >= individualPiece.tilePosition[0]) {
+                underCurrentPiece.push(move)
+            }
         })
+        verticalMoves.forEach(move => {
+            if (move[0] <= individualPiece.tilePosition[0]) {
+                overCurrentPiece.push(move)
+            }
+        })
+        horizontalMoves.forEach(move => {
+            if (move[1] >= individualPiece.tilePosition[1]) {
+                rightOfCurrentPiece.push(move)
+            }
+        })
+        horizontalMoves.forEach(move => {
+            if (move[1] <= individualPiece.tilePosition[1]) {
+                leftOfCurrentPiece.push(move)
+            }
+        })
+
+        let blockingKingUp = []
+        let blockingKingDown = []
+        let blockingKingRight = []
+        let blockingKingLeft = []
+
+        if (overCurrentPiece.some(position => position === kingPosition)) {
+            playerTwoTilePositions.forEach(p2Position => {
+                overCurrentPiece.forEach(position => {
+                    if (p2Position === position && p2Position !== kingPosition && position[0] > kingPosition[0]) {
+                        blockingKingUp.push(position)
+                    }
+                    if (playerOneTilePositions.includes(position) && position[0] > kingPosition[0]) {
+                        blockingKingUp = []
+                    }
+                })
+            })
+        }
+        if (underCurrentPiece.some(position => position === kingPosition)) {
+            playerTwoTilePositions.forEach(p2Position => {
+                underCurrentPiece.forEach(position => {
+                    if (p2Position === position && p2Position !== kingPosition && position[0] < kingPosition[0]) {
+                        blockingKingDown.push(position)
+                    }
+                    if (playerOneTilePositions.includes(position) && position[0] < kingPosition[0]) {
+                        blockingKingDown = []
+                    }
+                })
+            })
+        }
+        if (rightOfCurrentPiece.some(position => position === kingPosition)) {
+            playerTwoTilePositions.forEach(p2Position => {
+                rightOfCurrentPiece.forEach(position => {
+                    if (p2Position === position && p2Position !== kingPosition && position[1] < kingPosition[1]) {
+                        blockingKingRight.push(position)
+                    }
+                    if (playerOneTilePositions.includes(position) && position[1] < kingPosition[1]) {
+                        blockingKingRight = []
+                    }
+                })
+            })
+        }
+        if (leftOfCurrentPiece.some(position => position === kingPosition)) {
+            playerTwoTilePositions.forEach(p2Position => {
+                leftOfCurrentPiece.forEach(position => {
+                    if (p2Position === position && p2Position !== kingPosition && position[1] > kingPosition[1]) {
+                        blockingKingLeft.push(position)
+                    }
+                    if (playerOneTilePositions.includes(position) && position[1] > kingPosition[1]) {
+                        blockingKingLeft = []
+                    }
+                })
+            })
+        }
+
+
+        const blockingArrayDiagonal = [
+            blockingKingUp,
+            blockingKingDown,
+            blockingKingRight,
+            blockingKingLeft
+        ]
+
+        const getBlockingDirectionDiagonal = (blockingDirection) => {
+            if (blockingDirection.length === 1) {
+                blockingDirection.forEach(piece => {
+                    blockingKingFromCheck.push(piece)
+                })
+            }
+        }
+        blockingArrayDiagonal.forEach(direction => {
+            getBlockingDirectionDiagonal(direction)
+        })
+
     }
-    return [returnedMoves, blockingKingFromCheck]
+    blockingKingFromCheckFunc()
+    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker]
 }
 
 export default RookNewMovesPlayerOne

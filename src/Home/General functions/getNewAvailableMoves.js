@@ -39,25 +39,32 @@ const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boar
     let blockingKingFromCheckP1 = []
     let tilesBetweenKingAndAttackerP1 = []
     let tilesBetweenKingAndAttackerP2 = []
+    let willCheckKingP1 = []
     newPlayerOnePositions.forEach(position => {
         if (position.tilePosition !== null) {
             // player one new moves
             if (position.id === 10 || position.id === 11) {
-                const [rook1, blockingKingRook1] = RookNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions, playerTwoPiecePositions)
+                const [rook1, blockingKingRook1, tilesBetweenKingAndAttacker] = RookNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions, playerTwoPiecePositions)
                 pushPiecesToArray(rook1, rookP1)
                 blockingKingRook1.forEach(blockingPiece => {
                     blockingKingFromCheckP1.push(blockingPiece)
                 })
+                tilesBetweenKingAndAttacker.forEach(position => {
+                    tilesBetweenKingAndAttackerP1.push(position)
+                })
             }
 
             if (position.id === 8 || position.id === 9) {
-                const [bishop1, blockingKingBishop1, tilesBetweenKingAndAttacker] = BishopNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions, playerTwoPiecePositions)
+                const [bishop1, blockingKingBishop1, tilesBetweenKingAndAttacker, willCheckKing] = BishopNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions, playerTwoPiecePositions)
                 pushPiecesToArray(bishop1, bishopP1)
                 blockingKingBishop1.forEach(blockingPiece => {
                     blockingKingFromCheckP1.push(blockingPiece)
                 })
                 tilesBetweenKingAndAttacker.forEach(position => {
                     tilesBetweenKingAndAttackerP1.push(position)
+                })
+                willCheckKing.forEach(position => {
+                    willCheckKingP1.push(position)
                 })
             }
 
@@ -160,7 +167,7 @@ const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boar
         kingP2
     )
     setNextAvailableMoves([player1NewMoves, player2NewMoves])
-    return [blockingKingFromCheckP1, blockingKingFromCheckP2, tilesBetweenKingAndAttackerP1, tilesBetweenKingAndAttackerP2]
+    return [blockingKingFromCheckP1, blockingKingFromCheckP2, tilesBetweenKingAndAttackerP1, tilesBetweenKingAndAttackerP2, willCheckKingP1]
 }
 
 export default getNewAvailableMoves

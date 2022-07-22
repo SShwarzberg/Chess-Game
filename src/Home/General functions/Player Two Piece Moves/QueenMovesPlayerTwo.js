@@ -19,6 +19,13 @@ const QueenMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositi
                     newAvailableMoves.push(letters + (i))
                 })
             }
+            if (parseInt(individualPiece.tilePosition[1]) === 8) {
+                boardLetters.forEach(letters => {
+                    if (i + 1 === 8) {
+                        newAvailableMoves.push(letters + (i + 1))
+                    }
+                })
+            }
         })
 
         playerTwoPiecePositions.forEach(position => {
