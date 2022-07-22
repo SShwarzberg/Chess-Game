@@ -229,6 +229,105 @@ const RookNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosi
     newAvailableMoves = Array.from(new Set(newAvailableMoves))
     returnedMoves = { piece: 'Rook 2', id: individualPiece.id, newAvailableMoves }
 
+    let attackingPiecesPositions
+    const getPiecesBetweenKingAndOpponentPerpendicular = () => {
+        let kingPosition
+        playerOnePiecePositions.forEach(position => {
+            if (position.id === 15) {
+                kingPosition = position.tilePosition
+            }
+        })
+
+        let tilesBetweenKingAndAttacker = []
+        let playerTwoTilePositions = []
+        let playerOneTilePositions = []
+        playerTwoPiecePositions.forEach(position => {
+            if (position.id !== individualPiece.id) {
+                playerTwoTilePositions.push(position.tilePosition)
+            }
+        })
+        playerOnePiecePositions.forEach(position => {
+            playerOneTilePositions.push(position.tilePosition)
+        })
+
+        let underCurrentPiece = []
+        let overCurrentPiece = []
+        let rightOfCurrentPiece = []
+        let leftOfCurrentPiece = []
+
+        verticalMoves.forEach(move => {
+            if (move[0] >= individualPiece.tilePosition[0]) {
+                underCurrentPiece.push(move)
+            }
+        })
+        verticalMoves.forEach(move => {
+            if (move[0] <= individualPiece.tilePosition[0]) {
+                overCurrentPiece.push(move)
+            }
+        })
+        horizontalMoves.forEach(move => {
+            if (move[1] >= individualPiece.tilePosition[1]) {
+                rightOfCurrentPiece.push(move)
+            }
+        })
+        horizontalMoves.forEach(move => {
+            if (move[1] <= individualPiece.tilePosition[1]) {
+                leftOfCurrentPiece.push(move)
+            }
+        })
+
+        if (underCurrentPiece.some(piece => piece === kingPosition)) {
+            underCurrentPiece.forEach(position => {
+                if (position[0] < kingPosition[0]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+        if (overCurrentPiece.some(piece => piece === kingPosition)) {
+            overCurrentPiece.forEach(position => {
+                if (position[0] > kingPosition[0]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+        if (rightOfCurrentPiece.some(piece => piece === kingPosition)) {
+            rightOfCurrentPiece.forEach(position => {
+                if (position[1] < kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+        if (leftOfCurrentPiece.some(piece => piece === kingPosition)) {
+            leftOfCurrentPiece.forEach(position => {
+                if (position[1] > kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+
+
+        let opponentsPiecesBetween = []
+        tilesBetweenKingAndAttacker.forEach(position => {
+            if (playerTwoTilePositions.includes(position)) {
+                tilesBetweenKingAndAttacker = []
+            }
+            playerOnePiecePositions.forEach(p2Positions => {
+                if (p2Positions.tilePosition === position) {
+                    opponentsPiecesBetween.push(p2Positions.tilePosition)
+                }
+            })
+        })
+        if (opponentsPiecesBetween.length > 1) {
+            tilesBetweenKingAndAttacker = []
+        }
+        attackingPiecesPositions = ({
+            attackerId: individualPiece.id,
+            attackerPosition: individualPiece.tilePosition,
+            attackingPositions: tilesBetweenKingAndAttacker
+        })
+    }
+    getPiecesBetweenKingAndOpponentPerpendicular()
+
     const blockingKingFromCheckFunc = () => {
         let playerTwoTilePositions = []
         let playerOneTilePositions = []
@@ -342,7 +441,7 @@ const RookNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosi
 
     }
     blockingKingFromCheckFunc()
-    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker]
+    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker, attackingPiecesPositions]
 }
 
 export default RookNewMovesPlayerTwo

@@ -429,11 +429,94 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
             }
         })
     }
-    let willCheckKing = []
-    if (checkingPositions.length > 0) {
-        willCheckKing.push({ individualPiece, checkingPositions })
+
+
+
+
+    let attackingPiecesPositionsDiagonal
+    const getPiecesBetweenKingAndOpponentDiagonal = () => {
+        let kingPosition
+        playerTwoPiecePositions.forEach(position => {
+            if (position.id === 31) {
+                kingPosition = position.tilePosition
+            }
+        })
+
+        let tilesBetweenKingAndAttacker = []
+        let playerOneTilePositions = []
+        let playerTwoTilePositions = []
+        playerOnePiecePositions.forEach(position => {
+            if (position.id !== individualPiece.id) {
+                playerOneTilePositions.push(position.tilePosition)
+            }
+        })
+        playerTwoPiecePositions.forEach(position => {
+            playerTwoTilePositions.push(position.tilePosition)
+        })
+
+
+        if (upAndToRight.some(move => move === kingPosition)) {
+            upAndToRight.forEach(position => {
+                if (position[1] <= kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+        if (upAndToLeft.some(move => move === kingPosition)) {
+            upAndToLeft.forEach(position => {
+                if (position[1] >= kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+        if (downAndToRight.some(move => move === kingPosition)) {
+            downAndToRight.forEach(position => {
+                if (position[1] <= kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+        if (downAndToLeft.some(move => move === kingPosition)) {
+            downAndToLeft.forEach(position => {
+                if (position[1] >= kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+
+
+        let opponentsPiecesBetween = []
+        tilesBetweenKingAndAttacker.forEach(position => {
+            if (playerOneTilePositions.includes(position)) {
+                tilesBetweenKingAndAttacker = []
+            }
+            playerTwoPiecePositions.forEach(p2Positions => {
+                if (p2Positions.tilePosition === position) {
+                    opponentsPiecesBetween.push(p2Positions.tilePosition)
+                }
+            })
+        })
+
+        if (opponentsPiecesBetween.length !== 2) {
+            tilesBetweenKingAndAttacker = []
+        }
+        tilesBetweenKingAndAttacker = tilesBetweenKingAndAttacker.filter(position => {
+            if (position !== kingPosition) {
+                return position
+            }
+        })
+        if (tilesBetweenKingAndAttacker.length !== 0) {
+            attackingPiecesPositionsDiagonal = ({
+                attackerId: individualPiece.id,
+                attackerPosition: individualPiece.tilePosition,
+                attackingPositions: tilesBetweenKingAndAttacker
+            })
+        }
     }
-    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker, willCheckKing]
+    getPiecesBetweenKingAndOpponentDiagonal()
+
+
+    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker, attackingPiecesPositionsDiagonal]
 }
 
 export default BishopNewMovesPlayerOne

@@ -594,6 +594,185 @@ const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
         })
     }
 
+    let attackingPiecesPositionsPerpendicular
+    const getPiecesBetweenKingAndOpponentPerpendicular = () => {
+        let kingPosition
+        playerTwoPiecePositions.forEach(position => {
+            if (position.id === 31) {
+                kingPosition = position.tilePosition
+            }
+        })
+
+        let tilesBetweenKingAndAttacker = []
+        let playerOneTilePositions = []
+        let playerTwoTilePositions = []
+        playerOnePiecePositions.forEach(position => {
+            if (position.id !== individualPiece.id) {
+                playerOneTilePositions.push(position.tilePosition)
+            }
+        })
+        playerTwoPiecePositions.forEach(position => {
+            playerTwoTilePositions.push(position.tilePosition)
+        })
+
+        let underCurrentPiece = []
+        let overCurrentPiece = []
+        let rightOfCurrentPiece = []
+        let leftOfCurrentPiece = []
+
+        verticalMoves.forEach(move => {
+            if (move[0] >= individualPiece.tilePosition[0]) {
+                underCurrentPiece.push(move)
+            }
+        })
+        verticalMoves.forEach(move => {
+            if (move[0] <= individualPiece.tilePosition[0]) {
+                overCurrentPiece.push(move)
+            }
+        })
+        horizontalMoves.forEach(move => {
+            if (move[1] >= individualPiece.tilePosition[1]) {
+                rightOfCurrentPiece.push(move)
+            }
+        })
+        horizontalMoves.forEach(move => {
+            if (move[1] <= individualPiece.tilePosition[1]) {
+                leftOfCurrentPiece.push(move)
+            }
+        })
+
+        if (underCurrentPiece.some(piece => piece === kingPosition)) {
+            underCurrentPiece.forEach(position => {
+                if (position[0] < kingPosition[0]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+        if (overCurrentPiece.some(piece => piece === kingPosition)) {
+            overCurrentPiece.forEach(position => {
+                if (position[0] > kingPosition[0]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+        if (rightOfCurrentPiece.some(piece => piece === kingPosition)) {
+            rightOfCurrentPiece.forEach(position => {
+                if (position[1] < kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+        if (leftOfCurrentPiece.some(piece => piece === kingPosition)) {
+            leftOfCurrentPiece.forEach(position => {
+                if (position[1] > kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+        let opponentsPiecesBetween = []
+        tilesBetweenKingAndAttacker.forEach(position => {
+            if (playerOneTilePositions.includes(position)) {
+                tilesBetweenKingAndAttacker = []
+            }
+            playerTwoPiecePositions.forEach(p2Positions => {
+                if (p2Positions.tilePosition === position) {
+                    opponentsPiecesBetween.push(p2Positions.tilePosition)
+                }
+            })
+        })
+        if (opponentsPiecesBetween.length > 1) {
+            tilesBetweenKingAndAttacker = []
+        }
+        attackingPiecesPositionsPerpendicular = ({
+            attackerId: individualPiece.id,
+            attackerPosition: individualPiece.tilePosition,
+            attackingPositions: tilesBetweenKingAndAttacker
+        })
+    }
+    getPiecesBetweenKingAndOpponentPerpendicular()
+
+    let attackingPiecesPositionsDiagonal
+    const getPiecesBetweenKingAndOpponentDiagonal = () => {
+        let kingPosition
+        playerTwoPiecePositions.forEach(position => {
+            if (position.id === 31) {
+                kingPosition = position.tilePosition
+            }
+        })
+
+        let tilesBetweenKingAndAttacker = []
+        let playerOneTilePositions = []
+        let playerTwoTilePositions = []
+        playerOnePiecePositions.forEach(position => {
+            if (position.id !== individualPiece.id) {
+                playerOneTilePositions.push(position.tilePosition)
+            }
+        })
+        playerTwoPiecePositions.forEach(position => {
+            playerTwoTilePositions.push(position.tilePosition)
+        })
+
+
+        if (upAndToRight.some(move => move === kingPosition)) {
+            upAndToRight.forEach(position => {
+                if (position[1] <= kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+        if (upAndToLeft.some(move => move === kingPosition)) {
+            upAndToLeft.forEach(position => {
+                if (position[1] >= kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+        if (downAndToRight.some(move => move === kingPosition)) {
+            downAndToRight.forEach(position => {
+                if (position[1] <= kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+        if (downAndToLeft.some(move => move === kingPosition)) {
+            downAndToLeft.forEach(position => {
+                if (position[1] >= kingPosition[1]) {
+                    tilesBetweenKingAndAttacker.push(position)
+                }
+            })
+        }
+
+
+        let opponentsPiecesBetween = []
+        tilesBetweenKingAndAttacker.forEach(position => {
+            if (playerOneTilePositions.includes(position)) {
+                tilesBetweenKingAndAttacker = []
+            }
+            playerTwoPiecePositions.forEach(p2Positions => {
+                if (p2Positions.tilePosition === position) {
+                    opponentsPiecesBetween.push(p2Positions.tilePosition)
+                }
+            })
+        })
+
+        if (opponentsPiecesBetween.length !== 2) {
+            tilesBetweenKingAndAttacker = []
+        }
+        tilesBetweenKingAndAttacker = tilesBetweenKingAndAttacker.filter(position => {
+            if (position !== kingPosition) {
+                return position
+            }
+        })
+        if (tilesBetweenKingAndAttacker.length !== 0) {
+            attackingPiecesPositionsDiagonal = ({
+                attackerId: individualPiece.id,
+                attackerPosition: individualPiece.tilePosition,
+                attackingPositions: tilesBetweenKingAndAttacker
+            })
+        }
+    }
+    getPiecesBetweenKingAndOpponentDiagonal()
+
     const blockingKingFromCheckFunc = () => {
         let playerOneTilePositions = []
         let playerTwoTilePositions = []
@@ -766,7 +945,7 @@ const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
 
     }
     blockingKingFromCheckFunc()
-    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker]
+    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker, attackingPiecesPositionsPerpendicular, attackingPiecesPositionsDiagonal]
 }
 
 export default QueenNewMovesPlayerOne

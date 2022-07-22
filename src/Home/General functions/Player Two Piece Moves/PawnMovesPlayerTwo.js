@@ -1,4 +1,4 @@
-const PawnMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1) => {
+const PawnMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1, attackingPositionsP1Perpendicular, attackingPositionsDiagonalP1) => {
     if (individualPiece.id >= 16 && individualPiece.id <= 23) {
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition.includes(letter)) {
@@ -56,6 +56,44 @@ const PawnMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositio
                         }
                     })
                 }
+                let newNewAvailableMovesPerpendicular = []
+                attackingPositionsP1Perpendicular.forEach((attacker, i) => {
+                    attacker.attackingPositions.forEach(position => {
+                        if (individualPiece.tilePosition === position) {
+                            attackingPositionsP1Perpendicular[i].attackingPositions.forEach(selectedAttacker => {
+                                newAvailableMoves.forEach(newMove => {
+                                    if (selectedAttacker === newMove) {
+                                        newNewAvailableMovesPerpendicular.push(selectedAttacker);
+                                    }
+                                })
+                            })
+                            newAvailableMoves = newAvailableMoves.filter(moves => {
+                                if (newNewAvailableMovesPerpendicular.includes(moves)) {
+                                    return moves
+                                }
+                            })
+                        }
+                    })
+                })
+                let newNewAvailableMovesDiagonal = []
+                attackingPositionsDiagonalP1.forEach((attacker, i) => {
+                    attacker.attackingPositions.forEach(position => {
+                        if (individualPiece.tilePosition === position) {
+                            attackingPositionsDiagonalP1[i].attackingPositions.forEach(selectedAttacker => {
+                                newAvailableMoves.forEach(newMove => {
+                                    if (selectedAttacker === newMove) {
+                                        newNewAvailableMovesDiagonal.push(selectedAttacker);
+                                    }
+                                })
+                            })
+                            newAvailableMoves = newAvailableMoves.filter(moves => {
+                                if (newNewAvailableMovesDiagonal.includes(moves)) {
+                                    return moves
+                                }
+                            })
+                        }
+                    })
+                })
                 setAvailableMoves(newAvailableMoves)
             }
         })
