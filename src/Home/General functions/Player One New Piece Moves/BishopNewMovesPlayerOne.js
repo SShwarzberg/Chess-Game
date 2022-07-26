@@ -516,7 +516,79 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
     getPiecesBetweenKingAndOpponentDiagonal()
 
 
-    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker, attackingPiecesPositionsDiagonal]
+    let ownBlockingKingFromCheck = []
+    const ownPieceBlockingKing = () => {
+        let playerOneTilePositions = []
+        let playerTwoTilePositions = []
+        playerOnePiecePositions.forEach(position => {
+            if (position.id !== individualPiece.id) {
+                playerOneTilePositions.push(position.tilePosition)
+            }
+        })
+        playerTwoPiecePositions.forEach(position => {
+            playerTwoTilePositions.push(position.tilePosition)
+        })
+
+
+        let BlockingKingUpRight = []
+        let BlockingKingDownRight = []
+        let BlockingKingDownLeft = []
+        let BlockingKingUpLeft = []
+        const checkDirectionForBlockingDiagonalRight = (direction, blockingDirection) => {
+            if (direction.some(position => position === kingPosition)) {
+                playerOneTilePositions.forEach(tilePosition => {
+                    if (direction.some(position => position === tilePosition && position !== kingPosition)) {
+                        if (direction.some(position => position[1] < kingPosition[1])) {
+                            if (tilePosition[1] < kingPosition[1]) {
+                                blockingDirection.push(tilePosition)
+                            }
+                        }
+                    }
+                })
+            }
+        }
+        const checkDirectionForBlockingDiagonalLeft = (direction, blockingDirection) => {
+            if (direction.some(position => position === kingPosition)) {
+                playerOneTilePositions.forEach(tilePosition => {
+                    if (direction.some(position => position === tilePosition && position !== kingPosition)) {
+                        if (direction.some(position => position[1] > kingPosition[1])) {
+                            if (!playerTwoTilePositions.some(position => position === tilePosition)) {
+                                if (tilePosition[1] > kingPosition[1]) {
+                                    blockingDirection.push(tilePosition)
+                                }
+                            }
+                        }
+                    }
+                })
+            }
+        }
+        checkDirectionForBlockingDiagonalRight(upAndToRight, BlockingKingUpRight)
+        checkDirectionForBlockingDiagonalRight(downAndToRight, BlockingKingDownRight)
+        checkDirectionForBlockingDiagonalLeft(upAndToLeft, BlockingKingUpLeft)
+        checkDirectionForBlockingDiagonalLeft(downAndToLeft, BlockingKingDownLeft)
+
+        const getBlockingDirectionOrthogonal = (blockingDirection) => {
+            if (blockingDirection.length === 1) {
+                blockingDirection.forEach(piece => {
+                    ownBlockingKingFromCheck.push(piece)
+                })
+            }
+        }
+        const blockingArrayOrthogonal = [
+            BlockingKingUpRight,
+            BlockingKingDownRight,
+            BlockingKingDownLeft,
+            BlockingKingUpLeft
+        ]
+        blockingArrayOrthogonal.forEach(direction => {
+            getBlockingDirectionOrthogonal(direction)
+        })
+
+    }
+    ownPieceBlockingKing()
+
+
+    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker, attackingPiecesPositionsDiagonal, ownBlockingKingFromCheck]
 }
 
 export default BishopNewMovesPlayerOne

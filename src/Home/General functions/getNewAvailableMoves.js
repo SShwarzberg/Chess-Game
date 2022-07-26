@@ -14,6 +14,12 @@ import QueenNewMovesPlayerTwo from "./Player Two New Piece Moves/QueenNewMovesPl
 import KingNewMovesPlayerTwo from "./Player Two New Piece Moves/KingNewMovesPlayerTwo"
 
 const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setNextAvailableMoves) => {
+    let kingPositionP1
+    playerOnePiecePositions.forEach(position => {
+        if (position.id === 15) {
+            kingPositionP1 = position.tilePosition
+        }
+    })
     // player 1
     let pawnP1 = []
     let bishopP1 = []
@@ -35,8 +41,10 @@ const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boar
             arrayToPushTo.push(piece)
         }
     }
-    let blockingKingFromCheckP2 = []
     let blockingKingFromCheckP1 = []
+    let blockingKingFromCheckP2 = []
+    let ownBlockingKingFromCheckP1 = []
+    let ownBlockingKingFromCheckP2 = []
     let tilesBetweenKingAndAttackerP1 = []
     let tilesBetweenKingAndAttackerP2 = []
     let attackingPiecePositionsPerpendicularP1 = []
@@ -47,7 +55,7 @@ const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boar
         if (position.tilePosition !== null) {
             // player one new moves
             if (position.id === 10 || position.id === 11) {
-                const [rook1, blockingKingRook1, tilesBetweenKingAndAttacker, attackingPiecesPositionsPerpendicular] = RookNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions, playerTwoPiecePositions)
+                const [rook1, blockingKingRook1, tilesBetweenKingAndAttacker, attackingPiecesPositionsPerpendicular, ownBlockingKingFromCheck] = RookNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions, playerTwoPiecePositions)
                 pushPiecesToArray(rook1, rookP1)
                 blockingKingRook1.forEach(blockingPiece => {
                     blockingKingFromCheckP1.push(blockingPiece)
@@ -58,10 +66,13 @@ const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boar
                 if (attackingPiecesPositionsPerpendicular) {
                     attackingPiecePositionsPerpendicularP1.push(attackingPiecesPositionsPerpendicular)
                 }
+                ownBlockingKingFromCheck.forEach(position => {
+                    ownBlockingKingFromCheckP1.push(position)
+                })
             }
 
             if (position.id === 8 || position.id === 9) {
-                const [bishop1, blockingKingBishop1, tilesBetweenKingAndAttacker, attackingPiecePositionsDiagonal] = BishopNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions, playerTwoPiecePositions)
+                const [bishop1, blockingKingBishop1, tilesBetweenKingAndAttacker, attackingPiecePositionsDiagonal, ownBlockingKingFromCheck] = BishopNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions, playerTwoPiecePositions)
                 pushPiecesToArray(bishop1, bishopP1)
                 blockingKingBishop1.forEach(blockingPiece => {
                     blockingKingFromCheckP1.push(blockingPiece)
@@ -72,10 +83,13 @@ const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boar
                 if (attackingPiecePositionsDiagonal !== undefined) {
                     attackingPiecesPositionsDiagonalP1.push(attackingPiecePositionsDiagonal)
                 }
+                ownBlockingKingFromCheck.forEach(position => {
+                    ownBlockingKingFromCheckP1.push(position)
+                })
             }
 
             if (position.id === 14) {
-                const [queen1, blockingKingQueen1, tilesBetweenKingAndAttacker, attackingPiecesPositionsPerpendicular, attackingPiecePositionsDiagonal] = QueenNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions, playerTwoPiecePositions)
+                const [queen1, blockingKingQueen1, tilesBetweenKingAndAttacker, attackingPiecesPositionsPerpendicular, attackingPiecePositionsDiagonal, ownBlockingKingFromCheck] = QueenNewMovesPlayerOne(position, boardLetters, newPlayerOnePositions, playerTwoPiecePositions)
                 pushPiecesToArray(queen1, queenP1)
                 blockingKingQueen1.forEach(blockingPiece => {
                     blockingKingFromCheckP1.push(blockingPiece)
@@ -89,6 +103,9 @@ const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boar
                 if (attackingPiecePositionsDiagonal !== undefined) {
                     attackingPiecesPositionsDiagonalP1.push(attackingPiecePositionsDiagonal)
                 }
+                ownBlockingKingFromCheck.forEach(position => {
+                    ownBlockingKingFromCheckP1.push(position)
+                })
             }
 
             if (position.id >= 0 && position.id <= 7) {
@@ -111,7 +128,7 @@ const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boar
         if (position !== null) {
             // player two new moves
             if (position.id === 26 || position.id === 27) {
-                const [rook2, blockingKingRook2, tilesBetweenKingAndAttacker, attackingPiecesPositionsPerpendicular] = RookNewMovesPlayerTwo(position, boardLetters, newPlayerTwoPositions, playerOnePiecePositions)
+                const [rook2, blockingKingRook2, tilesBetweenKingAndAttacker, attackingPiecesPositionsPerpendicular, ownBlockingKingFromCheck] = RookNewMovesPlayerTwo(position, boardLetters, newPlayerTwoPositions, playerOnePiecePositions)
                 pushPiecesToArray(rook2, rookP2)
                 blockingKingRook2.forEach(blockingPiece => {
                     blockingKingFromCheckP2.push(blockingPiece)
@@ -122,8 +139,10 @@ const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boar
                 if (attackingPiecesPositionsPerpendicular) {
                     attackingPiecePositionsPerpendicularP2.push(attackingPiecesPositionsPerpendicular)
                 }
+                ownBlockingKingFromCheck.forEach(position => {
+                    ownBlockingKingFromCheckP2.push(position)
+                })
             }
-
             if (position.id === 24 || position.id === 25) {
                 const [bishop2, blockingKingBishop2, tilesBetweenKingAndAttacker, attackingPiecesPositionsDiagonal] = BishopNewMovesPlayerTwo(position, boardLetters, newPlayerTwoPositions, playerOnePiecePositions)
                 pushPiecesToArray(bishop2, bishopP2)
@@ -139,7 +158,7 @@ const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boar
             }
 
             if (position.id === 30) {
-                const [queen2, blockingKingQueen2, tilesBetweenKingAndAttacker, attackingPiecesPositionsPerpendicular, attackingPiecesPositionsDiagonal] = QueenNewMovesPlayerTwo(position, boardLetters, newPlayerTwoPositions, playerOnePiecePositions)
+                const [queen2, blockingKingQueen2, tilesBetweenKingAndAttacker, attackingPiecesPositionsPerpendicular, attackingPiecesPositionsDiagonal, ownBlockingKingFromCheck] = QueenNewMovesPlayerTwo(position, boardLetters, newPlayerTwoPositions, playerOnePiecePositions)
                 pushPiecesToArray(queen2, queenP2)
                 blockingKingQueen2.forEach(blockingPiece => {
                     blockingKingFromCheckP2.push(blockingPiece)
@@ -153,6 +172,9 @@ const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boar
                 if (attackingPiecesPositionsDiagonal !== undefined) {
                     attackingPiecesPositionsDiagonalP2.push(attackingPiecesPositionsDiagonal)
                 }
+                ownBlockingKingFromCheck.forEach(position => {
+                    ownBlockingKingFromCheckP2.push(position)
+                })
             }
 
             if (position.id >= 16 && position.id <= 23) {
@@ -191,7 +213,7 @@ const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boar
         kingP2
     )
     setNextAvailableMoves([player1NewMoves, player2NewMoves])
-    return [blockingKingFromCheckP1, blockingKingFromCheckP2, tilesBetweenKingAndAttackerP1, tilesBetweenKingAndAttackerP2, attackingPiecePositionsPerpendicularP1, attackingPiecePositionsPerpendicularP2, attackingPiecesPositionsDiagonalP1, attackingPiecesPositionsDiagonalP2]
+    return [blockingKingFromCheckP1, blockingKingFromCheckP2, tilesBetweenKingAndAttackerP1, tilesBetweenKingAndAttackerP2, attackingPiecePositionsPerpendicularP1, attackingPiecePositionsPerpendicularP2, attackingPiecesPositionsDiagonalP1, attackingPiecesPositionsDiagonalP2, ownBlockingKingFromCheckP1, ownBlockingKingFromCheckP2]
 }
 
 export default getNewAvailableMoves

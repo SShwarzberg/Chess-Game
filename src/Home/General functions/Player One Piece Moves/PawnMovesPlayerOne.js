@@ -25,6 +25,9 @@ const PawnMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                     if (position.tilePosition === pawnMove) {
                         newAvailableMoves.splice(pawnMove)
                     }
+                    if (position.tilePosition[0] === 'f' && individualPiece.tilePosition[1] === position.tilePosition[1] && individualPiece.tilePosition[0] === 'g') {
+                        removeFromAvailableMoves.push(pawnFirstMove)
+                    }
                 })
                 if (individualPiece.tilePosition.includes('g')) {
                     newAvailableMoves.push(pawnFirstMove)
