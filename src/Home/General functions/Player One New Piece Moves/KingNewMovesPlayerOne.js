@@ -26,13 +26,6 @@ const KingNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosi
             })
         }
     })
-    playerOnePiecePositions.forEach(position => {
-        newAvailableMoves.forEach(move => {
-            if (move === position.tilePosition) {
-                removeFromAvailableMoves.push(move)
-            }
-        })
-    })
     newAvailableMoves = newAvailableMoves.filter(move => {
         if (!removeFromAvailableMoves.includes(move)) {
             return move
