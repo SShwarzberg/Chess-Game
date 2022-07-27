@@ -52,10 +52,63 @@ const BishopNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePo
     getDirectionsAvailableMoves(downAndToRight, downAndToRightIndex)
     getDirectionsAvailableMoves(downAndToLeft, downAndToLeftIndex)
     getDirectionsAvailableMoves(upAndToLeft, upAndToLeftIndex)
+
+
     let ownPiecesBlockingUpRight = []
     let ownPiecesBlockingDownRight = []
     let ownPiecesBlockingDownLeft = []
     let ownPiecesBlockingUpLeft = []
+
+    const addToAvailableMoves = []
+    const checkIfBlockingOwnPiece = () => {
+        let checkIfBlockingOwn = []
+        playerTwoPiecePositions.forEach(position => {
+            newAvailableMoves.forEach(move => {
+                if (move === position.tilePosition) {
+                    checkIfBlockingOwn.push(move)
+                }
+            })
+        })
+        checkIfBlockingOwn.forEach(blocking => {
+            const opponentBlockingDirections = (directionIndex, opponentPiecesBlockingDirection) => {
+                directionIndex.forEach(index => {
+                    if (index.move === blocking) {
+                        opponentPiecesBlockingDirection.push(index)
+                    }
+                })
+            }
+            opponentBlockingDirections(upAndToRightIndex, ownPiecesBlockingUpRight)
+            opponentBlockingDirections(downAndToRightIndex, ownPiecesBlockingDownRight)
+            opponentBlockingDirections(downAndToLeftIndex, ownPiecesBlockingDownLeft)
+            opponentBlockingDirections(upAndToLeftIndex, ownPiecesBlockingUpLeft)
+        })
+        const getBlockingRight = (ownPiecesBlockingRightIndex) => {
+            let rightIndex = []
+            ownPiecesBlockingRightIndex.forEach(object => {
+                if (object.move !== individualPiece.tilePosition) {
+                    rightIndex.push(object.i)
+                }
+            })
+            if (rightIndex.length > 1) {
+                ownPiecesBlockingRightIndex.forEach(piece => {
+                    if (piece.i === Math.min(...rightIndex)) {
+                        addToAvailableMoves.push(piece.move)
+                    }
+                })
+            } else if (rightIndex.length === 1) {
+                ownPiecesBlockingRightIndex.forEach(piece => {
+                    if (piece.move !== individualPiece.tilePosition) {
+                        addToAvailableMoves.push(piece.move)
+                    }
+                })
+            } else return
+        }
+        getBlockingRight(ownPiecesBlockingDownRight)
+        getBlockingRight(ownPiecesBlockingUpRight)
+    }
+    checkIfBlockingOwnPiece()
+
+
     checkIfBlockingPlayerTwo.forEach(blocking => {
         const ownBlockingDirections = (direction, directionArray) => {
             direction.forEach(availableMove => {
@@ -98,15 +151,15 @@ const BishopNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePo
         })
     }
     const pushOwnBlockingPiecesUp = (ownPiecesBlockingDirection, directionIndex) => {
-        const getOwnBlockingIndexUpLeft = () => {
+        const getOwnBlockingIndexUp = () => {
             return ownPiecesBlockingDirection.map(piece => piece.i)
         }
-        const getMaxIndexUpLeft = () => {
-            return Math.max(...getOwnBlockingIndexUpLeft())
+        const getMaxIndexUp = () => {
+            return Math.max(...getOwnBlockingIndexUp())
         }
         let ownPieceBlockingDirection
         ownPiecesBlockingDirection.forEach(piece => {
-            if (piece.i === getMaxIndexUpLeft()) {
+            if (piece.i === getMaxIndexUp()) {
                 ownPieceBlockingDirection = piece
             }
         })
@@ -193,6 +246,9 @@ const BishopNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePo
         if (!removeFromAvailableMoves.includes(move)) {
             return move
         }
+    })
+    addToAvailableMoves.forEach(move => {
+        newAvailableMoves.push(move)
     })
     newAvailableMoves.forEach(move => {
         if (typeof move !== 'string') {
@@ -470,7 +526,77 @@ const BishopNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePo
         }
     }
     getPiecesBetweenKingAndOpponentDiagonal()
-    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker, attackingPiecesPositionsDiagonal]
+
+
+    let ownBlockingKingFromCheck = []
+    const ownBlockingKingFromCheckDiagonal = () => {
+        let BlockingKingUpRight = []
+        let BlockingKingDownRight = []
+        let BlockingKingDownLeft = []
+        let BlockingKingUpLeft = []
+        const checkDirectionForBlockingDiagonalRight = (direction, blockingDirection) => {
+            if (direction.some(position => position === kingPosition)) {
+                playerTwoTilePositions.forEach(tilePosition => {
+                    if (direction.some(position => position === tilePosition && position !== kingPosition)) {
+                        if (tilePosition[1] < kingPosition[1]) {
+                            blockingDirection.push(tilePosition)
+                        }
+                    }
+                })
+            }
+            playerOneTilePositions.forEach(p1TilePosition => {
+                direction.forEach(move => {
+                    if (move === p1TilePosition && p1TilePosition[1] < kingPosition[1] && p1TilePosition[1] > individualPiece.tilePosition[1]) {
+                        blockingDirection.pop()
+                    }
+                })
+            })
+        }
+        const checkDirectionForBlockingDiagonalLeft = (direction, blockingDirection) => {
+            if (direction.some(position => position === kingPosition)) {
+                playerTwoTilePositions.forEach(tilePosition => {
+                    if (direction.some(position => position === tilePosition && position !== kingPosition)) {
+                        if (tilePosition[1] > kingPosition[1]) {
+                            blockingDirection.push(tilePosition)
+                        }
+                    }
+                })
+            }
+            playerOneTilePositions.forEach(p1TilePosition => {
+                direction.forEach(move => {
+                    if (move === p1TilePosition && p1TilePosition[1] > kingPosition[1] && p1TilePosition[1] < individualPiece.tilePosition[1]) {
+                        blockingDirection.pop()
+                    }
+                })
+            })
+        }
+        checkDirectionForBlockingDiagonalRight(upAndToRight, BlockingKingUpRight)
+        checkDirectionForBlockingDiagonalRight(downAndToRight, BlockingKingDownRight)
+        checkDirectionForBlockingDiagonalLeft(upAndToLeft, BlockingKingUpLeft)
+        checkDirectionForBlockingDiagonalLeft(downAndToLeft, BlockingKingDownLeft)
+
+
+        const getBlockingDirectionOrthogonal = (blockingDirection) => {
+            if (blockingDirection.length === 1) {
+                blockingDirection.forEach(piece => {
+                    ownBlockingKingFromCheck.push(piece)
+                })
+            }
+        }
+        const blockingArrayOrthogonal = [
+            BlockingKingUpRight,
+            BlockingKingDownRight,
+            BlockingKingDownLeft,
+            BlockingKingUpLeft
+        ]
+        blockingArrayOrthogonal.forEach(direction => {
+            getBlockingDirectionOrthogonal(direction)
+        })
+    }
+    ownBlockingKingFromCheckDiagonal()
+
+
+    return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker, attackingPiecesPositionsDiagonal, ownBlockingKingFromCheck]
 }
 
 export default BishopNewMovesPlayerTwo

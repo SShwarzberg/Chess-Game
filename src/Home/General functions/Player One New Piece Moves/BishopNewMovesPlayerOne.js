@@ -431,8 +431,6 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
     }
 
 
-
-
     let attackingPiecesPositionsDiagonal
     const getPiecesBetweenKingAndOpponentDiagonal = () => {
         let kingPosition
@@ -517,19 +515,7 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
 
 
     let ownBlockingKingFromCheck = []
-    const ownPieceBlockingKing = () => {
-        let playerOneTilePositions = []
-        let playerTwoTilePositions = []
-        playerOnePiecePositions.forEach(position => {
-            if (position.id !== individualPiece.id) {
-                playerOneTilePositions.push(position.tilePosition)
-            }
-        })
-        playerTwoPiecePositions.forEach(position => {
-            playerTwoTilePositions.push(position.tilePosition)
-        })
-
-
+    const ownBlockingKingFromCheckDiagonal = () => {
         let BlockingKingUpRight = []
         let BlockingKingDownRight = []
         let BlockingKingDownLeft = []
@@ -538,34 +524,43 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
             if (direction.some(position => position === kingPosition)) {
                 playerOneTilePositions.forEach(tilePosition => {
                     if (direction.some(position => position === tilePosition && position !== kingPosition)) {
-                        if (direction.some(position => position[1] < kingPosition[1])) {
-                            if (tilePosition[1] < kingPosition[1]) {
-                                blockingDirection.push(tilePosition)
-                            }
+                        if (tilePosition[1] < kingPosition[1]) {
+                            blockingDirection.push(tilePosition)
                         }
                     }
                 })
             }
+            playerTwoTilePositions.forEach(p2TilePosition => {
+                direction.forEach(move => {
+                    if (move === p2TilePosition && p2TilePosition[1] < kingPosition[1] && p2TilePosition[1] > individualPiece.tilePosition[1]) {
+                        blockingDirection.pop()
+                    }
+                })
+            })
         }
         const checkDirectionForBlockingDiagonalLeft = (direction, blockingDirection) => {
             if (direction.some(position => position === kingPosition)) {
                 playerOneTilePositions.forEach(tilePosition => {
                     if (direction.some(position => position === tilePosition && position !== kingPosition)) {
-                        if (direction.some(position => position[1] > kingPosition[1])) {
-                            if (!playerTwoTilePositions.some(position => position === tilePosition)) {
-                                if (tilePosition[1] > kingPosition[1]) {
-                                    blockingDirection.push(tilePosition)
-                                }
-                            }
+                        if (tilePosition[1] > kingPosition[1]) {
+                            blockingDirection.push(tilePosition)
                         }
                     }
                 })
             }
+            playerTwoTilePositions.forEach(p2TilePosition => {
+                direction.forEach(move => {
+                    if (move === p2TilePosition && p2TilePosition[1] > kingPosition[1] && p2TilePosition[1] < individualPiece.tilePosition[1]) {
+                        blockingDirection.pop()
+                    }
+                })
+            })
         }
         checkDirectionForBlockingDiagonalRight(upAndToRight, BlockingKingUpRight)
         checkDirectionForBlockingDiagonalRight(downAndToRight, BlockingKingDownRight)
         checkDirectionForBlockingDiagonalLeft(upAndToLeft, BlockingKingUpLeft)
         checkDirectionForBlockingDiagonalLeft(downAndToLeft, BlockingKingDownLeft)
+
 
         const getBlockingDirectionOrthogonal = (blockingDirection) => {
             if (blockingDirection.length === 1) {
@@ -583,9 +578,8 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
         blockingArrayOrthogonal.forEach(direction => {
             getBlockingDirectionOrthogonal(direction)
         })
-
     }
-    ownPieceBlockingKing()
+    ownBlockingKingFromCheckDiagonal()
 
 
     return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker, attackingPiecesPositionsDiagonal, ownBlockingKingFromCheck]

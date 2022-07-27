@@ -7,6 +7,18 @@ const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
     let verticalMoves = []
 
 
+    let playerOneTilePositions = []
+    let playerTwoTilePositions = []
+    playerOnePiecePositions.forEach(position => {
+        if (position.id !== individualPiece.id) {
+            playerOneTilePositions.push(position.tilePosition)
+        }
+    })
+    playerTwoPiecePositions.forEach(position => {
+        playerTwoTilePositions.push(position.tilePosition)
+    })
+
+
     let kingPosition
     playerTwoPiecePositions.forEach(position => {
         if (position.id === 31) {
@@ -947,112 +959,7 @@ const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
 
 
     let ownBlockingKingFromCheck = []
-    const ownBlockingKingFromCheckFunc = () => {
-        let playerOneTilePositions = []
-        let playerTwoTilePositions = []
-        playerOnePiecePositions.forEach(position => {
-            if (position.id !== individualPiece.id) {
-                playerOneTilePositions.push(position.tilePosition)
-            }
-        })
-        playerTwoPiecePositions.forEach(position => {
-            playerTwoTilePositions.push(position.tilePosition)
-        })
-
-
-        let BlockingKingUpRight = []
-        let BlockingKingDownRight = []
-        let BlockingKingDownLeft = []
-        let BlockingKingUpLeft = []
-
-        let opponentPieceBlocking = false
-        downAndToRight.forEach(position => {
-            playerTwoTilePositions.forEach(tilePostion => {
-                if (tilePostion === position && position !== kingPosition && position[1] < kingPosition) {
-                    if (position) {
-                        opponentPieceBlocking = true
-                    }
-                }
-            })
-        })
-        let ownBlockingDnRight = []
-        if (!opponentPieceBlocking) {
-            downAndToRight.forEach(drPosition => {
-                playerOneTilePositions.forEach(p1Position => {
-                    if (p1Position === drPosition && p1Position[1] < kingPosition[1]) {
-                        ownBlockingDnRight.push(drPosition)
-                    }
-                })
-            })
-        }
-        if (ownPiecesBlockingDownRight.length === 1 && !opponentPieceBlocking) {
-            console.log(ownPiecesBlockingDownRight);
-            ownPiecesBlockingDownRight.forEach(piece => {
-                ownBlockingKingFromCheck.push(piece.blocking)
-            })
-        }
-
-        let ownPieceBlocking = []
-        const checkDirectionForBlockingDiagonalRight = (direction, blockingDirection) => {
-            playerTwoTilePositions.forEach(p2TilePosition => {
-                direction.forEach(rightDirection => {
-                    if (direction.some(position => position === kingPosition)) {
-                        if (p2TilePosition === rightDirection && p2TilePosition !== kingPosition && p2TilePosition[1] < kingPosition[1]) {
-                            ownPieceBlocking.push(p2TilePosition)
-                        }
-                    }
-                })
-            })
-            if (direction.some(position => position === kingPosition)) {
-                playerOneTilePositions.forEach(tilePosition => {
-                    if (direction.some(position => position === tilePosition && position !== kingPosition)) {
-                        if (direction.some(position => position[1] < kingPosition[1])) {
-                            if (tilePosition[1] < kingPosition[1]) {
-                                if (ownPieceBlocking === []) {
-                                    blockingDirection.push(tilePosition)
-                                }
-                            }
-                        }
-                    }
-                })
-            }
-        }
-        const checkDirectionForBlockingDiagonalLeft = (direction, blockingDirection) => {
-            if (direction.some(position => position === kingPosition)) {
-                playerOneTilePositions.forEach(tilePosition => {
-                    if (direction.some(position => position === tilePosition && position !== kingPosition)) {
-                        if (direction.some(position => position[1] > kingPosition[1])) {
-                            if (tilePosition[1] > kingPosition[1]) {
-                                blockingDirection.push(tilePosition)
-                            }
-                        }
-                    }
-                })
-            }
-        }
-        checkDirectionForBlockingDiagonalRight(upAndToRight, BlockingKingUpRight)
-        checkDirectionForBlockingDiagonalRight(downAndToRight, BlockingKingDownRight)
-        checkDirectionForBlockingDiagonalLeft(upAndToLeft, BlockingKingUpLeft)
-        checkDirectionForBlockingDiagonalLeft(downAndToLeft, BlockingKingDownLeft)
-
-        const getBlockingDirectionOrthogonal = (blockingDirection) => {
-            if (blockingDirection.length === 1) {
-                blockingDirection.forEach(piece => {
-                    ownBlockingKingFromCheck.push(piece)
-                })
-            }
-        }
-        const blockingArrayOrthogonal = [
-            BlockingKingUpRight,
-            BlockingKingDownRight,
-            BlockingKingDownLeft,
-            BlockingKingUpLeft
-        ]
-        blockingArrayOrthogonal.forEach(direction => {
-            getBlockingDirectionOrthogonal(direction)
-        })
-
-
+    const ownBlockingKingFromCheckFuncHorizVert = () => {
 
         let underCurrentPiece = []
         let overCurrentPiece = []
@@ -1153,8 +1060,73 @@ const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
             getBlockingDirectionDiagonal(direction)
         })
     }
-    ownBlockingKingFromCheckFunc()
-    console.log(ownBlockingKingFromCheck);
+    ownBlockingKingFromCheckFuncHorizVert()
+
+    const ownBlockingKingFromCheckDiagonal = () => {
+        let BlockingKingUpRight = []
+        let BlockingKingDownRight = []
+        let BlockingKingDownLeft = []
+        let BlockingKingUpLeft = []
+        const checkDirectionForBlockingDiagonalRight = (direction, blockingDirection) => {
+            if (direction.some(position => position === kingPosition)) {
+                playerOneTilePositions.forEach(tilePosition => {
+                    if (direction.some(position => position === tilePosition && position !== kingPosition)) {
+                        if (tilePosition[1] < kingPosition[1]) {
+                            blockingDirection.push(tilePosition)
+                        }
+                    }
+                })
+            }
+            playerTwoTilePositions.forEach(p2TilePosition => {
+                direction.forEach(move => {
+                    if (move === p2TilePosition && p2TilePosition[1] < kingPosition[1] && p2TilePosition[1] > individualPiece.tilePosition[1]) {
+                        blockingDirection.pop()
+                    }
+                })
+            })
+        }
+        const checkDirectionForBlockingDiagonalLeft = (direction, blockingDirection) => {
+            if (direction.some(position => position === kingPosition)) {
+                playerOneTilePositions.forEach(tilePosition => {
+                    if (direction.some(position => position === tilePosition && position !== kingPosition)) {
+                        if (tilePosition[1] > kingPosition[1]) {
+                            blockingDirection.push(tilePosition)
+                        }
+                    }
+                })
+            }
+            playerTwoTilePositions.forEach(p2TilePosition => {
+                direction.forEach(move => {
+                    if (move === p2TilePosition && p2TilePosition[1] > kingPosition[1] && p2TilePosition[1] < individualPiece.tilePosition[1]) {
+                        blockingDirection.pop()
+                    }
+                })
+            })
+        }
+        checkDirectionForBlockingDiagonalRight(upAndToRight, BlockingKingUpRight)
+        checkDirectionForBlockingDiagonalRight(downAndToRight, BlockingKingDownRight)
+        checkDirectionForBlockingDiagonalLeft(upAndToLeft, BlockingKingUpLeft)
+        checkDirectionForBlockingDiagonalLeft(downAndToLeft, BlockingKingDownLeft)
+
+
+        const getBlockingDirectionOrthogonal = (blockingDirection) => {
+            if (blockingDirection.length === 1) {
+                blockingDirection.forEach(piece => {
+                    ownBlockingKingFromCheck.push(piece)
+                })
+            }
+        }
+        const blockingArrayOrthogonal = [
+            BlockingKingUpRight,
+            BlockingKingDownRight,
+            BlockingKingDownLeft,
+            BlockingKingUpLeft
+        ]
+        blockingArrayOrthogonal.forEach(direction => {
+            getBlockingDirectionOrthogonal(direction)
+        })
+    }
+    ownBlockingKingFromCheckDiagonal()
 
     return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker, attackingPiecesPositionsPerpendicular, attackingPiecesPositionsDiagonal, ownBlockingKingFromCheck]
 }

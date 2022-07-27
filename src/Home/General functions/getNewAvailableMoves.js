@@ -144,7 +144,7 @@ const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boar
                 })
             }
             if (position.id === 24 || position.id === 25) {
-                const [bishop2, blockingKingBishop2, tilesBetweenKingAndAttacker, attackingPiecesPositionsDiagonal] = BishopNewMovesPlayerTwo(position, boardLetters, newPlayerTwoPositions, playerOnePiecePositions)
+                const [bishop2, blockingKingBishop2, tilesBetweenKingAndAttacker, attackingPiecesPositionsDiagonal, ownBlockingKingFromCheck] = BishopNewMovesPlayerTwo(position, boardLetters, newPlayerTwoPositions, playerOnePiecePositions)
                 pushPiecesToArray(bishop2, bishopP2)
                 blockingKingBishop2.forEach(blockingPiece => {
                     blockingKingFromCheckP2.push(blockingPiece)
@@ -155,6 +155,9 @@ const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boar
                 if (attackingPiecesPositionsDiagonal !== undefined) {
                     attackingPiecesPositionsDiagonalP2.push(attackingPiecesPositionsDiagonal)
                 }
+                ownBlockingKingFromCheck.forEach(position => {
+                    ownBlockingKingFromCheckP2.push(position)
+                })
             }
 
             if (position.id === 30) {
