@@ -13,7 +13,7 @@ const Home = () => {
     const boardLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
     const [playerOnePiecePositions, setPlayerOnePiecePositions] = useState(piecesPlayerOne)
     const [playerTwoPiecePositions, setPlayerTwoPiecePositions] = useState(piecesPlayerTwo)
-    const [playerOneTurn, setPlayerOneTurn] = useState(false)
+    const [playerOneTurn, setPlayerOneTurn] = useState(true)
     const [availableMoves, setAvailableMoves] = useState([])
     const [nextAvailableMoves, setNextAvailableMoves] = useState([])
     const [currentPiece, setCurrentPiece] = useState(null)

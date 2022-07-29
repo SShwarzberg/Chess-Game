@@ -1,4 +1,4 @@
-const QueenMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2) => {
+const QueenMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2, playerOneNextMoves, p2AttackingPosition) => {
     if (individualPiece.id === 14) {
         let newAvailableMoves = []
         let removeFromAvailableMoves = []
@@ -443,8 +443,15 @@ const QueenMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositi
                     return move
                 }
             })
+        } else {
+            playerOneNextMoves.forEach(move => {
+                playerOnePiecePositions.forEach(position => {
+                    if (position.tilePosition === move && position.id === 15) {
+                        newAvailableMoves = []
+                    }
+                })
+            })
         }
-
 
         const blockingKingPerpendicular = () => {
             let newNewAvailableMoves = []

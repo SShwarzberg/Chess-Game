@@ -1,4 +1,4 @@
-const RookMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular) => {
+const RookMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, playerOneNextMoves) => {
     if (individualPiece.id === 10 || individualPiece.id === 11) {
         let newAvailableMoves = []
         boardLetters.forEach((letter, i) => {
@@ -144,6 +144,14 @@ const RookMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                 if (tilesBetweenKingAndAttackerP2.includes(move)) {
                     return move
                 }
+            })
+        } else {
+            playerOneNextMoves.forEach(move => {
+                playerOnePiecePositions.forEach(position => {
+                    if (position.tilePosition === move && position.id === 15) {
+                        newAvailableMoves = []
+                    }
+                })
             })
         }
 

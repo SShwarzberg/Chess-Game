@@ -14,44 +14,44 @@ import QueenMovesPlayerTwo from './Player Two Piece Moves/QueenMovesPlayerTwo'
 import KingMovesPlayerTwo from './Player Two Piece Moves/KingMovesPlayerTwo'
 
 const getAvailableMoves = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, nextAvailableMoves, playerOneTurn, setCurrentPiece, tilesBetweenKingAndAttackerP1, tilesBetweenKingAndAttackerP2, attackingPositionsP1Perpendicular, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP1, attackingPositionsDiagonalP2, ownBlockingKingFromCheckP1, ownBlockingKingFromCheckP2) => {
+    let playerTwoNextMoves = []
+    let playerOneNextMoves = []
+    if (nextAvailableMoves[1]) {
+        nextAvailableMoves[1].forEach(pieces => {
+            pieces.map(piece => {
+                piece.newAvailableMoves.forEach(move => {
+                    playerTwoNextMoves.push(move)
+                })
+            })
+        })
+    }
+    if (nextAvailableMoves[0]) {
+        nextAvailableMoves[0].forEach(pieces => {
+            pieces.map(piece => {
+                piece.newAvailableMoves.forEach(move => {
+                    playerOneNextMoves.push(move)
+                })
+            })
+        })
+    }
     if (playerOneTurn) {
         // player one
         setCurrentPiece(individualPiece)
-        let opponentNextAvailableMoves = []
-        if (nextAvailableMoves[1]) {
-            nextAvailableMoves[1].forEach(pieces => {
-                pieces.map(piece => {
-                    piece.newAvailableMoves.forEach(move => {
-                        opponentNextAvailableMoves.push(move)
-                    })
-                })
-            })
-        }
-        PawnMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2)
-        RookMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular)
-        BishopMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2)
-        QueenMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2)
-        HorseMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular)
-        KingMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves, opponentNextAvailableMoves, ownBlockingKingFromCheckP2)
+        PawnMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2, playerOneNextMoves)
+        RookMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, playerOneNextMoves)
+        BishopMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2, playerOneNextMoves)
+        QueenMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2, playerOneNextMoves)
+        HorseMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, playerOneNextMoves)
+        KingMovesPlayerOne(individualPiece, boardLetters, playerOnePiecePositions, setAvailableMoves, playerTwoNextMoves, ownBlockingKingFromCheckP2)
     } else {
         // player two
         setCurrentPiece(individualPiece)
-        let opponentNextAvailableMoves = []
-        if (nextAvailableMoves[0]) {
-            nextAvailableMoves[0].forEach(pieces => {
-                pieces.map(piece => {
-                    piece.newAvailableMoves.forEach(move => {
-                        opponentNextAvailableMoves.push(move)
-                    })
-                })
-            })
-        }
         PawnMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1, attackingPositionsP1Perpendicular, attackingPositionsDiagonalP1)
         RookMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1, attackingPositionsP1Perpendicular)
         BishopMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1, attackingPositionsP1Perpendicular, attackingPositionsDiagonalP1)
         QueenMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1, attackingPositionsP1Perpendicular, attackingPositionsDiagonalP1)
         HorseMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1)
-        KingMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves, opponentNextAvailableMoves, ownBlockingKingFromCheckP1)
+        KingMovesPlayerTwo(individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves, playerTwoNextMoves, ownBlockingKingFromCheckP1)
     }
 }
 

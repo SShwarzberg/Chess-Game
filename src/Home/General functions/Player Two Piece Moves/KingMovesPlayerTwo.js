@@ -44,7 +44,6 @@ const KingMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositio
                 }
             })
         })
-        console.log(nextAvailableMoves);
         nextAvailableMoves.forEach(nextMove => {
             newAvailableMoves.forEach(move => {
                 if (nextMove === move) {

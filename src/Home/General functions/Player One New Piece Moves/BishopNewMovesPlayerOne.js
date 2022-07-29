@@ -42,7 +42,6 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
     playerOnePiecePositions.forEach(position => {
         newAvailableMoves.forEach(move => {
             if (position.tilePosition === move) {
-                removeFromAvailableMoves.push(move)
                 checkIfBlockingPlayerTwo.push(move)
             }
         })
@@ -266,78 +265,6 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
     }
     checkIfBlockingOwnPiecesDiagonal()
 
-    checkIfBlockingPlayerTwo.forEach(blocking => {
-        const ownBlockingDirections = (direction, directionArray) => {
-            direction.forEach(availableMove => {
-                if (availableMove === blocking && blocking !== individualPiece.tilePosition) {
-                    boardLetters.forEach((letter, i) => {
-                        if (blocking.includes(letter)) {
-                            directionArray.push({ blocking, i })
-                        }
-                    })
-                }
-            })
-        }
-        // up right
-        ownBlockingDirections(upAndToRight, ownPiecesBlockingUpRight)
-        // down right
-        ownBlockingDirections(downAndToRight, ownPiecesBlockingDownRight)
-        // down left
-        ownBlockingDirections(downAndToLeft, ownPiecesBlockingDownLeft)
-        // up left
-        ownBlockingDirections(upAndToLeft, ownPiecesBlockingUpLeft)
-    })
-
-    const pushOwnBlockingPiecesDown = (ownPiecesBlockingDirection, directionIndex) => {
-        const getOwnBlockingDirection = () => {
-            return ownPiecesBlockingDirection.map(piece => piece.i)
-        }
-        const getMinIndex = () => {
-            return Math.min(...getOwnBlockingDirection())
-        }
-        let ownPieceBlockingDirection
-        ownPiecesBlockingDirection.forEach(piece => {
-            if (piece.i === getMinIndex()) {
-                ownPieceBlockingDirection = piece
-            }
-        })
-        directionIndex.forEach(position => {
-            if (ownPieceBlockingDirection !== undefined && position.i > ownPieceBlockingDirection.i) {
-                removeFromAvailableMoves.push(position.move)
-            }
-        })
-    }
-    const pushOwnBlockingPiecesUp = (ownPiecesBlockingDirection, directionIndex) => {
-        const getOwnBlockingIndexUpLeft = () => {
-            return ownPiecesBlockingDirection.map(piece => piece.i)
-        }
-        const getMaxIndexUpLeft = () => {
-            return Math.max(...getOwnBlockingIndexUpLeft())
-        }
-        let ownPieceBlockingDirection
-        ownPiecesBlockingDirection.forEach(piece => {
-            if (piece.i === getMaxIndexUpLeft()) {
-                ownPieceBlockingDirection = piece
-            }
-        })
-        directionIndex.forEach(position => {
-            if (ownPieceBlockingDirection !== undefined && position.i < ownPieceBlockingDirection.i) {
-                removeFromAvailableMoves.push(position.move)
-            }
-        })
-    }
-
-    // remove all pieces after own first piece that blocks up and to the right
-    pushOwnBlockingPiecesUp(ownPiecesBlockingUpRight, upAndToRightIndex)
-
-    // remove all pieces after own first piece that blocks down and to the right
-    pushOwnBlockingPiecesDown(ownPiecesBlockingDownRight, downAndToRightIndex)
-
-    // remove all pieces after own first piece that blocks down and to the left
-    pushOwnBlockingPiecesDown(ownPiecesBlockingDownLeft, downAndToLeftIndex)
-
-    // remove all pieces after own first piece that blocks up and to the Left
-    pushOwnBlockingPiecesUp(ownPiecesBlockingUpLeft, upAndToLeftIndex)
 
     let checkIfBlockingOpponent = []
     playerTwoPiecePositions.forEach(position => {

@@ -215,6 +215,13 @@ const getNewAvailableMoves = (newPlayerOnePositions, newPlayerTwoPositions, boar
         queenP2,
         kingP2
     )
+    player2NewMoves.forEach(pieces => {
+        pieces.map(piece => {
+            piece.newAvailableMoves.forEach(move => {
+                console.log(move);
+            })
+        })
+    })
     setNextAvailableMoves([player1NewMoves, player2NewMoves])
     return [blockingKingFromCheckP1, blockingKingFromCheckP2, tilesBetweenKingAndAttackerP1, tilesBetweenKingAndAttackerP2, attackingPiecePositionsPerpendicularP1, attackingPiecePositionsPerpendicularP2, attackingPiecesPositionsDiagonalP1, attackingPiecesPositionsDiagonalP2, ownBlockingKingFromCheckP1, ownBlockingKingFromCheckP2]
 }

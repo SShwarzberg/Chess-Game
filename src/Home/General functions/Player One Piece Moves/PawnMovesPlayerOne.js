@@ -1,4 +1,4 @@
-const PawnMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2) => {
+const PawnMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2, playerOneNextMoves) => {
     if (individualPiece.id >= 0 && individualPiece.id <= 7) {
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition.includes(letter)) {
@@ -52,13 +52,24 @@ const PawnMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                         return move
                     }
                 })
+
                 if (tilesBetweenKingAndAttackerP2.length > 0) {
                     newAvailableMoves = newAvailableMoves.filter(move => {
                         if (tilesBetweenKingAndAttackerP2.includes(move)) {
                             return move
                         }
                     })
+                } else {
+                    playerOneNextMoves.forEach(move => {
+                        playerOnePiecePositions.forEach(position => {
+                            if (position.tilePosition === move && position.id === 15) {
+                                newAvailableMoves = []
+                            }
+                        })
+                    })
                 }
+
+
 
                 const blockingKingPerpendicular = () => {
                     let newNewAvailableMoves = []
