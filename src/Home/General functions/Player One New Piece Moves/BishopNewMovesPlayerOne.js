@@ -131,6 +131,17 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
                     }
                 })
             } else return
+            addToAvailableMoves.forEach(move => {
+                directionIndex.forEach(index => {
+                    if (index === move) {
+                        directionIndex.forEach(downRight => {
+                            if (move[1] < downRight[1]) {
+                                removeFromAvailableMoves.push(downRight)
+                            }
+                        })
+                    }
+                })
+            })
         }
         getBlockingDownRight(ownPiecesBlockingDownRight, downAndToRight)
 
@@ -174,6 +185,17 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
                     }
                 })
             } else return
+            addToAvailableMoves.forEach(move => {
+                directionIndex.forEach(index => {
+                    if (index === move) {
+                        directionIndex.forEach(downLeft => {
+                            if (move[1] > downLeft[1]) {
+                                removeFromAvailableMoves.push(downLeft)
+                            }
+                        })
+                    }
+                })
+            })
         }
         getBlockingDownLeft(ownPiecesBlockingDownLeft, downAndToLeft)
 
@@ -217,6 +239,17 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
                     }
                 })
             } else return
+            addToAvailableMoves.forEach(move => {
+                directionIndex.forEach(index => {
+                    if (index === move) {
+                        directionIndex.forEach(upRight => {
+                            if (move[1] < upRight[1]) {
+                                removeFromAvailableMoves.push(upRight)
+                            }
+                        })
+                    }
+                })
+            })
         }
         getBlockingUpRight(ownPiecesBlockingUpRight, upAndToRight)
 
@@ -260,6 +293,17 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
                     }
                 })
             } else return
+            addToAvailableMoves.forEach(move => {
+                directionIndex.forEach(index => {
+                    if (index === move) {
+                        directionIndex.forEach(upLeft => {
+                            if (move[1] > upLeft[1]) {
+                                removeFromAvailableMoves.push(upLeft)
+                            }
+                        })
+                    }
+                })
+            })
         }
         getBlockingUpLeft(ownPiecesBlockingUpLeft, upAndToLeft)
     }
@@ -626,7 +670,7 @@ const BishopNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePo
             })
         })
 
-        if (opponentsPiecesBetween.length !== 2) {
+        if (opponentsPiecesBetween.length !== 1) {
             tilesBetweenKingAndAttacker = []
         }
         tilesBetweenKingAndAttacker = tilesBetweenKingAndAttacker.filter(position => {

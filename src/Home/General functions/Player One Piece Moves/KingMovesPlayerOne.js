@@ -13,15 +13,15 @@ const KingMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                     }
                 })
             }
-            if (parseInt(individualPiece.tilePosition[1]) === i) {
+            if (parseInt(individualPiece.tilePosition[1]) === (i + 1)) {
                 boardLetters.forEach((letters, index) => {
                     if (individualPiece.tilePosition[0] === letters) {
                         newAvailableMoves.push(boardLetters[index - 1] + i)
                         newAvailableMoves.push(boardLetters[index + 1] + i)
                         newAvailableMoves.push(boardLetters[index - 1] + (i + 1))
                         newAvailableMoves.push(boardLetters[index + 1] + (i + 1))
-                        newAvailableMoves.push(boardLetters[index - 1] + (i - 1))
-                        newAvailableMoves.push(boardLetters[index + 1] + (i - 1))
+                        newAvailableMoves.push(boardLetters[index - 1] + (i + 2))
+                        newAvailableMoves.push(boardLetters[index + 1] + (i + 2))
                     }
                 })
             }
@@ -45,13 +45,11 @@ const KingMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                 }
             })
         })
-        if (ownBlockingKingFromCheckP2) {
-            newAvailableMoves = newAvailableMoves.filter(move => {
-                if (!removeFromAvailableMoves.includes(move)) {
-                    return move
-                }
-            })
-        }
+        newAvailableMoves = newAvailableMoves.filter(move => {
+            if (!removeFromAvailableMoves.includes(move)) {
+                return move
+            }
+        })
         setAvailableMoves(newAvailableMoves)
     }
 }

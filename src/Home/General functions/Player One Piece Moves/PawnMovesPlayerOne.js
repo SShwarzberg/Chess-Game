@@ -1,4 +1,4 @@
-const PawnMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2, playerOneNextMoves) => {
+const PawnMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2, playerTwoNextMoves) => {
     if (individualPiece.id >= 0 && individualPiece.id <= 7) {
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition.includes(letter)) {
@@ -24,6 +24,9 @@ const PawnMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                 playerOnePiecePositions.forEach(position => {
                     if (position.tilePosition === pawnMove) {
                         newAvailableMoves.splice(pawnMove)
+                    }
+                    if (position.tilePosition === pawnFirstMove) {
+                        removeFromAvailableMoves.push(pawnFirstMove)
                     }
                     if (position.tilePosition[0] === 'f' && individualPiece.tilePosition[1] === position.tilePosition[1] && individualPiece.tilePosition[0] === 'g') {
                         removeFromAvailableMoves.push(pawnFirstMove)
@@ -53,25 +56,16 @@ const PawnMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                     }
                 })
 
+
                 if (tilesBetweenKingAndAttackerP2.length > 0) {
                     newAvailableMoves = newAvailableMoves.filter(move => {
                         if (tilesBetweenKingAndAttackerP2.includes(move)) {
                             return move
                         }
                     })
-                } else {
-                    playerOneNextMoves.forEach(move => {
-                        playerOnePiecePositions.forEach(position => {
-                            if (position.tilePosition === move && position.id === 15) {
-                                newAvailableMoves = []
-                            }
-                        })
-                    })
                 }
 
-
-
-                const blockingKingPerpendicular = () => {
+                const attackingKingPerpendicular = () => {
                     let newNewAvailableMoves = []
                     attackingPositionsP2Perpendicular.forEach((attacker, i) => {
                         attacker.attackingPositions.forEach(position => {
@@ -92,9 +86,9 @@ const PawnMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                         })
                     })
                 }
-                blockingKingPerpendicular()
+                attackingKingPerpendicular()
 
-                const blockingKingDiagonal = () => {
+                const attackingKingDiagonal = () => {
                     let newNewAvailableMovesDiagonal = []
                     attackingPositionsDiagonalP2.forEach((attacker, i) => {
                         attacker.attackingPositions.forEach(position => {
@@ -115,7 +109,7 @@ const PawnMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositio
                         })
                     })
                 }
-                blockingKingDiagonal()
+                attackingKingDiagonal()
                 setAvailableMoves(newAvailableMoves)
             }
         })

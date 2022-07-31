@@ -328,19 +328,9 @@ const RookNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosi
             }
         })
     })
-    newAvailableMoves = newAvailableMoves.filter(item => {
-        if (!removeFromAvailableMoves.includes(item)) {
-            return item
-        }
-    })
-    addToAvailableMovesRightAngle.forEach(move => {
-        newAvailableMoves.push(move)
-    })
-    newAvailableMoves = Array.from(new Set(newAvailableMoves))
-    returnedMoves = { piece: 'Rook 2', id: individualPiece.id, newAvailableMoves }
 
-    let attackingPiecesPositions
     let tilesBetweenKingAndAttacker = []
+    let attackingPiecesPositions
     const getPiecesBetweenKingAndOpponentPerpendicular = () => {
         let kingPosition
         playerOnePiecePositions.forEach(position => {
@@ -349,15 +339,16 @@ const RookNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosi
             }
         })
 
-        let playerTwoTilePositions = []
+        let tilesBetweenKingAndAttacker = []
         let playerOneTilePositions = []
+        let playerTwoTilePositions = []
         playerTwoPiecePositions.forEach(position => {
             if (position.id !== individualPiece.id) {
-                playerTwoTilePositions.push(position.tilePosition)
+                playerOneTilePositions.push(position.tilePosition)
             }
         })
         playerOnePiecePositions.forEach(position => {
-            playerOneTilePositions.push(position.tilePosition)
+            playerTwoTilePositions.push(position.tilePosition)
         })
 
         let underCurrentPiece = []
@@ -418,12 +409,12 @@ const RookNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosi
 
         let opponentsPiecesBetween = []
         tilesBetweenKingAndAttacker.forEach(position => {
-            if (playerTwoTilePositions.includes(position)) {
+            if (playerOneTilePositions.includes(position)) {
                 tilesBetweenKingAndAttacker = []
             }
-            playerOnePiecePositions.forEach(p1Positions => {
-                if (p1Positions.tilePosition === position && position !== individualPiece.tilePosition) {
-                    opponentsPiecesBetween.push(p1Positions.tilePosition)
+            playerOnePiecePositions.forEach(p2Positions => {
+                if (p2Positions.tilePosition === position) {
+                    opponentsPiecesBetween.push(p2Positions.tilePosition)
                 }
             })
         })
@@ -502,6 +493,11 @@ const RookNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosi
                     if (playerTwoTilePositions.includes(position) && position[0] < kingPosition[0]) {
                         blockingKingDown = []
                     }
+                    blockingKingDown.forEach(piece => {
+                        if (piece[0] < position[0]) {
+                            removeFromAvailableMoves.push(position)
+                        }
+                    })
                 })
             })
         }
@@ -666,6 +662,18 @@ const RookNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosi
         })
     }
     ownBlockingKingFromCheckFunc()
+
+    newAvailableMoves = newAvailableMoves.filter(item => {
+        if (!removeFromAvailableMoves.includes(item)) {
+            return item
+        }
+    })
+    addToAvailableMovesRightAngle.forEach(move => {
+        newAvailableMoves.push(move)
+    })
+    newAvailableMoves = Array.from(new Set(newAvailableMoves))
+    returnedMoves = { piece: 'Rook 2', id: individualPiece.id, newAvailableMoves }
+
     return [returnedMoves, blockingKingFromCheck, tilesBetweenKingAndAttacker, attackingPiecesPositions, ownBlockingKingFromCheck]
 }
 

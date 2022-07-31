@@ -1,4 +1,4 @@
-const QueenMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2, playerOneNextMoves, p2AttackingPosition) => {
+const QueenMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2, playerTwoNextMoves, ownBlockingKingFromCheckP2) => {
     if (individualPiece.id === 14) {
         let newAvailableMoves = []
         let removeFromAvailableMoves = []
@@ -443,14 +443,6 @@ const QueenMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositi
                     return move
                 }
             })
-        } else {
-            playerOneNextMoves.forEach(move => {
-                playerOnePiecePositions.forEach(position => {
-                    if (position.tilePosition === move && position.id === 15) {
-                        newAvailableMoves = []
-                    }
-                })
-            })
         }
 
         const blockingKingPerpendicular = () => {
@@ -476,28 +468,26 @@ const QueenMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositi
         }
         blockingKingPerpendicular()
 
-        const blockingKingDiagonal = () => {
-            let newNewAvailableMovesDiagonal = []
-            attackingPositionsDiagonalP2.forEach((attacker, i) => {
-                attacker.attackingPositions.forEach(position => {
-                    if (individualPiece.tilePosition === position) {
-                        attackingPositionsDiagonalP2[i].attackingPositions.forEach(selectedAttacker => {
-                            newAvailableMoves.forEach(newMove => {
-                                if (selectedAttacker === newMove) {
-                                    newNewAvailableMovesDiagonal.push(selectedAttacker);
-                                }
-                            })
-                        })
-                        newAvailableMoves = newAvailableMoves.filter(moves => {
-                            if (newNewAvailableMovesDiagonal.includes(moves)) {
-                                return moves
+        let newNewAvailableMovesDiagonal = []
+        attackingPositionsDiagonalP2.forEach((attacker, i) => {
+            attacker.attackingPositions.forEach(position => {
+                if (individualPiece.tilePosition === position) {
+                    attackingPositionsDiagonalP2[i].attackingPositions.forEach(selectedAttacker => {
+                        newAvailableMoves.forEach(newMove => {
+                            if (selectedAttacker === newMove) {
+                                newNewAvailableMovesDiagonal.push(selectedAttacker);
                             }
                         })
-                    }
-                })
+                    })
+                    newAvailableMoves = newAvailableMoves.filter(moves => {
+                        if (newNewAvailableMovesDiagonal.includes(moves)) {
+                            return moves
+                        }
+                    })
+                }
             })
-        }
-        blockingKingDiagonal()
+        })
+
         setAvailableMoves(newAvailableMoves)
     }
 }

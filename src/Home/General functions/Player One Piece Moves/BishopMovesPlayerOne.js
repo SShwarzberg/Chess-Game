@@ -1,4 +1,4 @@
-const BishopMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2, playerOneNextMoves) => {
+const BishopMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePositions, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP2, attackingPositionsP2Perpendicular, attackingPositionsDiagonalP2, playerTwoNextMoves) => {
     if (individualPiece.id === 8 || individualPiece.id === 9) {
         let newAvailableMoves = []
         let upAndToRight = []
@@ -205,7 +205,7 @@ const BishopMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosit
                 }
             })
         } else {
-            playerOneNextMoves.forEach(move => {
+            playerTwoNextMoves.forEach(move => {
                 playerOnePiecePositions.forEach(position => {
                     if (position.tilePosition === move && position.id === 15) {
                         newAvailableMoves = []

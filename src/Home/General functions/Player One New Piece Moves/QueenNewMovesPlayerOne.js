@@ -480,6 +480,17 @@ const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
                     }
                 })
             } else return
+            addToAvailableMoves.forEach(move => {
+                directionIndex.forEach(index => {
+                    if (index === move) {
+                        directionIndex.forEach(downRight => {
+                            if (move[1] < downRight[1]) {
+                                removeFromAvailableMoves.push(downRight)
+                            }
+                        })
+                    }
+                })
+            })
         }
         getBlockingDownRight(ownPiecesBlockingDownRight, downAndToRight)
 
@@ -523,6 +534,17 @@ const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
                     }
                 })
             } else return
+            addToAvailableMoves.forEach(move => {
+                directionIndex.forEach(index => {
+                    if (index === move) {
+                        directionIndex.forEach(downLeft => {
+                            if (move[1] > downLeft[1]) {
+                                removeFromAvailableMoves.push(downLeft)
+                            }
+                        })
+                    }
+                })
+            })
         }
         getBlockingDownLeft(ownPiecesBlockingDownLeft, downAndToLeft)
 
@@ -566,6 +588,17 @@ const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
                     }
                 })
             } else return
+            addToAvailableMoves.forEach(move => {
+                directionIndex.forEach(index => {
+                    if (index === move) {
+                        directionIndex.forEach(upRight => {
+                            if (move[1] < upRight[1]) {
+                                removeFromAvailableMoves.push(upRight)
+                            }
+                        })
+                    }
+                })
+            })
         }
         getBlockingUpRight(ownPiecesBlockingUpRight, upAndToRight)
 
@@ -609,6 +642,17 @@ const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
                     }
                 })
             } else return
+            addToAvailableMoves.forEach(move => {
+                directionIndex.forEach(index => {
+                    if (index === move) {
+                        directionIndex.forEach(upLeft => {
+                            if (move[1] > upLeft[1]) {
+                                removeFromAvailableMoves.push(upLeft)
+                            }
+                        })
+                    }
+                })
+            })
         }
         getBlockingUpLeft(ownPiecesBlockingUpLeft, upAndToLeft)
     }
@@ -1074,7 +1118,7 @@ const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
             })
         })
 
-        if (opponentsPiecesBetween.length !== 2) {
+        if (opponentsPiecesBetween.length !== 1) {
             tilesBetweenKingAndAttacker = []
         }
         tilesBetweenKingAndAttacker = tilesBetweenKingAndAttacker.filter(position => {
