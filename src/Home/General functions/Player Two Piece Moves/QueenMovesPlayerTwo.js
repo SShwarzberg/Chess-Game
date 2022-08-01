@@ -1,4 +1,4 @@
-const QueenMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1, attackingPositionsP1Perpendicular, attackingPositionsDiagonalP1) => {
+const QueenMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1, attackingPositionsP1Perpendicular, attackingPositionsDiagonalP1, checkingKingPieces) => {
     if (individualPiece.id === 30) {
         let newAvailableMoves = []
         let removeFromAvailableMoves = []
@@ -484,6 +484,9 @@ const QueenMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositi
                 }
             })
         })
+        if (checkingKingPieces.length > 1) {
+            newAvailableMoves = []
+        }
         setAvailableMoves(newAvailableMoves)
     }
 }

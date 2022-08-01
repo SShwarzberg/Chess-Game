@@ -815,7 +815,7 @@ const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
     addToAvailableMovesRightAngle.forEach(move => {
         newAvailableMoves.push(move)
     })
-    returnedMoves = { piece: 'Queen 2', id: individualPiece.id, newAvailableMoves }
+    returnedMoves = { piece: 'Queen 2', currentPosition: individualPiece.tilePosition, id: individualPiece.id, newAvailableMoves }
 
     let kingPosition
     playerTwoPiecePositions.forEach(position => {
@@ -1043,7 +1043,7 @@ const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
                 }
             })
         })
-        if (opponentsPiecesBetween.length > 1) {
+        if (opponentsPiecesBetween.length > 2) {
             tilesBetweenKingAndAttacker = []
         }
         attackingPiecesPositionsPerpendicular = ({
@@ -1118,7 +1118,7 @@ const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
             })
         })
 
-        if (opponentsPiecesBetween.length !== 1) {
+        if (opponentsPiecesBetween.length > 2) {
             tilesBetweenKingAndAttacker = []
         }
         tilesBetweenKingAndAttacker = tilesBetweenKingAndAttacker.filter(position => {
@@ -1126,13 +1126,11 @@ const QueenNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePos
                 return position
             }
         })
-        if (tilesBetweenKingAndAttacker.length !== 0) {
-            attackingPiecesPositionsDiagonal = ({
-                attackerId: individualPiece.id,
-                attackerPosition: individualPiece.tilePosition,
-                attackingPositions: tilesBetweenKingAndAttacker
-            })
-        }
+        attackingPiecesPositionsDiagonal = ({
+            attackerId: individualPiece.id,
+            attackerPosition: individualPiece.tilePosition,
+            attackingPositions: tilesBetweenKingAndAttacker
+        })
     }
     getPiecesBetweenKingAndOpponentDiagonal()
 

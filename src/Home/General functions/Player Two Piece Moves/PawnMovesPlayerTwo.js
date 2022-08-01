@@ -1,4 +1,4 @@
-const PawnMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1, attackingPositionsP1Perpendicular, attackingPositionsDiagonalP1) => {
+const PawnMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1, attackingPositionsP1Perpendicular, attackingPositionsDiagonalP1, checkingKingPieces) => {
     if (individualPiece.id >= 16 && individualPiece.id <= 23) {
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition.includes(letter)) {
@@ -18,12 +18,15 @@ const PawnMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositio
                         }
                     })
                     if (position.tilePosition === pawnMove) {
-                        newAvailableMoves.splice(pawnMove)
+                        removeFromAvailableMoves.push(pawnMove)
                     }
                 })
                 playerTwoPiecePositions.forEach(position => {
                     if (position.tilePosition === pawnMove) {
-                        newAvailableMoves.splice(pawnMove)
+                        removeFromAvailableMoves.push(pawnMove)
+                    }
+                    if (position.tilePosition === pawnFirstMove) {
+                        removeFromAvailableMoves.push(pawnFirstMove)
                     }
                     if (position.tilePosition[0] === 'c' && individualPiece.tilePosition[1] === position.tilePosition[1] && individualPiece.tilePosition[0] === 'b') {
                         removeFromAvailableMoves.push(pawnFirstMove)
@@ -97,6 +100,9 @@ const PawnMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositio
                         }
                     })
                 })
+                if (checkingKingPieces.length > 1) {
+                    newAvailableMoves = []
+                }
                 setAvailableMoves(newAvailableMoves)
             }
         })

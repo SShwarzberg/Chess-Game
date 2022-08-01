@@ -41,7 +41,7 @@ const HorseNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePos
                     return move
                 }
             })
-            returnedMoves = { piece: 'Horse 2', id: individualPiece.id, newAvailableMoves }
+            returnedMoves = { piece: 'Horse 2', currentPosition: individualPiece.tilePosition, id: individualPiece.id, newAvailableMoves }
         }
     })
     return returnedMoves

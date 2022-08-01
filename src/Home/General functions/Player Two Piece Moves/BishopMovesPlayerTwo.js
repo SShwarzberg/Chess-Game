@@ -1,4 +1,4 @@
-const BishopMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1, attackingPositionsP1Perpendicular, attackingPositionsDiagonalP1) => {
+const BishopMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, playerOnePiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1, attackingPositionsP1Perpendicular, attackingPositionsDiagonalP1, checkingKingPieces) => {
     if (individualPiece.id === 24 || individualPiece.id === 25) {
         let newAvailableMoves = []
         let upAndToRight = []
@@ -242,6 +242,9 @@ const BishopMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosit
                 }
             })
         })
+        if (checkingKingPieces.length > 1) {
+            newAvailableMoves = []
+        }
         setAvailableMoves(newAvailableMoves)
     }
 }

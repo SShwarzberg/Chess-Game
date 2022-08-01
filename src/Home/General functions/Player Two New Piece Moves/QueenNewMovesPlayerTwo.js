@@ -822,7 +822,7 @@ const QueenNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePos
     addToAvailableMovesRightAngle.forEach(move => {
         newAvailableMoves.push(move)
     })
-    returnedMoves = { piece: 'Queen 2', id: individualPiece.id, newAvailableMoves }
+    returnedMoves = { piece: 'Queen 2', currentPosition: individualPiece.tilePosition, id: individualPiece.id, newAvailableMoves }
 
 
     let tilesBetweenKingAndAttacker = []
@@ -1048,7 +1048,7 @@ const QueenNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePos
                 }
             })
         })
-        if (opponentsPiecesBetween.length > 1) {
+        if (opponentsPiecesBetween.length > 2) {
             tilesBetweenKingAndAttacker = []
         }
         attackingPiecesPositions = ({
@@ -1123,7 +1123,7 @@ const QueenNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePos
             })
         })
 
-        if (opponentsPiecesBetween.length !== 2) {
+        if (opponentsPiecesBetween.length > 2) {
             tilesBetweenKingAndAttacker = []
         }
         tilesBetweenKingAndAttacker = tilesBetweenKingAndAttacker.filter(position => {

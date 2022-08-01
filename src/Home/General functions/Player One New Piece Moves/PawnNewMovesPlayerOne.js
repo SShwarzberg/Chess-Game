@@ -28,7 +28,7 @@ const PawnNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosi
                     return move
                 }
             })
-            returnedMoves = { piece: 'Pawn', id: individualPiece.id, newAvailableMoves }
+            returnedMoves = { piece: 'Pawn', currentPosition: individualPiece.tilePosition, id: individualPiece.id, newAvailableMoves }
         }
     })
     return returnedMoves

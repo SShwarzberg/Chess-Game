@@ -418,7 +418,7 @@ const RookNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePosi
                 }
             })
         })
-        if (opponentsPiecesBetween.length > 1) {
+        if (opponentsPiecesBetween.length > 2) {
             tilesBetweenKingAndAttacker = []
         }
         attackingPiecesPositions = ({

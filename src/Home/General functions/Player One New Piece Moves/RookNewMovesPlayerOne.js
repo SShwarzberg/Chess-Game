@@ -420,7 +420,7 @@ const RookNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosi
         newAvailableMoves.push(move)
     })
     newAvailableMoves = Array.from(new Set(newAvailableMoves))
-    returnedMoves = { piece: 'Rook 2', id: individualPiece.id, newAvailableMoves }
+    returnedMoves = { piece: 'Rook 2', currentPosition: individualPiece.tilePosition, id: individualPiece.id, newAvailableMoves }
 
 
 
@@ -510,7 +510,7 @@ const RookNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosi
                 }
             })
         })
-        if (opponentsPiecesBetween.length > 1) {
+        if (opponentsPiecesBetween.length > 2) {
             tilesBetweenKingAndAttacker = []
         }
         attackingPiecesPositionsPerpendicular = ({

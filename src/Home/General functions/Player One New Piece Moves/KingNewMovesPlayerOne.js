@@ -31,7 +31,7 @@ const KingNewMovesPlayerOne = (individualPiece, boardLetters, playerOnePiecePosi
             return move
         }
     })
-    returnedMoves = { piece: 'King', id: individualPiece.id, newAvailableMoves }
+    returnedMoves = { piece: 'King', currentPosition: individualPiece.tilePosition, id: individualPiece.id, newAvailableMoves }
     return returnedMoves
 }
 

@@ -493,7 +493,7 @@ const BishopNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePo
         }
     })
     newAvailableMoves = Array.from(new Set(newAvailableMoves))
-    returnedMoves = { piece: 'Bishop 2', id: individualPiece.id, newAvailableMoves }
+    returnedMoves = { piece: 'Bishop 2', currentPosition: individualPiece.tilePosition, id: individualPiece.id, newAvailableMoves }
 
     let blockingKingUpRight = []
     let blockingKingDownRight = []
@@ -685,7 +685,7 @@ const BishopNewMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePo
             })
         })
 
-        if (opponentsPiecesBetween.length !== 1) {
+        if (opponentsPiecesBetween.length > 2) {
             tilesBetweenKingAndAttacker = []
         }
         tilesBetweenKingAndAttacker = tilesBetweenKingAndAttacker.filter(position => {

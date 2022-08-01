@@ -5,21 +5,21 @@ import queen from './images/queen.png'
 import rook from './images/rook.png'
 import horse from './images/horse.png'
 
-// player one initial positions
-const pawnsPlayerOne = ['', '', '', '', '', '', '', '']
-const bishopsPlayerOne = ['', '']
-const rooksPlayerOne = ['f4', '']
-const horsesPlayerOne = ['', '']
-const queenPlayerOne = ['']
-const kingPlayerOne = ['f5']
+// player one beginning positions
+const pawnsPlayerOne = ['g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8']
+const bishopsPlayerOne = ['h3', 'h6']
+const rooksPlayerOne = ['h1', 'h8']
+const horsesPlayerOne = ['h2', 'h7']
+const queenPlayerOne = ['h4']
+const kingPlayerOne = ['h5']
 
-// player two initial position
-const pawnsPlayerTwo = ['', '', '', '', '', '', '', '']
-const bishopsPlayerTwo = ['', '']
-const rooksPlayerTwo = ['', '']
-const horsesPlayerTwo = ['', '']
-const queenPlayerTwo = ['f1']
-const kingPlayerTwo = ['']
+// player two beginning position
+const pawnsPlayerTwo = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8']
+const bishopsPlayerTwo = ['a3', 'a6']
+const rooksPlayerTwo = ['a1', 'a8']
+const horsesPlayerTwo = ['a2', 'a7']
+const queenPlayerTwo = ['a4']
+const kingPlayerTwo = ['a5']
 
 // player one piece info
 const piecesPlayerOne = [

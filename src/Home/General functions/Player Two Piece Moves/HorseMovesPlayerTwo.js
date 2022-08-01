@@ -1,4 +1,4 @@
-const HorseMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1) => {
+const HorseMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositions, setAvailableMoves, tilesBetweenKingAndAttackerP1, checkingKingPieces) => {
     if (individualPiece.id === 28 || individualPiece.id === 29) {
         boardLetters.forEach((letter, i) => {
             if (individualPiece.tilePosition[0] === letter) {
@@ -47,6 +47,9 @@ const HorseMovesPlayerTwo = (individualPiece, boardLetters, playerTwoPiecePositi
                             return move
                         }
                     })
+                }
+                if (checkingKingPieces.length > 1) {
+                    newAvailableMoves = []
                 }
                 setAvailableMoves(newAvailableMoves)
             }
